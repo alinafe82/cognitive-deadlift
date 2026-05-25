@@ -19,6 +19,8 @@ Every non-trivial change should answer:
 - Which runtime adapters are affected: Codex, Claude, Gemini?
 - What was verified locally?
 
+Do not commit generated test artifacts, grading reports, coverage output, caches, logs, or temporary files. Commit source checks and scripts; keep their generated output local or in CI logs.
+
 ## Avoid
 
 - Generic productivity prompts.
