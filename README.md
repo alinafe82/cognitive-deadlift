@@ -77,6 +77,16 @@ COGNITIVE_DEADLIFT_BYPASS=1 git commit
 
 See [docs/research-brief.md](docs/research-brief.md) for the source-grounded argument behind the repo.
 
+## Quality Checks
+
+Run the local validation and skill grading checks:
+
+```bash
+make check
+```
+
+The grader requires each skill to keep clear activation boundaries, anti-pattern coverage, a decision flow, explicit tooling expectations, and a structured output contract.
+
 ## License
 
 MIT
