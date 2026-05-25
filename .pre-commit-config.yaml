@@ -1,0 +1,14 @@
+repos:
+  - repo: local
+    hooks:
+      - id: cognitive-deadlift-validate
+        name: Cognitive Deadlift repo validation
+        entry: python3 scripts/validate_repo.py
+        language: system
+        pass_filenames: false
+      - id: cognitive-deadlift-thinking-ledger
+        name: Cognitive Deadlift thinking ledger
+        entry: python3 scripts/cognitive_deadlift_check.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]

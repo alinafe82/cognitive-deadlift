@@ -1,0 +1,24 @@
+{
+  "name": "cognitive-deadlift",
+  "description": "Skills and hooks that keep AI-assisted developers out of autopilot.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Alinafe Matenda",
+    "url": "https://github.com/alinafe82"
+  },
+  "homepage": "https://github.com/alinafe82/cognitive-deadlift",
+  "repository": "https://github.com/alinafe82/cognitive-deadlift",
+  "license": "MIT",
+  "skills": [
+    "./skills/problem-framing",
+    "./skills/assumption-audit",
+    "./skills/alternatives-before-code",
+    "./skills/failing-test-first",
+    "./skills/trace-the-code",
+    "./skills/read-the-docs-first",
+    "./skills/explain-without-ai",
+    "./skills/diff-interrogation",
+    "./skills/debugging-lab-notebook",
+    "./skills/complexity-budget"
+  ]
+}

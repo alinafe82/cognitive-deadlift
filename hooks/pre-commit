@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+set -eu
+
+HOOK_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+if [ -x "$REPO_ROOT/scripts/cognitive_deadlift_check.py" ]; then
+  "$REPO_ROOT/scripts/cognitive_deadlift_check.py"
+elif [ -x "$HOOK_DIR/../scripts/cognitive_deadlift_check.py" ]; then
+  "$HOOK_DIR/../scripts/cognitive_deadlift_check.py"
+else
+  echo "Cognitive Deadlift hook could not find scripts/cognitive_deadlift_check.py" >&2
+  exit 1
+fi

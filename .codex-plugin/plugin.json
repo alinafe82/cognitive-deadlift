@@ -1,0 +1,40 @@
+{
+  "name": "cognitive-deadlift",
+  "version": "0.1.0",
+  "description": "Skills and hooks that make AI-assisted developers prove they still understand the work.",
+  "author": {
+    "name": "Alinafe Matenda",
+    "url": "https://github.com/alinafe82"
+  },
+  "homepage": "https://github.com/alinafe82/cognitive-deadlift",
+  "repository": "https://github.com/alinafe82/cognitive-deadlift",
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "software-engineering",
+    "critical-thinking",
+    "developer-tools",
+    "codex-skills",
+    "hooks"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Cognitive Deadlift",
+    "shortDescription": "AI guardrails that keep developers thinking.",
+    "longDescription": "Cognitive Deadlift is a set of Codex skills, hooks, and scripts for developers who use AI but refuse to outsource judgment. It forces problem framing, assumption audits, trace reading, failing tests, alternatives, and diff interrogation before code is accepted.",
+    "developerName": "Alinafe Matenda",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use problem-framing before implementing this.",
+      "Run an assumption audit on this plan.",
+      "Interrogate this diff before I merge it."
+    ],
+    "brandColor": "#171717",
+    "screenshots": []
+  }
+}
