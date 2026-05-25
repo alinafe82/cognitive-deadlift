@@ -40,6 +40,14 @@ _Avoid_: Fork, duplicate skill, compatibility hack
 Concrete traces that the developer understood the work: hypotheses, code paths, tests, alternatives, constraints, or review notes.
 _Avoid_: Explanation, confidence, vibes
 
+**Security Posture**:
+The repo's layered controls for preventing malicious changes, secret exposure, unsafe automation, and supply-chain drift.
+_Avoid_: Enterprise security claim, checkbox security
+
+**Security Gate**:
+A CI, review, branch, or local validation control that blocks risky changes until the missing security evidence is supplied.
+_Avoid_: Test artifact, audit report
+
 ## Flagged Ambiguities
 
 **"Against AI"**:
@@ -50,6 +58,9 @@ The repo should force reasoning evidence at decision points, not add performativ
 
 **"Codex, Gemini, and Claude skills"**:
 The shared skill source is `skills/*/SKILL.md`. Codex, Claude, and Gemini each get a runtime adapter instead of separate duplicated skill bodies.
+
+**"CrowdStrike level security"**:
+The repo cannot honestly claim commercial EDR or enterprise SOC capability. The canonical interpretation is enterprise-style repository security: least privilege, supply-chain checks, secret scanning, threat modeling, protected branches, and auditable security gates.
 
 ## Example Dialogue
 

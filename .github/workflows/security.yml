@@ -1,4 +1,4 @@
-name: Validate
+name: Security Hygiene
 
 on:
   pull_request:
@@ -10,11 +10,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: validate-${{ github.ref }}
+  group: security-hygiene-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
+  security-hygiene:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -26,11 +26,5 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Validate repo
-        run: python3 scripts/validate_repo.py
-
-      - name: Grade skills
-        run: python3 scripts/grade_skills.py --min-score 90
-
-      - name: Security hygiene scan
+      - name: Run security scan
         run: python3 scripts/security_scan.py

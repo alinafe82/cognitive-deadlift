@@ -85,7 +85,11 @@ Run the local validation and skill grading checks:
 make check
 ```
 
-The grader requires each skill to keep clear activation boundaries, anti-pattern coverage, a decision flow, explicit tooling expectations, and a structured output contract.
+`make check` runs repo validation, skill grading, and security hygiene scanning. The grader requires each skill to keep clear activation boundaries, anti-pattern coverage, a decision flow, explicit tooling expectations, and a structured output contract.
+
+## Security
+
+See [SECURITY.md](SECURITY.md) and [docs/security/threat-model.md](docs/security/threat-model.md). The repo uses least-privilege GitHub Actions, CodeQL, dependency review, CODEOWNERS, secret scanning, and local security hygiene checks.
 
 ## License
 

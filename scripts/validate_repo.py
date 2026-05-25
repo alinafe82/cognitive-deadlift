@@ -19,6 +19,12 @@ REQUIRED_ROOT_FILES = [
     ".codex-plugin/plugin.json",
     ".claude-plugin/plugin.json",
     "gemini-extension.json",
+    "SECURITY.md",
+    "docs/security/threat-model.md",
+    "docs/security/supply-chain.md",
+    "docs/security/branch-protection.md",
+    "docs/security/incident-response.md",
+    "scripts/security_scan.py",
 ]
 
 
