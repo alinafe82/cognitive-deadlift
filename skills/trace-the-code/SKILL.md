@@ -1,58 +1,34 @@
 ---
 name: trace-the-code
-description: "Make the developer trace existing execution paths before inventing behavior. Use when changing unfamiliar code, debugging, reviewing AI-generated edits, or when a plan depends on how the code currently works. NOT for greenfield files, pure docs, or isolated changes with an already-known call path."
+description: "Trace existing execution paths before changing unfamiliar behavior. Use when editing unknown code, debugging, reviewing AI-generated changes, or when a plan depends on current state, side effects, or error flow. NOT for greenfield files, pure docs, or already-traced isolated changes."
 ---
 
 # Trace The Code
 
-Do not reason about the system from memory when the code is available.
+## Purpose
+
+Force the assistant to read the real implementation path before inventing behavior.
 
 ## When To Use
 
 - The code path is unfamiliar.
-- A plan depends on how current state, errors, or side effects flow.
-- AI suggests a new path without showing the old one.
-- A change crosses module boundaries.
+- The change crosses module boundaries.
+- Current state, data shape, error handling, or side effects matter.
+- AI suggests an implementation without showing how the current code works.
 
-## Do Not Use For
+## When Not To Use
 
 - Greenfield files with no existing callers.
 - Pure documentation edits.
-- Isolated changes where a recent trace already exists in the issue or thinking ledger.
+- Work where a recent trace already exists in the issue, PR, or thinking ledger.
 
-## Decision Flow
+## Inputs Expected
 
-```mermaid
-flowchart TD
-  A[Need to change behavior] --> B[Find public entry point]
-  B --> C[Follow call path]
-  C --> D[Track data shape]
-  D --> E[Track state and side effects]
-  E --> F[Track error path]
-  F --> G[Summarize before editing]
-```
+- Entry point, command, route, component, function, stack trace, or user workflow.
+- Relevant repository files if known.
+- The behavior to understand or change.
 
-## Anti-Patterns
-
-| Novice move | Expert move | Why it matters |
-| --- | --- | --- |
-| Search for a filename and edit locally | Start from the public entry point | Local edits can miss caller contracts |
-| Ignore error paths | Trace swallowed, transformed, retried, and surfaced errors | Bugs often live in failure handling |
-| Trust AI's invented architecture | Verify real callers and data flow | The repository is the source of truth |
-
-## Process
-
-1. Locate the public entry point.
-2. Follow calls to the state change or external effect.
-3. Identify the data shape at each boundary.
-4. Note where errors are swallowed, transformed, retried, or surfaced.
-5. Summarize the path before proposing edits.
-
-## Tooling
-
-Use `rg` first for code search. Prefer file and line references over vague module names.
-
-## Output Contract
+## Output Expected
 
 ```md
 Entry point:
@@ -63,6 +39,41 @@ Error path:
 Unknowns:
 ```
 
-## Temporal Note
+## Process
 
-This skill encodes a durable reasoning workflow and contains no time-sensitive third-party technical claims. Last reviewed: 2026-05-25.
+1. Find the public entry point.
+2. Follow calls to the state change or external effect.
+3. Track the data shape at boundaries.
+4. Track where errors are swallowed, transformed, retried, or surfaced.
+5. Summarize the path with file references before proposing edits.
+
+## Quality Bar
+
+A good trace gives enough file and line references that another engineer can verify the path without redoing the search from scratch.
+
+## Examples
+
+Simple case: a CLI flag is ignored. The skill should trace from argument parsing to config construction to the branch that should consume the flag.
+
+Complex case: a webhook is acknowledged but not persisted. The skill should trace request handling, validation, persistence, retries, and error logging.
+
+See `examples/simple.md` and `examples/edge-case.md`.
+
+## Failure Modes
+
+- Entry point unknown: search for user-visible strings, routes, commands, or tests.
+- Generated code involved: trace to the generated boundary and identify the source of generation.
+- Files unavailable: state that the trace is incomplete and ask for the smallest missing file.
+- Multiple possible paths: list them and prioritize the path with the reported symptom.
+
+## Safety And Privacy
+
+Do not paste private source code, secrets, logs, customer identifiers, or internal hostnames into the final output. Use file references and redacted snippets.
+
+## Anti-Slop Rules
+
+- Do not describe architecture from memory when code is available.
+- Do not skip the error path.
+- Do not invent callers or data shapes.
+- Do not propose edits before summarizing the trace.
+

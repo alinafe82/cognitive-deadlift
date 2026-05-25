@@ -1,57 +1,34 @@
 ---
 name: alternatives-before-code
-description: "Require multiple viable approaches before implementation. Use when architecture, refactors, data model changes, workflow changes, tool choices, or local optimum thinking could make the first idea too sticky. NOT for one-line fixes, clearly constrained chores, or changes with only one safe path."
+description: "Compare viable solution paths before implementation. Use when architecture, refactors, data model changes, workflow changes, tool choices, or irreversible decisions make the first idea too sticky. NOT for one-line fixes, constrained chores, or changes with only one safe path."
 ---
 
 # Alternatives Before Code
 
-Do not let the first plausible plan become the plan by default.
+## Purpose
+
+Prevent the first plausible implementation from becoming the decision by default.
 
 ## When To Use
 
-- The change affects architecture, data shape, workflow, or dependency choices.
-- The agent or user has already latched onto one implementation.
-- A refactor could be minimal, structural, or deferred.
-- Reversibility and blast radius matter.
+- The change affects architecture, data shape, workflow, dependencies, or public behavior.
+- Multiple implementation strategies are plausible.
+- Reversibility, blast radius, or testability matters.
+- The user has already anchored on one solution.
 
-## Do Not Use For
+## When Not To Use
 
 - One-line fixes with obvious verification.
-- Renames, formatting, or generated-file updates.
-- Emergency mitigation where analysis would delay restoration.
+- Formatting, renames, generated files, or lockfile-only work.
+- Emergency mitigation where delay would increase impact.
 
-## Decision Flow
+## Inputs Expected
 
-```mermaid
-flowchart TD
-  A[Decision needed] --> B[Name the decision]
-  B --> C[Generate minimal option]
-  C --> D[Generate structural option]
-  D --> E[Generate no-build or defer option]
-  E --> F[Compare cost, risk, reversibility]
-  F --> G[Recommend one path]
-```
+- Decision to be made.
+- Constraints such as time, compatibility, migration risk, ownership, and test surface.
+- Existing architecture notes, ADRs, or code boundaries if available.
 
-## Anti-Patterns
-
-| Novice move | Expert move | Why it matters |
-| --- | --- | --- |
-| Compare only implementation details | Compare reversibility, blast radius, and testability | The best code may be the wrong commitment |
-| Treat no-build as laziness | Include defer/no-build as a real option | Sometimes the cheapest fix is not changing code |
-| Pick the clever option | Prefer the option with the smallest sufficient surface | Future maintenance is part of the cost |
-
-## Process
-
-1. Name the decision being made.
-2. Present three options: minimal, structural, and conservative/no-build.
-3. Compare cost, reversibility, blast radius, testability, and cognitive load.
-4. Recommend one option and say what would make you change your mind.
-
-## Tooling
-
-No external tools are required. Inspect code or ADRs when an option depends on existing architecture.
-
-## Output Contract
+## Output Expected
 
 ```md
 Decision:
@@ -62,8 +39,41 @@ Recommendation:
 Change-my-mind evidence:
 ```
 
-If only one option seems viable, explain which constraint eliminated the others.
+## Process
 
-## Temporal Note
+1. Name the decision in one sentence.
+2. Produce a minimal option, a structural option, and a conservative/no-build option.
+3. Compare cost, reversibility, blast radius, testability, and cognitive load.
+4. Recommend one option.
+5. State what evidence would change the recommendation.
 
-This skill encodes a durable reasoning workflow and contains no time-sensitive third-party technical claims. Last reviewed: 2026-05-25.
+## Quality Bar
+
+A good alternatives pass makes the tradeoff obvious enough that a reviewer can disagree with the recommendation without first reconstructing the decision.
+
+## Examples
+
+Simple case: "Should we add a config flag or hardcode this timeout?" The skill should compare local constant, config flag, and no-change options.
+
+Complex case: "Should failed billing sync move to a queue?" The skill should compare synchronous retry, scheduled retry, queue-based retry, and no-build operational mitigation.
+
+See `examples/simple.md` and `examples/edge-case.md`.
+
+## Failure Modes
+
+- Only one option appears viable: explain which constraints eliminated the others.
+- Missing architecture context: inspect ADRs or code before recommending.
+- Emergency request: recommend immediate mitigation and defer deeper alternatives.
+- The boring option looks worse: explain the specific cost it fails to handle.
+
+## Safety And Privacy
+
+Do not include private vendor details, customer names, or confidential architecture diagrams. Use generic labels when examples need sensitive context.
+
+## Anti-Slop Rules
+
+- Do not create fake options just to fill a template.
+- Do not hide the no-build option.
+- Do not recommend a complex option without naming the complexity it buys.
+- Do not use vague tradeoff words without specifics.
+

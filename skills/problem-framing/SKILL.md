@@ -1,58 +1,34 @@
 ---
 name: problem-framing
-description: "Force a developer to define the real problem before implementation. Use when a request jumps straight to code, proposes a solution before stating the problem, asks for a fix without reproduction, or needs a sharper engineering objective. NOT for pure formatting, copy edits, or already-scoped mechanical changes."
+description: "Turn an unclear request into a concrete engineering problem statement before implementation. Use when the user jumps to code, proposes a solution without the underlying problem, or asks for a fix without reproduction. NOT for pure formatting, copy edits, or already-scoped mechanical changes."
 ---
 
 # Problem Framing
 
-Do not implement until the problem is stated in operational terms.
+## Purpose
+
+Make the assistant define the real problem before it designs or writes code.
 
 ## When To Use
 
-- The user asks for code but has not defined the failure, workflow, actor, or success condition.
-- The user proposes a solution and assumes the problem is already understood.
+- The request starts with an implementation idea instead of a problem.
 - A bug report lacks reproduction evidence.
-- A feature request mixes goals, constraints, and implementation ideas.
+- A feature request mixes goals, constraints, and solution guesses.
+- Success is described as "make it work" rather than a verifiable outcome.
 
-## Do Not Use For
+## When Not To Use
 
-- Pure formatting or copy edits.
-- Mechanical dependency bumps with clear acceptance checks.
-- Tasks where a current issue, PRD, or failing test already frames the problem.
+- Pure formatting, typo fixes, or copy edits.
+- Mechanical dependency bumps with clear validation.
+- Work already framed by a current issue, PRD, failing test, or incident note.
 
-## Decision Flow
+## Inputs Expected
 
-```mermaid
-flowchart TD
-  A[Request received] --> B{Problem stated?}
-  B -- No --> C[Extract symptom, actor, workflow, boundary]
-  B -- Yes --> D{Success condition stated?}
-  C --> D
-  D -- No --> E[Define proof of problem and proof of fix]
-  D -- Yes --> F[Proceed to implementation planning]
-```
+- User request or issue summary.
+- Any known symptom, affected workflow, user, logs, screenshots, or failing command.
+- Relevant constraints, deadlines, or non-goals if known.
 
-## Anti-Patterns
-
-| Novice move | Expert move | Why it matters |
-| --- | --- | --- |
-| Start coding from the proposed solution | Restate the underlying problem first | The proposed solution may solve the wrong thing |
-| Treat opinions as facts | Separate observed evidence from interpretation | Debugging depends on evidence |
-| Define success as "it works" | Define a concrete verification signal | Reviewers need proof, not confidence |
-
-## Process
-
-1. State the user-visible symptom or desired capability.
-2. Identify the affected actor, workflow, and boundary.
-3. Separate facts from interpretations.
-4. Define what evidence would prove the problem exists.
-5. Define what evidence would prove the problem is solved.
-
-## Tooling
-
-No external tools are required. If code or docs can verify the frame, inspect them before asking the user.
-
-## Output Contract
+## Output Expected
 
 ```md
 Problem:
@@ -63,8 +39,42 @@ Success condition:
 First verification step:
 ```
 
-If the user gave a solution instead of a problem, challenge it directly and recommend the narrower problem statement.
+## Process
 
-## Temporal Note
+1. Restate the request as a problem, not a solution.
+2. Identify actor, workflow, boundary, and observable symptom.
+3. Separate facts from interpretation.
+4. Name assumptions that still need checking.
+5. Define success as a test, command, user-visible outcome, or reviewable signal.
+6. If the problem cannot be framed, ask one focused question.
 
-This skill encodes a durable reasoning workflow and contains no time-sensitive third-party technical claims. Last reviewed: 2026-05-25.
+## Quality Bar
+
+A good frame lets another engineer understand what is wrong, what is out of scope, and what proof would make the fix credible.
+
+## Examples
+
+Simple case: user says "Add retries to the webhook worker." The skill should ask what failure is being retried, where the failure is observed, and what success signal proves retries help.
+
+Complex case: user says "Move billing sync to a queue because customers are missing invoices." The skill should separate the customer-visible invoice failure from the proposed queue solution and require evidence from logs, current sync behavior, and acceptance criteria.
+
+See `examples/simple.md` and `examples/edge-case.md`.
+
+## Failure Modes
+
+- Missing evidence: state what is missing and ask one question.
+- Files unavailable: frame only from the prompt and mark code evidence as unchecked.
+- Ambiguous actor or workflow: list the plausible interpretations and recommend the one to verify first.
+- Urgent incident: create the shortest useful frame and defer non-critical detail.
+
+## Safety And Privacy
+
+Do not ask for secrets, customer records, private employer details, or production credentials. If examples contain private data, request redacted logs or synthetic identifiers.
+
+## Anti-Slop Rules
+
+- Do not summarize the request as if it were already clear.
+- Do not claim the problem is verified without evidence.
+- Do not produce a solution plan until the output contract is filled.
+- Do not use filler or motivational language.
+

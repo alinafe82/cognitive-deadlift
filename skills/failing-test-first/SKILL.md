@@ -1,59 +1,34 @@
 ---
 name: failing-test-first
-description: "Enforce a red-green loop before bug fixes or behavior changes. Use when fixing a bug, adding behavior, changing edge-case handling, or reviewing AI code that lacks a failing signal. NOT for docs-only edits, generated snapshots, or emergency hotfixes where a follow-up test is explicitly tracked."
+description: "Require a failing signal before bug fixes or behavior changes. Use when fixing a bug, adding behavior, changing edge cases, or reviewing AI code that lacks proof. NOT for docs-only edits, generated snapshots, or emergency hotfixes with a tracked follow-up test."
 ---
 
 # Failing Test First
 
-A fix without a failing signal is a guess with code attached.
+## Purpose
+
+Turn a fix from a guess into a red-green feedback loop.
 
 ## When To Use
 
 - A bug fix is requested.
 - New behavior needs acceptance proof.
-- AI proposes code without demonstrating the existing failure.
-- A regression could silently return.
+- AI proposes a code change without showing a failing signal.
+- A regression could return silently.
 
-## Do Not Use For
+## When Not To Use
 
 - Documentation-only edits.
 - Snapshot or lockfile churn with separate validation.
-- Emergency hotfixes where restoration matters more than the red step and a follow-up test is tracked.
+- Emergency hotfixes where restoration is more urgent and a follow-up test is tracked.
 
-## Decision Flow
+## Inputs Expected
 
-```mermaid
-flowchart TD
-  A[Bug or behavior change] --> B{Failing signal exists?}
-  B -- No --> C[Create minimal failing test or command]
-  B -- Yes --> D[Run and capture failure]
-  C --> D
-  D --> E[Implement smallest fix]
-  E --> F[Run failing signal again]
-  F --> G[Run nearby regression checks]
-```
+- Bug description or desired behavior.
+- Existing test command if known.
+- Relevant files, reproduction steps, logs, or failing user workflow.
 
-## Anti-Patterns
-
-| Novice move | Expert move | Why it matters |
-| --- | --- | --- |
-| Patch from intuition | Reproduce before editing | Reproduction turns debugging into a feedback loop |
-| Test private internals | Verify behavior through public surfaces | Refactors should not break valid tests |
-| Stop at the fixed case | Run nearby regression checks | Fixes can damage adjacent behavior |
-
-## Process
-
-1. Reproduce the failure manually or with an automated test.
-2. Minimize the failing case.
-3. Run the test or command and capture the failure.
-4. Implement the smallest fix.
-5. Re-run the failing check and a relevant regression set.
-
-## Tooling
-
-Use the repository's existing test command. If none exists, create the smallest repeatable command or script that fails before the fix.
-
-## Output Contract
+## Output Expected
 
 ```md
 Failing signal:
@@ -64,8 +39,42 @@ Passing signal:
 Regression checks:
 ```
 
-If no automated test framework exists, state the fallback signal and its limits.
+## Process
 
-## Temporal Note
+1. Identify the smallest behavior that should fail before the fix.
+2. Use an existing test harness when available.
+3. If no harness exists, create a repeatable command or script.
+4. Run the failing signal and capture the failure.
+5. Implement the smallest fix.
+6. Re-run the failing signal and nearby regression checks.
 
-This skill encodes a durable reasoning workflow and contains no time-sensitive third-party technical claims. Last reviewed: 2026-05-25.
+## Quality Bar
+
+A good result includes a command that failed before the change and passed after the change, plus a clear explanation of what behavior the test proves.
+
+## Examples
+
+Simple case: a parser accepts invalid empty input. The skill should create or identify a test that fails on empty input before changing parser code.
+
+Complex case: a retry loop double-submits payments. The skill should create a failing integration or boundary test proving only one payment side effect occurs.
+
+See `examples/simple.md` and `examples/edge-case.md`.
+
+## Failure Modes
+
+- No test framework: create the smallest repeatable script or manual command and state its limits.
+- Flaky failure: isolate the smallest deterministic signal before changing code.
+- Tests fail for unrelated reasons: record the baseline failure and avoid claiming the fix passed.
+- Permissions missing: ask for the command or log output needed to reproduce.
+
+## Safety And Privacy
+
+Do not use real credentials, payment data, medical records, customer records, or production-only endpoints in tests. Use fixtures or redacted examples.
+
+## Anti-Slop Rules
+
+- Do not write the fix before defining the failing signal.
+- Do not claim a test failed or passed unless it was run.
+- Do not test private internals when public behavior can prove the fix.
+- Do not stop at the happy path if the risk is an edge case.
+
