@@ -1,6 +1,10 @@
 {
   "name": "cognitive-deadlift",
   "description": "Codex skills, Claude skills, Gemini instructions, hooks, and plugins that keep AI-assisted developers thinking.",
+  "license": {
+    "code": "MIT",
+    "content": "CC-BY-NC-SA-4.0"
+  },
   "keywords": [
     "ai-skills",
     "agent-skills",

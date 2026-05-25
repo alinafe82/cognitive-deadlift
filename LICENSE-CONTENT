@@ -1,0 +1,37 @@
+Cognitive Deadlift Content License
+
+Copyright (c) 2026 Alinafe Matenda
+
+The written content in this repository is licensed under the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International License
+(CC BY-NC-SA 4.0).
+
+License text: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+Human-readable summary: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+This license applies to the repository's written and instructional material,
+including:
+
+- skills/
+- docs/
+- AGENTS.md
+- CLAUDE.md
+- GEMINI.md
+- CONTEXT.md
+- CATALOG.md
+- README.md
+- CHANGELOG.md
+- SECURITY.md
+- CONTRIBUTING.md
+- CODE_OF_CONDUCT.md
+- skills_index.json content fields
+
+You may share and adapt this content if you:
+
+- Give appropriate attribution to Alinafe Matenda and this repository.
+- Do not use the content for commercial purposes without separate permission.
+- Distribute adaptations under the same license.
+- Indicate whether changes were made.
+
+For commercial licensing, contact the maintainer through:
+https://github.com/alinafe82

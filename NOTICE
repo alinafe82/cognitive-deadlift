@@ -1,0 +1,44 @@
+Cognitive Deadlift License Notice
+
+Copyright (c) 2026 Alinafe Matenda
+
+This repository uses a split license.
+
+MIT applies to executable and operational project files:
+
+- scripts/
+- hooks/
+- .github/workflows/
+- .codex-plugin/
+- .claude-plugin/
+- gemini-extension.json
+- Makefile
+- pyproject.toml
+- .pre-commit-config.yaml
+- .gitattributes
+- .gitignore
+- .markdownlint.json
+- .python-version
+
+CC BY-NC-SA 4.0 applies to written, instructional, and methodology content:
+
+- skills/
+- docs/
+- AGENTS.md
+- CLAUDE.md
+- GEMINI.md
+- CONTEXT.md
+- CATALOG.md
+- README.md
+- CHANGELOG.md
+- SECURITY.md
+- CONTRIBUTING.md
+- CODE_OF_CONDUCT.md
+- skills_index.json content fields
+
+If a file combines executable code and written methodology, the code portions
+are MIT and the written methodology portions are CC BY-NC-SA 4.0 unless a
+future file header says otherwise.
+
+The project name "Cognitive Deadlift" is used as a source identifier. No
+trademark license is granted by the repository licenses.

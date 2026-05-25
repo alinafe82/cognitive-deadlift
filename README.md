@@ -89,4 +89,9 @@ The grader requires each skill to keep clear activation boundaries, anti-pattern
 
 ## License
 
-MIT
+Cognitive Deadlift uses a split license:
+
+- Code, scripts, hooks, workflows, and plugin manifests: [MIT](LICENSE)
+- Skills, docs, prompts, catalogs, and written methodology: [CC BY-NC-SA 4.0](LICENSE-CONTENT)
+
+See [NOTICE](NOTICE) for the file-scope policy.
