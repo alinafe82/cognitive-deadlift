@@ -5,9 +5,7 @@ from __future__ import annotations
 
 import re
 import subprocess
-import sys
 from pathlib import Path
-
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / ".github" / "workflows"
@@ -35,7 +33,10 @@ DANGEROUS_TEXT_PATTERNS = [
     (re.compile(r"wget\b[^\n|]*\|\s*(?:sh|bash)"), "wget piped to shell"),
     (re.compile(r"\beval\s+['\"]?\$\("), "eval of command substitution"),
     (re.compile(r"\bos\.system\s*\("), "os.system call"),
-    (re.compile(r"subprocess\.(?:run|call|Popen)\([^)]*shell\s*=\s*True", re.DOTALL), "subprocess shell=True"),
+    (
+        re.compile(r"subprocess\.(?:run|call|Popen)\([^)]*shell\s*=\s*True", re.DOTALL),
+        "subprocess shell=True",
+    ),
 ]
 
 ALLOWED_UNPINNED_ACTION_OWNERS = {"actions", "github"}
@@ -47,10 +48,14 @@ def repo_files() -> list[Path]:
         cwd=ROOT,
         check=True,
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
-    return [ROOT / line for line in result.stdout.splitlines() if line.strip()]
+    files: list[Path] = []
+    for line in result.stdout.splitlines():
+        path = ROOT / line
+        if line.strip() and path.exists():
+            files.append(path)
+    return files
 
 
 def read_text(path: Path) -> str:
@@ -137,7 +142,14 @@ def check_workflows(findings: list[str]) -> None:
         for line_number, line in enumerate(text.splitlines(), start=1):
             action = extract_uses(line)
             if action and not action_is_pinned_or_allowed(action):
-                fail(findings, f"{relative}:{line_number} action is not pinned or first-party semver: {action}")
+                message = (
+                    f"{relative}:{line_number} action is not pinned or "
+                    f"first-party semver: {action}"
+                )
+                fail(
+                    findings,
+                    message,
+                )
 
 
 def main() -> int:

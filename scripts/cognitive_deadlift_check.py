@@ -8,7 +8,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 SOURCE_SUFFIXES = {
     ".c",
     ".cc",
@@ -51,8 +50,7 @@ def git(args: list[str]) -> str:
         ["git", *args],
         check=True,
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
     return result.stdout
 
