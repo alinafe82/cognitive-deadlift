@@ -1,4 +1,4 @@
-name: Validate
+name: CI
 
 on:
   pull_request:
@@ -10,11 +10,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: validate-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
+  check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -26,11 +26,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Validate repo and skills
-        run: make validate
+      - name: Install test dependencies
+        run: python3 -m pip install -e ".[test,lint]"
 
-      - name: Grade skills
-        run: python3 scripts/grade_skills.py --min-score 90
-
-      - name: Security hygiene scan
-        run: python3 scripts/security_scan.py
+      - name: Run checks
+        run: make check
