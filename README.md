@@ -1,8 +1,10 @@
 # Cognitive Deadlift
 
+Codex skills, Claude skills, Gemini instructions, AI coding hooks, and agent plugins for developers who use AI without outsourcing their thinking.
+
 AI can write code faster than you can type. That is not the same as engineering.
 
-Cognitive Deadlift is a public Codex plugin repo for developers who use AI without letting it dissolve their judgment. It ships skills, hooks, and scripts that force the developer to frame problems, challenge assumptions, read the code, form hypotheses, write failing tests, compare alternatives, and interrogate diffs.
+Cognitive Deadlift is a public multi-agent skills repo for developers who use AI without letting it dissolve their judgment. It ships Codex skills, Claude skills, Gemini-compatible instructions, hooks, and scripts that force the developer to frame problems, challenge assumptions, read the code, form hypotheses, write failing tests, compare alternatives, and interrogate diffs.
 
 The position is not anti-AI. It is anti-autopilot.
 
@@ -22,6 +24,12 @@ Those findings do not prove that AI is bad for software engineering. They do sup
 
 ## What Is Inside
 
+Runtime adapters:
+
+- Codex: `.codex-plugin/plugin.json` and `AGENTS.md`.
+- Claude: `.claude-plugin/plugin.json` and `CLAUDE.md`.
+- Gemini: `gemini-extension.json` and `GEMINI.md`.
+
 Initial skills:
 
 - `problem-framing` - turn a request into a clear problem statement before implementation.
@@ -34,6 +42,8 @@ Initial skills:
 - `diff-interrogation` - review a generated or human diff as if it came from an untrusted contributor.
 - `debugging-lab-notebook` - run a disciplined reproduce, hypothesize, instrument, verify loop.
 - `complexity-budget` - reject cleverness unless the extra moving parts pay for themselves.
+
+See [CATALOG.md](CATALOG.md) for the searchable skill catalog.
 
 Hook and script foundation:
 

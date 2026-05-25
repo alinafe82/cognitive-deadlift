@@ -1,0 +1,73 @@
+{
+  "name": "cognitive-deadlift",
+  "description": "Codex skills, Claude skills, Gemini instructions, hooks, and plugins that keep AI-assisted developers thinking.",
+  "keywords": [
+    "ai-skills",
+    "agent-skills",
+    "codex-skills",
+    "claude-skills",
+    "gemini-cli",
+    "ai-coding",
+    "developer-tools",
+    "critical-thinking",
+    "software-engineering",
+    "hooks"
+  ],
+  "runtimes": {
+    "codex": [".codex-plugin/plugin.json", "AGENTS.md"],
+    "claude": [".claude-plugin/plugin.json", "CLAUDE.md"],
+    "gemini": ["gemini-extension.json", "GEMINI.md"]
+  },
+  "skills": [
+    {
+      "name": "problem-framing",
+      "path": "skills/problem-framing/SKILL.md",
+      "purpose": "Define the real problem before implementation."
+    },
+    {
+      "name": "assumption-audit",
+      "path": "skills/assumption-audit/SKILL.md",
+      "purpose": "Surface and challenge hidden assumptions."
+    },
+    {
+      "name": "alternatives-before-code",
+      "path": "skills/alternatives-before-code/SKILL.md",
+      "purpose": "Compare solution paths before writing code."
+    },
+    {
+      "name": "failing-test-first",
+      "path": "skills/failing-test-first/SKILL.md",
+      "purpose": "Prove the bug or behavior before fixing it."
+    },
+    {
+      "name": "trace-the-code",
+      "path": "skills/trace-the-code/SKILL.md",
+      "purpose": "Follow the existing execution path before changing it."
+    },
+    {
+      "name": "read-the-docs-first",
+      "path": "skills/read-the-docs-first/SKILL.md",
+      "purpose": "Check docs, ADRs, schemas, and source references before guessing."
+    },
+    {
+      "name": "explain-without-ai",
+      "path": "skills/explain-without-ai/SKILL.md",
+      "purpose": "Require a plain-language explanation before merge or handoff."
+    },
+    {
+      "name": "diff-interrogation",
+      "path": "skills/diff-interrogation/SKILL.md",
+      "purpose": "Review generated or human diffs as untrusted code."
+    },
+    {
+      "name": "debugging-lab-notebook",
+      "path": "skills/debugging-lab-notebook/SKILL.md",
+      "purpose": "Reproduce, hypothesize, instrument, and verify hard bugs."
+    },
+    {
+      "name": "complexity-budget",
+      "path": "skills/complexity-budget/SKILL.md",
+      "purpose": "Challenge unnecessary abstraction and dependency creep."
+    }
+  ]
+}
