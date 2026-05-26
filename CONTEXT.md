@@ -40,6 +40,10 @@ _Avoid_: Fork, duplicate skill, compatibility hack
 Concrete traces that the developer understood the work: hypotheses, code paths, tests, alternatives, constraints, or review notes.
 _Avoid_: Explanation, confidence, vibes
 
+**Workflow Audit**:
+A fixed-scope commercial review of how a developer or team uses AI-assisted coding tools, focused on finding missing reasoning evidence and recommending Cognitive Deadlift skills, hooks, or review gates.
+_Avoid_: Security audit, productivity survey, generic AI enablement
+
 **Security Posture**:
 The repo's layered controls for preventing malicious changes, secret exposure, unsafe automation, and supply-chain drift.
 _Avoid_: Enterprise security claim, checkbox security
