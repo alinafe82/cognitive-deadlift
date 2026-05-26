@@ -4,15 +4,25 @@
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
-DATE_RE = re.compile(r"\b20\d{2}-\d{2}-\d{2}\b")
+REQUIRED_SECTIONS = [
+    "Purpose",
+    "When To Use",
+    "When Not To Use",
+    "Inputs Expected",
+    "Output Expected",
+    "Process",
+    "Quality Bar",
+    "Examples",
+    "Failure Modes",
+    "Safety And Privacy",
+    "Anti-Slop Rules",
+]
 
 
 @dataclass(frozen=True)
@@ -91,13 +101,25 @@ def has_heading(text: str, heading: str) -> bool:
     return f"\n## {heading}\n" in text
 
 
-def has_table_after(text: str, heading: str) -> bool:
+def section_text(text: str, heading: str) -> str:
     section_start = text.find(f"\n## {heading}\n")
     if section_start == -1:
-        return False
+        return ""
     next_heading = text.find("\n## ", section_start + 1)
-    section = text[section_start: next_heading if next_heading != -1 else len(text)]
-    return "| --- |" in section
+    return text[section_start: next_heading if next_heading != -1 else len(text)]
+
+
+def bullet_count(section: str) -> int:
+    return sum(1 for line in section.splitlines() if line.startswith("- "))
+
+
+def numbered_step_count(section: str) -> int:
+    count = 0
+    for line in section.splitlines():
+        prefix, separator, _ = line.lstrip().partition(". ")
+        if separator and prefix.isdigit():
+            count += 1
+    return count
 
 
 def grade_description(frontmatter: dict[str, str]) -> AxisGrade:
@@ -108,18 +130,34 @@ def grade_description(frontmatter: dict[str, str]) -> AxisGrade:
     has_name = bool(frontmatter.get("name"))
 
     if has_name and has_use and has_not and 25 <= len(words) <= 70:
-        return AxisGrade("Description Quality", 95, "Specific trigger, exclusions, and compact length.")
+        return AxisGrade(
+            "Description Quality",
+            95,
+            "Specific trigger, exclusions, and compact length.",
+        )
     if has_name and has_use and has_not:
-        return AxisGrade("Description Quality", 88, "Good trigger and exclusions; length could be tighter.")
+        return AxisGrade(
+            "Description Quality",
+            88,
+            "Good trigger and exclusions; length could be tighter.",
+        )
     if description:
-        return AxisGrade("Description Quality", 74, "Description exists but lacks trigger or exclusion precision.")
+        return AxisGrade(
+            "Description Quality",
+            74,
+            "Description exists but lacks trigger or exclusion precision.",
+        )
     return AxisGrade("Description Quality", 0, "Description is missing.")
 
 
 def grade_scope(text: str) -> AxisGrade:
-    if has_heading(text, "When To Use") and has_heading(text, "Do Not Use For"):
+    has_negative_boundary = has_heading(text, "Do Not Use For") or has_heading(
+        text,
+        "When Not To Use",
+    )
+    if has_heading(text, "When To Use") and has_negative_boundary:
         return AxisGrade("Scope Discipline", 95, "Explicit use and non-use boundaries.")
-    if has_heading(text, "When To Use") or has_heading(text, "Do Not Use For"):
+    if has_heading(text, "When To Use") or has_negative_boundary:
         return AxisGrade("Scope Discipline", 82, "Only one scope boundary section is present.")
     return AxisGrade("Scope Discipline", 60, "No explicit scope boundaries.")
 
@@ -132,65 +170,133 @@ def grade_progressive(text: str) -> AxisGrade:
         return AxisGrade("Progressive Disclosure", 88, f"Readable SKILL.md ({lines} lines).")
     if lines <= 500:
         return AxisGrade("Progressive Disclosure", 76, f"Long SKILL.md ({lines} lines).")
-    return AxisGrade("Progressive Disclosure", 60, f"Too long for a primary skill file ({lines} lines).")
-
-
-def grade_anti_patterns(text: str) -> AxisGrade:
-    if has_heading(text, "Anti-Patterns") and has_table_after(text, "Anti-Patterns"):
-        return AxisGrade("Anti-Pattern Coverage", 94, "Anti-pattern table maps novice moves to expert moves.")
-    if has_heading(text, "Anti-Patterns"):
-        return AxisGrade("Anti-Pattern Coverage", 82, "Anti-patterns exist but are not table-structured.")
-    return AxisGrade("Anti-Pattern Coverage", 62, "No anti-pattern section.")
-
-
-def grade_tools(text: str) -> AxisGrade:
-    if has_heading(text, "Tooling"):
-        return AxisGrade("Self-Contained Tools", 93, "Tool expectations are explicit.")
-    return AxisGrade("Self-Contained Tools", 72, "Tool expectations are implicit.")
+    return AxisGrade(
+        "Progressive Disclosure",
+        60,
+        f"Too long for a primary skill file ({lines} lines).",
+    )
 
 
 def grade_activation(frontmatter: dict[str, str], text: str) -> AxisGrade:
     description = frontmatter.get("description", "")
     if "Use when" in description and "NOT for" in description and has_heading(text, "When To Use"):
-        return AxisGrade("Activation Precision", 94, "Activation and false-positive boundaries are explicit.")
+        return AxisGrade(
+            "Activation Precision",
+            94,
+            "Activation and false-positive boundaries are explicit.",
+        )
     if "Use when" in description:
-        return AxisGrade("Activation Precision", 82, "Activation exists but false-positive boundaries are weak.")
+        return AxisGrade(
+            "Activation Precision",
+            82,
+            "Activation exists but false-positive boundaries are weak.",
+        )
     return AxisGrade("Activation Precision", 65, "Activation depends on vague wording.")
 
 
-def grade_visuals(text: str) -> AxisGrade:
-    has_mermaid = "```mermaid" in text
-    has_tables = "| --- |" in text
-    if has_mermaid and has_tables:
-        return AxisGrade("Visual Artifacts", 95, "Includes decision flow and comparison table.")
-    if has_mermaid or has_tables:
-        return AxisGrade("Visual Artifacts", 84, "Includes one visual structure.")
-    return AxisGrade("Visual Artifacts", 65, "No diagrams or tables.")
+def grade_io(text: str) -> AxisGrade:
+    has_inputs = has_heading(text, "Inputs Expected")
+    has_outputs = has_heading(text, "Output Expected")
+    output = section_text(text, "Output Expected")
+    if has_inputs and has_outputs and "```md" in output:
+        return AxisGrade(
+            "Input/Output Contract",
+            95,
+            "Inputs and fenced output shape are explicit.",
+        )
+    if has_inputs and has_outputs:
+        return AxisGrade(
+            "Input/Output Contract",
+            84,
+            "Inputs and outputs exist but output shape is loose.",
+        )
+    return AxisGrade("Input/Output Contract", 62, "Input or output contract is missing.")
 
 
-def grade_output(text: str) -> AxisGrade:
-    if has_heading(text, "Output Contract") and "```md" in text:
-        return AxisGrade("Output Contracts", 95, "Structured markdown output contract is explicit.")
-    if has_heading(text, "Output Contract"):
-        return AxisGrade("Output Contracts", 84, "Output contract exists but lacks a fenced template.")
-    return AxisGrade("Output Contracts", 62, "No explicit output contract.")
+def grade_process(text: str) -> AxisGrade:
+    process = section_text(text, "Process")
+    steps = numbered_step_count(process)
+    if steps >= 5:
+        return AxisGrade("Process Specificity", 95, f"Process has {steps} concrete steps.")
+    if steps >= 3:
+        return AxisGrade("Process Specificity", 84, f"Process has {steps} steps.")
+    return AxisGrade("Process Specificity", 65, "Process is missing or too thin.")
 
 
-def grade_temporal(text: str) -> AxisGrade:
-    if has_heading(text, "Temporal Note") and DATE_RE.search(text):
-        return AxisGrade("Temporal Awareness", 92, "Temporal status is explicit and dated.")
-    if has_heading(text, "Temporal Note"):
-        return AxisGrade("Temporal Awareness", 84, "Temporal status exists but is not dated.")
-    return AxisGrade("Temporal Awareness", 65, "No temporal status.")
+def grade_examples(path: Path, text: str) -> AxisGrade:
+    examples = section_text(text, "Examples")
+    example_files = sorted((path.parent / "examples").glob("*.md"))
+    has_simple = "Simple case:" in examples
+    has_complex = "Complex case:" in examples or "edge case" in examples.lower()
+    if len(example_files) >= 2 and has_simple and has_complex:
+        return AxisGrade("Example Coverage", 95, "Simple and complex examples are present.")
+    if len(example_files) >= 2:
+        return AxisGrade(
+            "Example Coverage",
+            84,
+            "Example files exist but SKILL.md examples are thin.",
+        )
+    return AxisGrade("Example Coverage", 62, "Skill needs at least two examples.")
+
+
+def grade_failure_modes(text: str) -> AxisGrade:
+    failure_modes = section_text(text, "Failure Modes")
+    bullets = bullet_count(failure_modes)
+    if bullets >= 4:
+        return AxisGrade(
+            "Failure Handling",
+            94,
+            "Failure modes cover common missing-context cases.",
+        )
+    if bullets >= 2:
+        return AxisGrade("Failure Handling", 84, "Failure modes exist but could cover more cases.")
+    return AxisGrade("Failure Handling", 62, "Failure modes are missing or too thin.")
+
+
+def grade_safety(text: str) -> AxisGrade:
+    safety = section_text(text, "Safety And Privacy").lower()
+    markers = ["secret", "private", "credential", "customer", "production", "destructive"]
+    hits = sum(marker in safety for marker in markers)
+    if hits >= 2:
+        return AxisGrade(
+            "Safety and Privacy",
+            94,
+            "Safety notes name concrete data or action risks.",
+        )
+    if safety.strip():
+        return AxisGrade("Safety and Privacy", 82, "Safety section exists but risks are broad.")
+    return AxisGrade("Safety and Privacy", 60, "Safety section is missing.")
+
+
+def grade_anti_slop(text: str) -> AxisGrade:
+    anti_slop = section_text(text, "Anti-Slop Rules")
+    do_not_rules = sum(1 for line in anti_slop.splitlines() if line.startswith("- Do not "))
+    if do_not_rules >= 3:
+        return AxisGrade("Anti-Slop Rules", 94, "Concrete anti-slop rules are present.")
+    if anti_slop.strip():
+        return AxisGrade("Anti-Slop Rules", 82, "Anti-slop section exists but is thin.")
+    return AxisGrade("Anti-Slop Rules", 60, "Anti-slop section is missing.")
 
 
 def grade_docs(text: str) -> AxisGrade:
-    required = ["When To Use", "Do Not Use For", "Process", "Output Contract"]
-    present = sum(has_heading(text, heading) for heading in required)
-    repo_docs = all((ROOT / path).exists() for path in ["README.md", "CATALOG.md", "CHANGELOG.md"])
-    if present == len(required) and repo_docs:
-        return AxisGrade("Documentation Quality", 92, "Skill is self-contained and repo-level docs exist.")
-    if present >= 3:
+    present = sum(has_heading(text, heading) for heading in REQUIRED_SECTIONS)
+    repo_docs = all(
+        (ROOT / path).exists()
+        for path in [
+            "README.md",
+            "CONTRIBUTING.md",
+            "docs/architecture.md",
+            "docs/skill-standard.md",
+            "docs/review-checklist.md",
+        ]
+    )
+    if present == len(REQUIRED_SECTIONS) and repo_docs:
+        return AxisGrade(
+            "Documentation Quality",
+            96,
+            "Skill standard sections and repo docs exist.",
+        )
+    if present >= len(REQUIRED_SECTIONS) - 2:
         return AxisGrade("Documentation Quality", 84, "Most expected sections are present.")
     return AxisGrade("Documentation Quality", 70, "Skill documentation structure is incomplete.")
 
@@ -202,12 +308,13 @@ def grade_skill(path: Path) -> SkillGrade:
         grade_description(frontmatter),
         grade_scope(text),
         grade_progressive(text),
-        grade_anti_patterns(text),
-        grade_tools(text),
         grade_activation(frontmatter, text),
-        grade_visuals(text),
-        grade_output(text),
-        grade_temporal(text),
+        grade_io(text),
+        grade_process(text),
+        grade_examples(path, text),
+        grade_failure_modes(text),
+        grade_safety(text),
+        grade_anti_slop(text),
         grade_docs(text),
     ]
     weighted_total = (
@@ -215,7 +322,7 @@ def grade_skill(path: Path) -> SkillGrade:
         + axes[1].score * 2
         + sum(axis.score for axis in axes[2:])
     )
-    score = weighted_total / 12
+    score = weighted_total / (len(axes) + 2)
     return SkillGrade(frontmatter.get("name", path.parent.name), score, axes)
 
 

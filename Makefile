@@ -1,12 +1,21 @@
-.PHONY: validate grade security check
+PYTHON ?= python3
+
+.PHONY: validate grade security lint test check
 
 validate:
-	python3 scripts/validate_repo.py
+	$(PYTHON) scripts/validate_repo.py
+	$(PYTHON) scripts/validate_skills.py
 
 grade:
-	python3 scripts/grade_skills.py --min-score 90
+	$(PYTHON) scripts/grade_skills.py --min-score 90
 
 security:
-	python3 scripts/security_scan.py
+	$(PYTHON) scripts/security_scan.py
 
-check: validate grade security
+lint:
+	$(PYTHON) -m ruff check .
+
+test:
+	$(PYTHON) -m pytest
+
+check: validate grade lint security test

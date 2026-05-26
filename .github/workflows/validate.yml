@@ -26,8 +26,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Validate repo
-        run: python3 scripts/validate_repo.py
+      - name: Validate repo and skills
+        run: make validate
 
       - name: Grade skills
         run: python3 scripts/grade_skills.py --min-score 90

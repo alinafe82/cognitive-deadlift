@@ -7,7 +7,6 @@ import json
 import sys
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_ROOT_FILES = [
     "README.md",
@@ -25,6 +24,10 @@ REQUIRED_ROOT_FILES = [
     "docs/security/branch-protection.md",
     "docs/security/incident-response.md",
     "scripts/security_scan.py",
+    "scripts/validate_skills.py",
+    "docs/architecture.md",
+    "docs/skill-standard.md",
+    "docs/review-checklist.md",
 ]
 
 

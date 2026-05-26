@@ -1,4 +1,4 @@
-# ADR 0001: One Public Plugin Repo
+# ADR 0000: One Public Plugin Repo
 
 ## Status
 

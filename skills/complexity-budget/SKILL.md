@@ -1,58 +1,35 @@
 ---
 name: complexity-budget
-description: "Challenge unnecessary abstraction, architecture, dependencies, and cleverness. Use when a solution adds modules, frameworks, queues, caches, state machines, agents, configuration layers, or indirection. NOT for small local changes, deletion-only refactors, or complexity that an accepted ADR already justifies."
+description: "Challenge unnecessary abstraction, dependencies, and indirection before adding them. Use when a solution adds modules, frameworks, queues, caches, state machines, agents, configuration layers, or hard-to-delete architecture. NOT for small local changes, deletion-only refactors, or accepted ADRs."
 ---
 
 # Complexity Budget
 
-Every moving part spends future attention. Make the spend explicit.
+## Purpose
+
+Make the future maintenance cost of new moving parts explicit before they are added.
 
 ## When To Use
 
-- A change adds a dependency, framework, queue, cache, state machine, agent, or new abstraction.
+- A change adds a dependency, framework, queue, cache, state machine, agent, or abstraction.
 - A plan makes code more generic than the current need.
 - The solution is hard to delete later.
-- The team might pay operational cost after the author leaves.
+- Ownership, operations, or onboarding cost may increase.
 
-## Do Not Use For
+## When Not To Use
 
 - Small local changes with no new abstraction.
 - Deletion-only refactors that reduce moving parts.
 - Architecture already justified by a current ADR.
 
-## Decision Flow
+## Inputs Expected
 
-```mermaid
-flowchart TD
-  A[New moving part proposed] --> B[List concepts and failure modes]
-  B --> C[Separate essential from optional]
-  C --> D[Compare boring alternative]
-  D --> E[Define deletion path]
-  E --> F{Benefit pays cost?}
-  F -- No --> G[Reject or simplify]
-  F -- Yes --> H[Proceed with guardrails]
-```
+- Proposed design or implementation plan.
+- New components, dependencies, states, or failure modes.
+- Existing ADRs or constraints if relevant.
+- Expected benefit and expected lifetime of the added complexity.
 
-## Anti-Patterns
-
-| Novice move | Expert move | Why it matters |
-| --- | --- | --- |
-| Add abstraction for possible future needs | Buy only the complexity needed now | Speculative abstractions age poorly |
-| Count implementation effort only | Count maintenance, operations, and deletion cost | Future attention is part of the budget |
-| Hide complexity behind naming | Name each new state and failure mode | Unnamed complexity becomes surprise work |
-
-## Process
-
-1. List the new concepts, dependencies, states, and failure modes.
-2. Identify which complexity is essential versus optional.
-3. Compare with the boring solution.
-4. Define the deletion path if the abstraction fails to pay for itself.
-
-## Tooling
-
-No external tools are required. Read existing ADRs before challenging accepted architecture.
-
-## Output Contract
+## Output Expected
 
 ```md
 New moving parts:
@@ -63,8 +40,41 @@ Deletion path:
 Recommendation:
 ```
 
-Prefer the boring alternative unless the added complexity buys a named capability or removes larger existing complexity.
+## Process
 
-## Temporal Note
+1. List new concepts, dependencies, states, and failure modes.
+2. Separate essential complexity from optional complexity.
+3. Compare with the boring alternative.
+4. Define how the abstraction could be deleted later.
+5. Recommend proceed, simplify, defer, or reject.
 
-Architecture cost changes as systems and teams evolve. Re-check this budget when ownership, traffic, or operational constraints change. Last reviewed: 2026-05-25.
+## Quality Bar
+
+A good budget shows what future engineers will have to understand and why that cost is worth paying now.
+
+## Examples
+
+Simple case: adding a new helper class for one call site. The skill should ask whether a function is enough and what future variation justifies the class.
+
+Complex case: adding a queue and retry worker. The skill should account for delivery semantics, observability, idempotency, ownership, and deletion path.
+
+See `examples/simple.md` and `examples/edge-case.md`.
+
+## Failure Modes
+
+- Benefit is unclear: recommend the boring alternative or a reversible experiment.
+- Existing ADR conflicts: follow the ADR or write a new decision record before changing direction.
+- Scale is unknown: state the threshold that would justify the complexity.
+- Urgent mitigation: defer structural complexity until the incident is contained.
+
+## Safety And Privacy
+
+Do not include confidential architecture diagrams, private vendor contracts, or customer-specific operational details. Use abstract component names when needed.
+
+## Anti-Slop Rules
+
+- Do not call complexity "future-proofing" without a concrete future requirement.
+- Do not ignore deletion cost.
+- Do not hide operational ownership.
+- Do not recommend abstraction because it feels cleaner.
+

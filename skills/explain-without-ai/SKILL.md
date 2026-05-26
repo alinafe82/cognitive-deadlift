@@ -1,58 +1,34 @@
 ---
 name: explain-without-ai
-description: "Force a plain-language explanation of a plan, diff, algorithm, or incident before shipping or handoff. Use when changes are largely AI-generated, learning-focused, or the developer may not understand the code. NOT for trivial edits, generated artifacts, or explanations already captured in a thinking ledger."
+description: "Require a plain-language mechanism explanation before shipping, handoff, or review. Use when changes are largely AI-generated, learning-focused, or the developer may not understand the code. NOT for trivial edits, generated artifacts, or explanations already captured in a thinking ledger."
 ---
 
 # Explain Without AI
 
-The developer should be able to explain the work before shipping it.
+## Purpose
+
+Make the developer own the mechanism, tradeoff, and failure risk of the work.
 
 ## When To Use
 
 - A diff was mostly AI-generated.
 - A developer is learning a new API, library, or code path.
-- The change is large enough that review needs a mechanism-level explanation.
+- A change is large enough that review needs mechanism-level context.
 - The developer can describe the outcome but not how it works.
 
-## Do Not Use For
+## When Not To Use
 
 - Trivial edits where the mechanism is obvious.
-- Generated artifacts that are validated elsewhere.
-- Work with a recent thinking ledger that already explains mechanism and trade-offs.
+- Generated artifacts validated elsewhere.
+- Work with a recent thinking ledger that already explains mechanism and tradeoffs.
 
-## Decision Flow
+## Inputs Expected
 
-```mermaid
-flowchart TD
-  A[Need explanation] --> B{Mechanism clear?}
-  B -- No --> C[Ask for plain explanation]
-  B -- Yes --> D{Rejected alternative clear?}
-  C --> D
-  D -- No --> E[Identify obvious alternative]
-  D -- Yes --> F[Define breakage test]
-  E --> F
-```
+- Plan, diff, algorithm, incident summary, or learning task.
+- Relevant code references or docs.
+- The decision or behavior that must be explained.
 
-## Anti-Patterns
-
-| Novice move | Expert move | Why it matters |
-| --- | --- | --- |
-| Explain in buzzwords | Explain mechanism in plain language | Review depends on causal understanding |
-| Say "AI generated it" | Own the explanation as the developer | Accountability cannot be delegated |
-| Describe only the happy path | Name what would break if wrong | A real explanation is falsifiable |
-
-## Process
-
-1. Ask for or produce a concise explanation without rhetorical polish.
-2. Include the actual mechanism, not just the outcome.
-3. Explain why the selected approach is better than the obvious alternative.
-4. Identify what would break if the explanation is wrong.
-
-## Tooling
-
-No external tools are required. Use code references when the explanation depends on a specific path.
-
-## Output Contract
+## Output Expected
 
 ```md
 Plain explanation:
@@ -62,8 +38,41 @@ Breakage test:
 Confidence gap:
 ```
 
-If the explanation is vague, ask one focused follow-up that forces a concrete mechanism.
+## Process
 
-## Temporal Note
+1. Explain the mechanism in plain language.
+2. Name the relevant code path or decision boundary.
+3. Explain why the selected approach beats the obvious alternative.
+4. Define what would break if the explanation is wrong.
+5. Identify any remaining confidence gap.
 
-This skill encodes a durable reasoning workflow and contains no time-sensitive third-party technical claims. Last reviewed: 2026-05-25.
+## Quality Bar
+
+A good explanation is falsifiable. A reviewer should be able to point to the breakage test and decide whether the developer understands the change.
+
+## Examples
+
+Simple case: a developer changed date parsing. The skill should explain accepted input, rejected input, timezone behavior, and the test that would catch a mistaken explanation.
+
+Complex case: a model wrote a caching layer. The skill should explain cache key choice, invalidation, stale-read risk, and the rejected no-cache alternative.
+
+See `examples/simple.md` and `examples/edge-case.md`.
+
+## Failure Modes
+
+- Explanation is vague: ask one focused mechanism question.
+- Code is unavailable: explain only from provided context and mark code evidence unchecked.
+- User cannot explain a risky diff: recommend blocking merge until the mechanism is understood.
+- High-stakes domain: avoid giving legal, medical, or financial conclusions without expert review.
+
+## Safety And Privacy
+
+Do not require the user to disclose secrets, customer details, private employer data, or confidential architecture. Ask for redacted mechanisms and public abstractions.
+
+## Anti-Slop Rules
+
+- Do not accept "AI generated it" as an explanation.
+- Do not use buzzwords instead of mechanism.
+- Do not describe only the happy path.
+- Do not pretend confidence when the developer cannot explain the code.
+

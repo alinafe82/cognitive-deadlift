@@ -1,5 +1,7 @@
 # Architecture
 
+Canonical architecture documentation lives in [docs/architecture.md](docs/architecture.md).
+
 Cognitive Deadlift has one shared skill library and several runtime adapters.
 
 ```text

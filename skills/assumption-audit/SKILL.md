@@ -1,59 +1,34 @@
 ---
 name: assumption-audit
-description: "Surface and challenge hidden assumptions in a plan, prompt, bug report, design, or AI-generated answer. Use when committing to an approach, or when something is called obvious, simple, safe, or already decided. NOT for restating confirmed requirements or blocking tiny mechanical edits."
+description: "Find and challenge hidden assumptions in a plan, prompt, bug report, design, or AI-generated answer. Use when claims are unverified, something is called obvious or safe, or a plan depends on external behavior. NOT for confirmed requirements or tiny mechanical edits."
 ---
 
 # Assumption Audit
 
-Treat confidence as something to inspect, not something to inherit.
+## Purpose
+
+Make unverified claims visible before they become implementation decisions.
 
 ## When To Use
 
-- A plan depends on claims that have not been checked.
-- The user or agent says "obviously", "just", "safe", "simple", or "already handled".
-- A design assumes behavior from an API, framework, runtime, or user workflow.
-- AI produced a fluent answer without citing code, docs, tests, or logs.
+- A plan depends on behavior that has not been checked.
+- The user or assistant says "obviously", "just", "safe", or "simple".
+- A design depends on API, framework, runtime, user, or operational assumptions.
+- AI produced a fluent answer without evidence.
 
-## Do Not Use For
+## When Not To Use
 
 - Requirements already verified by tests, docs, or code references.
 - Cosmetic changes with no behavioral or operational effect.
-- Brainstorming where the user explicitly wants divergent ideas before evaluation.
+- Early brainstorming where evaluation is explicitly deferred.
 
-## Decision Flow
+## Inputs Expected
 
-```mermaid
-flowchart TD
-  A[Plan or claim] --> B[Extract assumptions]
-  B --> C{Can code/docs verify it?}
-  C -- Yes --> D[Inspect source]
-  C -- No --> E[Mark unknown]
-  D --> F[Classify risk]
-  E --> F
-  F --> G[Recommend next check]
-```
+- Proposed plan, answer, or design.
+- Any available code, docs, logs, tests, metrics, or constraints.
+- The decision that depends on the assumptions.
 
-## Anti-Patterns
-
-| Novice move | Expert move | Why it matters |
-| --- | --- | --- |
-| Accept fluent AI output | Demand evidence from code, docs, tests, or logs | Fluency is not verification |
-| Collapse risk into one concern | Classify assumptions by type and severity | Different risks need different checks |
-| Ask the user everything | Inspect locally verifiable claims first | The codebase is often the best witness |
-
-## Process
-
-1. Extract assumptions from the request, plan, and code context.
-2. Classify each assumption as factual, technical, product, operational, or social.
-3. Mark each one as verified, likely, risky, or unknown.
-4. Inspect code or docs for assumptions that can be checked locally.
-5. Ask only for assumptions that cannot be checked and would change the work.
-
-## Tooling
-
-Use local code and docs search first. No dedicated script is required.
-
-## Output Contract
+## Output Expected
 
 ```md
 Verified:
@@ -63,8 +38,41 @@ Unknown:
 Recommended next check:
 ```
 
-Challenge at least one assumption unless all assumptions are already verified by code or docs.
+## Process
 
-## Temporal Note
+1. Extract concrete assumptions from the plan.
+2. Classify each as factual, technical, product, operational, or social.
+3. Check locally verifiable assumptions in code or docs before asking the user.
+4. Mark each assumption as verified, likely, risky, or unknown.
+5. Recommend the next check that would most change the decision.
 
-This skill encodes a durable reasoning workflow and contains no time-sensitive third-party technical claims. Last reviewed: 2026-05-25.
+## Quality Bar
+
+A good audit changes behavior: it either verifies the plan, narrows it, or exposes a risk that must be resolved before implementation.
+
+## Examples
+
+Simple case: "This endpoint is idempotent, so retries are safe." The skill should verify idempotency in code or mark the retry plan as risky.
+
+Complex case: "We can cache permission checks because role changes are rare." The skill should identify assumptions about role update frequency, cache invalidation, stale access risk, and audit requirements.
+
+See `examples/simple.md` and `examples/edge-case.md`.
+
+## Failure Modes
+
+- No code access: mark technical claims as unverified and ask for the smallest source needed.
+- Too many assumptions: rank by blast radius and reversibility.
+- User refuses delay: document the unverified assumption and recommend the smallest reversible step.
+- External docs may be stale: cite access date when browsing is used.
+
+## Safety And Privacy
+
+Do not request raw secrets, customer data, private contracts, or internal incident details. Ask for redacted evidence or aggregate behavior.
+
+## Anti-Slop Rules
+
+- Do not list generic assumptions that do not affect the decision.
+- Do not treat confidence as proof.
+- Do not ask the user for facts the repo can answer.
+- Do not bury the highest-risk assumption.
+
