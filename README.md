@@ -25,6 +25,14 @@ AI assistants make it easy to skip the thinking that makes code review and debug
 
 Cognitive Deadlift turns those behaviors into reusable skills with validation and review standards.
 
+## Paid Offer
+
+Teams that want help applying this repo to their own AI-assisted engineering workflow can buy a fixed-scope [Cognitive Deadlift Workflow Audit](docs/paid-offer.md).
+
+- Price: USD 2,500 fixed fee.
+- Outcome: a reasoning evidence gap analysis, recommended skill workflow, adapted thinking ledger template, and 30-day adoption plan.
+- Scope: workflow review and recommendations, not security penetration testing or private implementation work.
+
 ## Repo Layout
 
 ```text
