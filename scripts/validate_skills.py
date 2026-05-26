@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import shlex
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -135,9 +136,25 @@ def validate_no_bad_text(path: Path, text: str, root: Path, errors: list[str]) -
             errors.append(f"{relative(path, root)} contains possible secret material")
 
 
+def parse_markdown_link_target(raw_target: str) -> str:
+    """Return the link destination, ignoring an optional Markdown title."""
+    target = raw_target.strip()
+    try:
+        parts = shlex.split(target)
+    except ValueError:
+        parts = target.split(maxsplit=1)
+
+    if parts:
+        target = parts[0]
+
+    if target.startswith("<") and target.endswith(">"):
+        return target[1:-1].strip()
+    return target
+
+
 def validate_links(path: Path, text: str, root: Path, errors: list[str]) -> None:
     for match in LINK_RE.finditer(text):
-        target = match.group(1).strip()
+        target = parse_markdown_link_target(match.group(1))
         if target.startswith(("http://", "https://", "mailto:", "#")):
             continue
         target_path = (path.parent / target.split("#", 1)[0]).resolve()
