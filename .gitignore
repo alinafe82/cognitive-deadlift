@@ -19,3 +19,6 @@ junit.xml
 skill-grade-report.md
 grade-report.md
 *.tmp
+
+# Local architecture-agent context. Do not publish.
+.specs/
