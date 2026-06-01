@@ -226,6 +226,15 @@ those files and should not duplicate them.
 - Claude: `.claude-plugin/plugin.json` and `CLAUDE.md`
 - Gemini: `gemini-extension.json` and `GEMINI.md`
 
+## Support
+
+Cognitive Deadlift is free to use. If it helps your team keep better judgment in
+AI-assisted development, voluntary support is available through GitHub Sponsors.
+
+Sponsorship does not change the repo's purpose, license, or vendor-neutral
+stance. Teams that want help applying the workflow can read
+[docs/workflow-audit.md](docs/workflow-audit.md).
+
 ## What This Repo Deliberately Does Not Do
 
 - No generic prompt dump.
