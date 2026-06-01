@@ -12,7 +12,6 @@ except ImportError:  # pragma: no cover - exercised when imported as a package i
     from scripts.contract_yaml import read_contract_yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKS_DIR = ROOT / "context-packs"
 SKILLS_INDEX = ROOT / "skills_index.json"
 
 REQUIRED_PACKS = ["bugfix", "refactor", "repo-review", "risky-change"]

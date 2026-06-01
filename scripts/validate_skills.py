@@ -10,7 +10,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS_DIR = ROOT / "skills"
 
 REQUIRED_SECTIONS = [
     "Purpose",
