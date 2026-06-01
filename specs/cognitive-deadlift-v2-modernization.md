@@ -243,21 +243,37 @@ Inspection commands run before this spec:
 
 Validation commands to run after implementation:
 
-- `make check`
-- `make prod-gate`
-- `make skills-check`
-- `make harness-check`
-- `make context-check`
-- `make docs-check`
-- `make slop-scan`
-- `make doctor`
-- `make test`
-- `make lint`
+- `python3 scripts/validate_policies.py`: pass.
+- `python3 scripts/validate_context_packs.py`: pass.
+- `python3 scripts/validate_harnesses.py`: pass.
+- `python3 scripts/doctor.py`: ready.
+- `python3 scripts/validate_repo.py`: pass.
+- `python3 scripts/validate_skills.py`: pass.
+- `python3 scripts/validate_skills.py --slop-only`: pass.
+- `python3 scripts/security_scan.py`: pass.
+- `python3 -m pytest`: 19 passed, with one sandbox cache warning.
+- `python3 -m ruff check .`: initially failed on unused import, passed after fix.
+- `make check`: pass.
+- `make prod-gate`: pass.
+- `make skills-check`: pass.
+- `make harness-check`: pass.
+- `make context-check`: pass.
+- `make docs-check`: pass.
+- `make slop-scan`: pass.
+- `make doctor`: ready.
+- `make test`: 19 passed, with one sandbox cache warning.
+- `make lint`: pass.
+- `make policy-check`: pass.
 
 ## Test results
 
-No modernization test results yet. This section will be updated after the new validators,
-tests, Makefile targets, and docs are in place.
+- Added `tests/test_contract_artifacts.py`.
+- Pytest now runs 19 tests.
+- Contract artifact tests cover simple YAML parsing, thinking budget validation,
+  context pack validation, harness validation, doctor readiness, and doctor JSON output.
+- Existing repo and skill validator tests still pass.
+- Pytest warning: local sandbox blocked writing `.pytest_cache`; this did not affect test
+  results.
 
 ## Manual follow-up
 
@@ -267,3 +283,5 @@ tests, Makefile targets, and docs are in place.
 - Periodically review real agent sessions to see whether the harness fixtures catch the
   right failure modes. The repo can validate structure, but human review still judges
   behavior.
+- Consider whether `docs/paid-offer.md` should be revised or removed in a later PR so it
+  does not distract from the vendor-neutral harness story.

@@ -6,6 +6,9 @@
 /.gemini/ @alinafe82
 /gemini-extension.json @alinafe82
 /hooks/ @alinafe82
+/policies/ @alinafe82
+/context-packs/ @alinafe82
+/harnesses/ @alinafe82
 /scripts/ @alinafe82
 /skills/ @alinafe82
 /SECURITY.md @alinafe82

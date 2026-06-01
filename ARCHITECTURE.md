@@ -16,7 +16,10 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 ├── hooks/                     # Optional pre-commit hook
 ├── tests/                     # Pytest tests for the harness
 ├── docs/                      # Deeper supporting docs, ADRs, security
-├── specs/                     # Planning and review documents (portfolio-wide work, etc.)
+├── specs/                     # Planning and review documents for repo-level changes
+├── policies/                  # Risk-based thinking budget
+├── context-packs/             # Evidence contracts for common workflows
+├── harnesses/                 # Review fixtures for agent failure modes
 ├── .codex-plugin/             # Codex runtime adapter manifest
 ├── .claude-plugin/            # Claude runtime adapter manifest
 ├── .gemini/                   # Gemini runtime adapter note
@@ -37,11 +40,14 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 
 ## What belongs where
 
-- **`scripts/`** holds Python checkers and harness logic. New checks land here.
+- **`scripts/`** holds Python checkers and harness logic. New deterministic checks land here.
 - **`hooks/`** holds local automation invoked by git. The repo does not assume hooks are installed in consumer repos.
 - **`skills/`** holds reusable skill bodies and is the single source of truth for any skill. Runtime adapters reference these and never copy them.
 - **`docs/`** holds deeper documentation like architecture rationale, ADRs, the security model, the skill standard, the review checklist, and the paid offer. It is not the contract surface.
-- **`specs/`** holds planning and review documents that span multiple repos or set scope for upcoming work. The portfolio-wide review lives here.
+- **`specs/`** holds planning and review documents for repo-level changes.
+- **`policies/`** holds risk-based evidence policy. `thinking-budget.yaml` is the source of truth for low / medium / high gates.
+- **`context-packs/`** holds workflow-specific context contracts for bug fixes, refactors, repo review, and risky changes.
+- **`harnesses/`** holds review fixtures that teach how to catch AI-assisted development failure modes. These are not benchmark claims.
 - **`tests/`** holds pytest tests that lock harness behavior (validators, doc contract, slop scanner). These are not behavior tests for the AI.
 
 ## Skill lifecycle
@@ -60,7 +66,29 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 3. The hook blocks staged source changes unless a `docs/thinking/*.md` ledger is also staged. `COGNITIVE_DEADLIFT_BYPASS=1` skips the check.
 4. Adding a new hook requires updating `CATALOG.md` and `hooks/pre-commit` documentation.
 
-## Harness lifecycle
+## Policy lifecycle
+
+1. Policy files live in `policies/`.
+2. `policies/thinking-budget.yaml` defines the low / medium / high evidence gates.
+3. `scripts/validate_policies.py` checks required levels and required fields.
+4. Changing policy shape requires updating `README.md`, `CATALOG.md`, tests, and this file.
+
+## Context pack lifecycle
+
+1. Context packs live in `context-packs/*.yaml`.
+2. Each pack defines purpose, required evidence, optional evidence, forbidden context, freshness rules, output contract, and recommended skills.
+3. `scripts/validate_context_packs.py` checks required fields and recommended skill names.
+4. Adding or removing a pack requires updating `CATALOG.md` and tests.
+
+## Review harness lifecycle
+
+1. Harness fixtures live in `harnesses/<name>/`.
+2. Each harness has `task.md`, `expected-behavior.md`, and `rubric.yaml`.
+3. Harnesses are review fixtures, not benchmark suites or claims about model quality.
+4. `scripts/validate_harnesses.py` checks required files and rubric shape.
+5. Adding or removing a harness requires updating `CATALOG.md` and tests.
+
+## Validation lifecycle
 
 ```text
 make prod-gate
@@ -68,11 +96,19 @@ make prod-gate
   │                          (required files, manifests, skills_index, doc contract, no tracked build artifacts)
   ├── make skills-check   -> scripts/validate_skills.py
   │                          (skill structure, frontmatter, sections, examples, links)
+  ├── make policy-check   -> scripts/validate_policies.py
+  │                          (thinking budget levels and required fields)
+  ├── make harness-check  -> scripts/validate_harnesses.py
+  │                          (review fixture files and rubrics)
+  ├── make context-check  -> scripts/validate_context_packs.py
+  │                          (context pack fields and skill references)
   ├── make slop-scan      -> scripts/validate_skills.py --slop-only
   │                          (banned filler, placeholders, secret patterns across all markdown)
   ├── make grade          -> scripts/grade_skills.py --min-score 90
   ├── make lint           -> ruff check
   ├── make security       -> scripts/security_scan.py
+  ├── make doctor         -> scripts/doctor.py
+  │                          (readiness check for contract artifacts)
   └── make test           -> pytest
 ```
 

@@ -43,9 +43,19 @@ REQUIRED_ROOT_FILES = [
     "docs/security/incident-response.md",
     "scripts/security_scan.py",
     "scripts/validate_skills.py",
+    "scripts/validate_policies.py",
+    "scripts/validate_harnesses.py",
+    "scripts/validate_context_packs.py",
+    "scripts/doctor.py",
     "docs/architecture.md",
     "docs/skill-standard.md",
     "docs/review-checklist.md",
+    "docs/skill-atrophy-taxonomy.md",
+    "docs/ai-slop-taxonomy.md",
+    "docs/roadmap.md",
+    "policies/thinking-budget.yaml",
+    "harnesses/README.md",
+    "context-packs/README.md",
 ]
 
 # Each entry: (file, list of required section headings).
@@ -68,7 +78,10 @@ DOC_CONTRACT: list[tuple[str, list[str]]] = [
             "Top-level layout",
             "Skill lifecycle",
             "Hook lifecycle",
-            "Harness lifecycle",
+            "Policy lifecycle",
+            "Context pack lifecycle",
+            "Review harness lifecycle",
+            "Validation lifecycle",
         ],
     ),
     (
