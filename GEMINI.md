@@ -1,10 +1,10 @@
 # Gemini Instructions
 
-Gemini-specific rules. Read `AGENTS.md` first — these are additions, not replacements.
+Gemini-specific rules. Read `AGENTS.md` first, and treat the rules below as additions to that file rather than replacements for it.
 
 ## Gemini adapter
 
-Gemini reads the shared skills through `gemini-extension.json` and uses this file as the context entry point. The shared body in `skills/*/SKILL.md` is the only body; do not generate Gemini-specific copies.
+Gemini reads the shared skills through `gemini-extension.json` and uses this file as the context entry point. The shared body in `skills/*/SKILL.md` is the only body, and you should not generate Gemini-specific copies.
 
 Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in every environment. When in doubt, read the relevant `skills/<name>/SKILL.md` directly before acting.
 
@@ -22,7 +22,7 @@ Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in ever
 
 ## Gemini-specific rule
 
-When Gemini is used for broad synthesis, force it back to local evidence: files, docs, tests, logs, traces, and explicit assumptions. A synthesis without file paths or commands is a draft, not an answer.
+When Gemini is used for broad synthesis, force it back to local evidence like files, docs, tests, logs, traces, and explicit assumptions. A synthesis without file paths or commands is a draft, not an answer.
 
 ## Before finishing
 

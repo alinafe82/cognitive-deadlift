@@ -129,7 +129,7 @@ The repo includes an optional pre-commit hook that blocks staged source changes 
 ln -s "$(pwd)/hooks/pre-commit" /path/to/target-repo/.git/hooks/pre-commit
 ```
 
-Bypass only for genuinely mechanical work:
+Bypass only for mechanical work like dependency bumps or generated-file regeneration:
 
 ```bash
 COGNITIVE_DEADLIFT_BYPASS=1 git commit

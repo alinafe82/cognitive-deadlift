@@ -6,14 +6,14 @@ This repo is enforced by `make prod-gate`. Read this section first.
 
 Before editing:
 
-1. Read `CONTEXT.md` — mission, principles, anti-slop rules, current assumptions.
-2. Read `repo-audit.md` — standing list of duplications, gaps, and risks.
-3. Read `ARCHITECTURE.md` — current structure and lifecycles.
+1. Read `CONTEXT.md` for mission, principles, anti-slop rules, and current assumptions.
+2. Read `repo-audit.md` for the standing list of duplications, gaps, and risks.
+3. Read `ARCHITECTURE.md` for the current structure and lifecycles.
 
 Before finishing:
 
 - Update `CATALOG.md` if you added, removed, or renamed a skill / hook / script.
-- Update `ARCHITECTURE.md` only when the top-level structure or a lifecycle actually changes.
+- Update `ARCHITECTURE.md` only when the top-level structure or a lifecycle changes.
 - Update `skills_index.json` if you added or removed a skill.
 - Update `repo-audit.md` if you introduced a new source of truth, a duplication, or a new risk.
 - Update `productionization-report.md` if the harness or check set changed.

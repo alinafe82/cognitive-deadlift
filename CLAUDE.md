@@ -1,10 +1,10 @@
 # Claude Instructions
 
-Claude-specific rules. Read `AGENTS.md` first — these are additions, not replacements.
+Claude-specific rules. Read `AGENTS.md` first, and treat the rules below as additions to that file rather than replacements for it.
 
 ## Claude adapter
 
-Claude loads skills from `skills/*/SKILL.md` through `.claude-plugin/plugin.json`. The shared body is the only body; do not generate Claude-specific copies of any skill.
+Claude loads skills from `skills/*/SKILL.md` through `.claude-plugin/plugin.json`. The shared body is the only body, and you should not generate Claude-specific copies of any skill.
 
 ## Skill routing
 
@@ -29,7 +29,7 @@ When a request touches implementation, review, debugging, architecture, or learn
 
 ## Claude-specific rule
 
-Claude can be persuasive even when wrong. Require reasoning evidence — file paths, line numbers, command output, test results — before accepting a fluent explanation. Treat your own draft answers the same way before sending them.
+Claude can be persuasive even when wrong. Require reasoning evidence like file paths, line numbers, command output, and test results before accepting a fluent explanation. Treat your own draft answers the same way before sending them.
 
 ## Before finishing
 

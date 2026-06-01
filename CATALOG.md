@@ -1,6 +1,6 @@
 # Cognitive Deadlift Catalog
 
-Index of skills, hooks, scripts, and runtime adapters. Keep this concise — purpose only.
+Index of skills, hooks, scripts, and runtime adapters. Keep entries concise and state only the purpose of each item.
 
 Search phrases this repo is intended to answer:
 
