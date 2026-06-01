@@ -74,30 +74,29 @@ See [CATALOG.md](CATALOG.md) for the searchable catalog.
 
 ## Quickstart
 
-Clone the repo:
+Clone and set up:
 
 ```bash
 git clone https://github.com/alinafe82/cognitive-deadlift.git
 cd cognitive-deadlift
+uv sync --all-extras   # or: python3 -m pip install -e ".[test,lint]"
 ```
 
-Run validation:
+Run the full gate:
 
 ```bash
-python3 -m pip install -e ".[test,lint]"
-make check
+make prod-gate
 ```
 
-Run tests:
+Or run individual checks:
 
 ```bash
-python3 -m pytest
-```
-
-Run only skill validation:
-
-```bash
-python scripts/validate_skills.py
+make skills-check   # skill structure, frontmatter, sections, examples, links
+make docs-check     # doc contract (required files + one-job per doc)
+make slop-scan      # banned filler, placeholders, secret patterns
+make lint           # ruff
+make test           # pytest
+make security       # security hygiene scan
 ```
 
 ## Use A Skill
@@ -140,23 +139,20 @@ COGNITIVE_DEADLIFT_BYPASS=1 git commit
 
 Validation checks:
 
-- required repo files
-- plugin manifest consistency
-- skill folder structure
-- skill metadata
-- required skill sections
-- examples and fixtures
-- banned filler phrases
+- required repo files and plugin manifests
+- `skills_index.json` matches `skills/`
+- skill folder structure, frontmatter, sections, examples, fixtures
+- banned filler phrases, placeholder text, obvious secret patterns
 - broken internal links
-- obvious secret patterns
+- generated artifacts stay untracked
 
 Commands:
 
 ```bash
-make validate
-make test
-make security
-make check
+make prod-gate     # run every meaningful check
+make skills-check  # only the skill validator
+make docs-check    # only the doc contract
+make slop-scan     # only the filler / placeholder / secret scan
 ```
 
 CI runs validation, tests, security hygiene scanning, dependency review, and CodeQL.
@@ -164,12 +160,12 @@ CI runs validation, tests, security hygiene scanning, dependency review, and Cod
 ## Add A New Skill
 
 1. Create `skills/<skill-name>/`.
-2. Add `SKILL.md`.
+2. Add `SKILL.md` matching the format in [docs/skill-standard.md](docs/skill-standard.md).
 3. Add at least two examples under `examples/`.
 4. Add validation fixtures or test notes under `fixtures/` or `tests/`.
 5. Update `.claude-plugin/plugin.json` if the skill should be exposed to Claude.
 6. Update `skills_index.json` and `CATALOG.md`.
-7. Run `make check`.
+7. Run `make prod-gate`.
 
 Use [docs/skill-standard.md](docs/skill-standard.md) and [docs/review-checklist.md](docs/review-checklist.md) before opening a PR.
 

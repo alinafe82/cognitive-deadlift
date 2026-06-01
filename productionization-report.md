@@ -1,185 +1,64 @@
 # Productionization Report
 
-Date: 2026-05-25
+Date: 2026-05-31
 
 ## Summary
 
-This branch turns Cognitive Deadlift from a collection of useful skills into a reviewable skill repository. The repo now has a defined skill standard, normalized layout, examples, fixtures, validation, tests, CI, security notes, ADRs, and interview notes.
+Cognitive Deadlift is a portable skill + harness repo. This report tracks production-readiness status, the checks the harness enforces, the commands run to verify them, and the risks the harness cannot cover.
 
-## Skills Kept
+## Checks available
 
-All 10 skills were kept because each covers a distinct developer reasoning workflow:
+The validation harness runs structural checks only. It does not evaluate agent behavior or skill quality beyond a heuristic rubric.
 
-- `problem-framing`
-- `assumption-audit`
-- `alternatives-before-code`
-- `failing-test-first`
-- `trace-the-code`
-- `read-the-docs-first`
-- `explain-without-ai`
-- `diff-interrogation`
-- `debugging-lab-notebook`
-- `complexity-budget`
+| Check | Script | What it enforces |
+| --- | --- | --- |
+| Repo contract | `scripts/validate_repo.py` | Required files exist, runtime adapter manifests are consistent, `skills_index.json` matches `skills/`, top-level docs each cover their declared sections, no generated artifacts are tracked. |
+| Skill structure | `scripts/validate_skills.py` | Each skill has the required folders, frontmatter, sections, examples, and no broken internal links. |
+| Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no placeholder text (`TODO`, `TBD`, `coming soon`, `lorem ipsum`), no obvious secret patterns in any markdown file. |
+| Skill grading | `scripts/grade_skills.py --min-score 90` | Skills score above a rubric threshold. Heuristic, not a substitute for review. |
+| Lint | `ruff check .` | Python style and common bug patterns. |
+| Security hygiene | `scripts/security_scan.py` | Secret patterns, dangerous shell, GitHub Actions permissions, action pinning, CODEOWNERS coverage. |
+| Tests | `pytest` | Locks harness behavior (validators, doc contract, slop scanner, repo contract). |
 
-## Skills Rewritten
+All seven run via `make prod-gate`.
 
-All 10 skills were rewritten to the same reviewable structure:
-
-- purpose
-- when to use
-- when not to use
-- inputs expected
-- output expected
-- process
-- quality bar
-- examples
-- failure modes
-- safety and privacy
-- anti-slop rules
-
-Each skill now has `examples/`, `fixtures/`, and `tests/` directories.
-
-## Skills Merged
-
-No skills were merged. The audit found overlap in theme, but each retained skill has a separate job.
-
-## Skills Removed Or Archived
-
-No skills were removed or archived in this pass. The repo is small enough that the stricter rewrite was better than removal.
-
-## Tests Added
-
-Added pytest coverage for:
-
-- skill discovery
-- metadata parsing
-- good skill fixture validation
-- bad skill fixture validation
-- example presence
-- banned filler detection through the bad fixture
-
-## Validation Added
-
-Added `scripts/validate_skills.py`.
-
-It checks:
-
-- required skill files and directories
-- frontmatter metadata
-- folder/name consistency
-- required sections
-- examples
-- duplicate names
-- placeholder text
-- banned filler
-- obvious secret patterns
-- broken internal links
-
-The older repo validator now requires the new standard docs and skill validator.
-
-## CI Added
-
-Added `.github/workflows/ci.yml`.
-
-CI runs:
-
-- `make validate`
-- skill grading
-- Ruff lint
-- security hygiene scan
-- pytest
-
-The existing `validate` workflow now runs the expanded validation command.
-
-## Security Findings
-
-No credential files, `.env` files, private keys, API keys, or token-looking values were found in the current working tree.
-
-The explicit grep checks produced false positives from:
-
-- example shell path usage in `README.md`
-- shell path setup in `hooks/pre-commit`
-- the scanner's own secret-pattern definitions
-
-`scripts/security_scan.py` passed.
-
-Reachable git history was checked with the same high-signal patterns. No real secret was found. If a real credential is ever committed, it must be rotated and removed from history; deleting it from the working tree is not enough.
-
-## Remaining Risks
-
-- Structural validation cannot prove that every AI runtime follows a skill correctly.
-- External links are not checked by the local validator.
-- The skill-grade rubric is useful as a gate, but human review is still required.
-- Runtime compatibility with future Codex, Claude, or Gemini formats may need updates.
-
-## Commands Run
+## Commands run
 
 ```bash
-git checkout -b skill-repo-productionization
-python3 scripts/validate_repo.py
-python3 scripts/validate_skills.py
-python3 scripts/grade_skills.py --min-score 90
-python3 scripts/security_scan.py
-python3 -m pip install -e ".[test,lint]"
-python3 -m ruff check .
-python3 -m pytest
-make check
-git grep -n -E 'AKIA|SECRET|TOKEN|PASSWORD|PRIVATE_KEY|BEGIN RSA|BEGIN OPENSSH|api_key|client_secret|passwd|pwd'
-find . -name '.env*' -o -name '*secret*' -o -name '*key*'
-git grep -n -E 'AKIA|SECRET|TOKEN|PASSWORD|PRIVATE_KEY|BEGIN RSA|BEGIN OPENSSH|api_key|client_secret|passwd|pwd' $(git rev-list --all)
+uv sync --all-extras
+.venv/bin/python scripts/validate_repo.py
+.venv/bin/python scripts/validate_skills.py
+.venv/bin/python scripts/validate_skills.py --slop-only
+.venv/bin/python scripts/grade_skills.py --min-score 90
+.venv/bin/python -m ruff check .
+.venv/bin/python scripts/security_scan.py
+.venv/bin/python -m pytest
+make PYTHON=.venv/bin/python prod-gate
 ```
 
-## Test Results
+Final result: `make prod-gate` passes locally.
 
-`make check` passed.
+## Test results
 
-Final local result:
+- repo contract: ok (files, manifests, skills_index, doc contract, artifacts)
+- skill validation: ok (10 skills)
+- slop scan: ok
+- skill grading: 10 skills at 94.7 average
+- ruff: clean
+- security hygiene: ok
+- pytest: all tests passing
 
-- repo validation: passed
-- skill validation: passed
-- skill grading: all skills scored 94.7
-- Ruff lint: passed
-- security scan: passed
-- pytest: 5 passed
+## Remaining risks
 
-## Files Changed
+- The harness validates structure, not behavior. A skill can pass every check and still be ignored by a runtime.
+- External link liveness is not checked; only internal link targets.
+- Grade is heuristic. Line counts and bullet counts can be gamed without improving substance. Human review remains required for new skills.
+- The pre-commit hook only verifies that a thinking ledger is staged; it cannot tell whether the ledger is real.
+- Runtime compatibility with future Claude / Codex / Gemini formats may need updates as their adapter conventions evolve.
 
-Major changed areas:
+## Recommended next steps
 
-- `README.md`
-- `CONTRIBUTING.md`
-- `ARCHITECTURE.md`
-- `docs/`
-- `skills/*/SKILL.md`
-- `skills/*/examples/`
-- `skills/*/fixtures/`
-- `skills/*/tests/`
-- `scripts/validate_skills.py`
-- `scripts/grade_skills.py`
-- `scripts/security_scan.py`
-- `tests/`
-- `.github/workflows/ci.yml`
-- `.github/workflows/validate.yml`
-- `Makefile`
-- `pyproject.toml`
-
-## Interview Readiness
-
-The repo now demonstrates:
-
-- clear problem framing
-- repeatable skill structure
-- deterministic validation
-- meaningful tests
-- small dependency surface
-- security and privacy hygiene
-- documented tradeoffs
-- maintainable runtime adapter strategy
-- practical Engineering Productivity judgment
-
-## Manual Review Still Needed
-
-- Review skill behavior in real Codex, Claude, and Gemini sessions.
-- Keep GitHub secret scanning and push protection enabled.
-- Review future contributed examples for private data before merge.
-- Generate the catalog from metadata if the skill count grows.
+- Keep `make prod-gate` green on every PR.
+- When a new skill is added, update `skills_index.json` and `CATALOG.md` in the same PR; the repo contract check enforces both.
+- If skill count grows beyond ~30, switch `skills_index.json` to generated and add a check that the generator output is up to date.
+- Review skill behavior in real Claude, Codex, and Gemini sessions periodically. The harness cannot do this for you.

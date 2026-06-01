@@ -1,12 +1,14 @@
 # Claude Instructions
 
-Cognitive Deadlift uses Claude skills as the primary portable skill format.
+Claude-specific rules. Read `AGENTS.md` first — these are additions, not replacements.
 
-## Claude Adapter
+## Claude adapter
 
-Claude should load skills from `skills/*/SKILL.md` through `.claude-plugin/plugin.json`.
+Claude loads skills from `skills/*/SKILL.md` through `.claude-plugin/plugin.json`. The shared body is the only body; do not generate Claude-specific copies of any skill.
 
-When a request touches implementation, review, debugging, architecture, or learning, prefer the relevant Cognitive Deadlift skill before generating code:
+## Skill routing
+
+When a request touches implementation, review, debugging, architecture, or learning, route to a skill before generating code:
 
 - `problem-framing` before implementation.
 - `assumption-audit` before accepting a plan.
@@ -19,6 +21,16 @@ When a request touches implementation, review, debugging, architecture, or learn
 - `debugging-lab-notebook` for hard bugs.
 - `complexity-budget` before adding abstraction.
 
-## Claude-Specific Rule
+## Model choice
 
-Claude can be persuasive even when wrong. Require reasoning evidence before accepting fluent explanations.
+- Use Opus for repo audit, architecture decisions, doc contract changes, and security-sensitive work.
+- Use Sonnet for skill edits, harness checks, and routine implementation when the architecture is settled.
+- Do not switch models mid-task unless the user asks.
+
+## Claude-specific rule
+
+Claude can be persuasive even when wrong. Require reasoning evidence — file paths, line numbers, command output, test results — before accepting a fluent explanation. Treat your own draft answers the same way before sending them.
+
+## Before finishing
+
+Run `make prod-gate`. If it fails, fix the real issue. Do not weaken the gate.

@@ -58,3 +58,41 @@ def test_real_skills_have_examples() -> None:
     for skill in validate_skills.skill_dirs():
         examples = list((skill / "examples").glob("*.md"))
         assert len(examples) >= 2, skill
+
+
+def test_slop_scanner_ignores_backticked_banned_phrases(tmp_path: Path) -> None:
+    """Banned phrases inside backticks (as examples of what to avoid) must not trip the scanner."""
+    md = tmp_path / "doc.md"
+    md.write_text(
+        "Do not use words like `seamlessly`, `revolutionary`, or `world-class`.\n",
+        encoding="utf-8",
+    )
+    errors: list[str] = []
+
+    validate_skills.validate_no_bad_text(md, md.read_text(encoding="utf-8"), tmp_path, errors)
+
+    assert errors == []
+
+
+def test_slop_scanner_catches_banned_phrase_in_prose(tmp_path: Path) -> None:
+    md = tmp_path / "doc.md"
+    md.write_text("Our seamlessly integrated platform is world-class.\n", encoding="utf-8")
+    errors: list[str] = []
+
+    validate_skills.validate_no_bad_text(md, md.read_text(encoding="utf-8"), tmp_path, errors)
+
+    assert any("seamlessly" in e for e in errors)
+    assert any("world-class" in e for e in errors)
+
+
+def test_slop_scanner_ignores_fenced_code_block(tmp_path: Path) -> None:
+    md = tmp_path / "doc.md"
+    md.write_text(
+        "Example of bad copy:\n\n```\nTODO: fix this revolutionary thing\n```\n",
+        encoding="utf-8",
+    )
+    errors: list[str] = []
+
+    validate_skills.validate_no_bad_text(md, md.read_text(encoding="utf-8"), tmp_path, errors)
+
+    assert errors == []

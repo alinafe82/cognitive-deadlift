@@ -53,6 +53,19 @@ SECRET_PATTERNS = [
 
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 
+FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
+INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+
+
+def strip_code(text: str) -> str:
+    """Remove fenced code blocks and inline code spans for slop scanning.
+
+    Banned phrases inside backticks are intentional (e.g., listing what NOT
+    to write), so they should not count as violations.
+    """
+    without_fences = FENCED_CODE_RE.sub("", text)
+    return INLINE_CODE_RE.sub("", without_fences)
+
 
 @dataclass(frozen=True)
 class ValidationResult:
@@ -122,15 +135,17 @@ def relative(path: Path, root: Path = ROOT) -> str:
 
 
 def validate_no_bad_text(path: Path, text: str, root: Path, errors: list[str]) -> None:
-    lower = text.lower()
+    scannable = strip_code(text)
+    lower = scannable.lower()
     for phrase in BANNED_PHRASES:
         if phrase in lower:
             errors.append(f"{relative(path, root)} contains banned filler phrase: {phrase}")
 
     for pattern in PLACEHOLDER_PATTERNS:
-        if pattern.search(text):
+        if pattern.search(scannable):
             errors.append(f"{relative(path, root)} contains placeholder text: {pattern.pattern}")
 
+    # Secret patterns still scan the raw text — secrets in code blocks are still secrets.
     for pattern in SECRET_PATTERNS:
         if pattern.search(text):
             errors.append(f"{relative(path, root)} contains possible secret material")
@@ -243,19 +258,42 @@ def validate_all(root: Path = ROOT) -> ValidationResult:
     return ValidationResult(errors)
 
 
+def slop_scan(root: Path = ROOT) -> ValidationResult:
+    """Scan all repo markdown for banned filler, placeholders, and secret patterns."""
+    errors: list[str] = []
+    for md_file in markdown_files(root):
+        if is_excluded_markdown(md_file, root):
+            continue
+        content = md_file.read_text(encoding="utf-8")
+        validate_no_bad_text(md_file, content, root, errors)
+    return ValidationResult(errors)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument(
+        "--slop-only",
+        action="store_true",
+        help="Only run the banned-phrase / placeholder / secret scan.",
+    )
     args = parser.parse_args()
 
-    result = validate_all(args.root.resolve())
+    root = args.root.resolve()
+    if args.slop_only:
+        result = slop_scan(root)
+        label = "slop_scan"
+    else:
+        result = validate_all(root)
+        label = "validate_skills"
+
     if not result.ok:
-        print("validate_skills: failed")
+        print(f"{label}: failed")
         for error in result.errors:
             print(f"- {error}")
         return 1
 
-    print("validate_skills: ok")
+    print(f"{label}: ok")
     return 0
 
 
