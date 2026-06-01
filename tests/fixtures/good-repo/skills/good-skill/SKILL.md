@@ -9,6 +9,18 @@ description: "Validate a well-formed fixture skill. Use when testing the validat
 
 Provide a valid fixture.
 
+## Preserves
+
+Validator contract clarity.
+
+## Required Evidence
+
+- Fixture repository path.
+
+## Failure Signs
+
+- Required sections are missing.
+
 ## When To Use
 
 - During validator tests.

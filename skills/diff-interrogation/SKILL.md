@@ -9,6 +9,22 @@ description: "Review a human or AI-generated diff as an untrusted claim. Use whe
 
 Force a diff to prove its behavior, test coverage, and risk profile before acceptance.
 
+## Preserves
+
+Review judgment.
+
+## Required Evidence
+
+- Diff or PR summary.
+- Test output if available.
+- Relevant files, issue, expected behavior, and security-sensitive areas.
+
+## Failure Signs
+
+- The review summarizes file names instead of behavior.
+- Missing tests are buried.
+- Security, data, permission, or error-handling changes are not inspected.
+
 ## When To Use
 
 - A diff came from AI, heavy autocomplete, or an unfamiliar contributor.
@@ -76,4 +92,3 @@ Do not paste secrets, tokens, customer records, private incident details, or pro
 - Do not say "looks good" without proof.
 - Do not bury missing tests.
 - Do not claim security safety without checking the relevant paths.
-

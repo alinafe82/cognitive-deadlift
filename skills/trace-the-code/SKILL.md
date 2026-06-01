@@ -9,6 +9,22 @@ description: "Trace existing execution paths before changing unfamiliar behavior
 
 Force the assistant to read the real implementation path before inventing behavior.
 
+## Preserves
+
+Code reading.
+
+## Required Evidence
+
+- Entry point, command, route, component, function, stack trace, or workflow.
+- Relevant files found by search or supplied by the user.
+- Behavior to understand or change.
+
+## Failure Signs
+
+- Architecture is described from memory while code is available.
+- Error flow, state, or side effects are skipped.
+- Edits are proposed before the call path is summarized.
+
 ## When To Use
 
 - The code path is unfamiliar.
@@ -76,4 +92,3 @@ Do not paste private source code, secrets, logs, customer identifiers, or intern
 - Do not skip the error path.
 - Do not invent callers or data shapes.
 - Do not propose edits before summarizing the trace.
-

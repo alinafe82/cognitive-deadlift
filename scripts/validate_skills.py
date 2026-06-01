@@ -14,6 +14,9 @@ SKILLS_DIR = ROOT / "skills"
 
 REQUIRED_SECTIONS = [
     "Purpose",
+    "Preserves",
+    "Required Evidence",
+    "Failure Signs",
     "When To Use",
     "When Not To Use",
     "Inputs Expected",

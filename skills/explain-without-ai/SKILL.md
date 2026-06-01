@@ -9,6 +9,22 @@ description: "Require a plain-language mechanism explanation before shipping, ha
 
 Make the developer own the mechanism, tradeoff, and failure risk of the work.
 
+## Preserves
+
+Ownership of the mechanism.
+
+## Required Evidence
+
+- Plan, diff, algorithm, incident summary, or learning task.
+- Relevant code references or docs.
+- Behavior or decision that must be explained.
+
+## Failure Signs
+
+- The answer repeats the model summary without mechanism.
+- The happy path is explained but the breakage test is missing.
+- The developer cannot name a rejected alternative.
+
 ## When To Use
 
 - A diff was mostly AI-generated.
@@ -75,4 +91,3 @@ Do not require the user to disclose secrets, customer details, private employer 
 - Do not use buzzwords instead of mechanism.
 - Do not describe only the happy path.
 - Do not pretend confidence when the developer cannot explain the code.
-

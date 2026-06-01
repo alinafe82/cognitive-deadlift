@@ -9,6 +9,22 @@ description: "Require a failing signal before bug fixes or behavior changes. Use
 
 Turn a fix from a guess into a red-green feedback loop.
 
+## Preserves
+
+Behavioral proof and test design.
+
+## Required Evidence
+
+- Bug description or desired behavior.
+- Smallest failing signal available.
+- Command or repeatable step that can prove the failure and the fix.
+
+## Failure Signs
+
+- The fix is written before the failing signal is defined.
+- Test results are claimed without command output.
+- The test covers only the happy path while the bug is an edge case.
+
 ## When To Use
 
 - A bug fix is requested.
@@ -77,4 +93,3 @@ Do not use real credentials, payment data, medical records, customer records, or
 - Do not claim a test failed or passed unless it was run.
 - Do not test private internals when public behavior can prove the fix.
 - Do not stop at the happy path if the risk is an edge case.
-

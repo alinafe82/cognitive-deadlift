@@ -9,6 +9,22 @@ description: "Debug hard failures with reproduction, hypotheses, instrumentation
 
 Turn hard debugging into a recorded experiment loop instead of a sequence of guesses.
 
+## Preserves
+
+Systematic debugging and error interpretation.
+
+## Required Evidence
+
+- Symptom and reproduction attempt.
+- Logs, traces, metrics, failing command, or user report if available.
+- Code area or workflow likely involved.
+
+## Failure Signs
+
+- A patch is proposed before a hypothesis.
+- Only one favored hypothesis is kept.
+- Negative findings are dropped.
+
 ## When To Use
 
 - A bug is hard, flaky, or poorly understood.
@@ -78,4 +94,3 @@ Do not expose raw production logs, tokens, customer data, internal hostnames, or
 - Do not keep only one favored hypothesis.
 - Do not drop negative findings.
 - Do not claim root cause until the experiment supports it.
-
