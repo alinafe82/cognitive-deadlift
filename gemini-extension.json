@@ -1,6 +1,6 @@
 {
   "name": "cognitive-deadlift",
-  "description": "Anti-autopilot reasoning skills for AI-assisted software development.",
+  "description": "Skill-retention harness for AI-assisted software development.",
   "version": "0.1.0",
   "contextFileName": "GEMINI.md"
 }

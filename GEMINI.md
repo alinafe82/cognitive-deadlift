@@ -20,6 +20,11 @@ Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in ever
 - For hard bugs, read `skills/debugging-lab-notebook/SKILL.md`.
 - Before merge or handoff, read `skills/explain-without-ai/SKILL.md`.
 
+Use `policies/thinking-budget.yaml` to choose friction by risk. Low-risk work needs
+intent and a basic check. Medium-risk work needs trace, behavior proof, and diff
+review. High-risk work needs framing, assumption audit, alternatives, rollback,
+human approval, and final mechanism explanation.
+
 ## Gemini-specific rule
 
 When Gemini is used for broad synthesis, force it back to local evidence like files, docs, tests, logs, traces, and explicit assumptions. A synthesis without file paths or commands is a draft, not an answer.
