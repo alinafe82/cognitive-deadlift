@@ -1,7 +1,7 @@
 {
   "name": "cognitive-deadlift",
   "version": "0.1.0",
-  "description": "Skills and hooks that make AI-assisted developers prove they still understand the work.",
+  "description": "A skill-retention harness for developers using AI coding assistants.",
   "author": {
     "name": "Alinafe Matenda",
     "url": "https://github.com/alinafe82"
@@ -12,16 +12,17 @@
   "keywords": [
     "ai",
     "software-engineering",
-    "critical-thinking",
-    "developer-tools",
+      "critical-thinking",
+      "skill-retention",
+      "developer-tools",
     "codex-skills",
     "hooks"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Cognitive Deadlift",
-    "shortDescription": "AI guardrails that keep developers thinking.",
-    "longDescription": "Cognitive Deadlift is a set of Codex skills, hooks, and scripts for developers who use AI but refuse to outsource judgment. It forces problem framing, assumption audits, trace reading, failing tests, alternatives, and diff interrogation before code is accepted.",
+    "shortDescription": "Keep developer judgment in the loop while using AI.",
+    "longDescription": "Cognitive Deadlift is a skill-retention harness for AI-assisted development. It uses reusable skills, context packs, harness fixtures, and lightweight checks to preserve problem framing, code reading, behavioral testing, tradeoff analysis, diff review, and plain-English explanation.",
     "developerName": "Alinafe Matenda",
     "category": "Productivity",
     "capabilities": [

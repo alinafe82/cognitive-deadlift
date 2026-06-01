@@ -1,6 +1,6 @@
 {
   "name": "cognitive-deadlift",
-  "description": "Codex skills, Claude skills, Gemini instructions, hooks, and plugins that keep AI-assisted developers thinking.",
+  "description": "A skill-retention harness for developers using AI coding assistants.",
   "license": {
     "code": "MIT",
     "content": "CC-BY-NC-SA-4.0"
@@ -15,6 +15,7 @@
     "developer-tools",
     "critical-thinking",
     "software-engineering",
+    "skill-retention",
     "hooks"
   ],
   "runtimes": {

@@ -9,6 +9,22 @@ description: "Turn an unclear request into a concrete engineering problem statem
 
 Make the assistant define the real problem before it designs or writes code.
 
+## Preserves
+
+Problem definition.
+
+## Required Evidence
+
+- User request or symptom.
+- Current evidence, or an explicit note that evidence is missing.
+- Constraints, non-goals, or success signal if known.
+
+## Failure Signs
+
+- The response proposes implementation before naming the problem.
+- Assumptions are presented as facts.
+- No first verification step is defined.
+
 ## When To Use
 
 - The request starts with an implementation idea instead of a problem.
@@ -77,4 +93,3 @@ Do not ask for secrets, customer records, private employer details, or productio
 - Do not claim the problem is verified without evidence.
 - Do not produce a solution plan until the output contract is filled.
 - Do not use filler or motivational language.
-

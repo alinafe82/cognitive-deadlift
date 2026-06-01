@@ -13,6 +13,9 @@
 ├── docs/
 ├── scripts/
 ├── hooks/
+├── policies/
+├── context-packs/
+├── harnesses/
 ├── .codex-plugin/
 ├── .claude-plugin/
 ├── .gemini/
@@ -31,7 +34,24 @@ Runtime adapters point at or describe those shared skills:
 - Claude: `.claude-plugin/plugin.json` and `CLAUDE.md`
 - Gemini: `gemini-extension.json` and `GEMINI.md`
 
+Installation and loading are separate steps. Installing a skill makes it
+available to a runtime, but it does not mean every new session loads the full
+`SKILL.md` into active context. A runtime may first discover skill metadata and
+load the full body only when the user names the skill or the request matches the
+skill trigger.
+
 The repo does not duplicate skill bodies per runtime. If a runtime needs special routing, put that in the adapter file, not in a forked copy of the skill.
+
+## Skill Retention Harness Model
+
+The repo has four contract surfaces:
+
+- `skills/` defines the reasoning behavior.
+- `policies/thinking-budget.yaml` chooses how much evidence a task needs by risk.
+- `context-packs/` defines useful evidence for common workflows.
+- `harnesses/` gives reviewers fixtures for common agent failure modes.
+
+The scripts validate structure only. They do not claim that a model followed a skill.
 
 ## Naming Conventions
 

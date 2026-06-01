@@ -9,6 +9,22 @@ description: "Challenge unnecessary abstraction, dependencies, and indirection b
 
 Make the future maintenance cost of new moving parts explicit before they are added.
 
+## Preserves
+
+Systems thinking and operational judgment.
+
+## Required Evidence
+
+- Proposed design or implementation plan.
+- New components, dependencies, states, or failure modes.
+- Expected benefit, expected lifetime, and deletion path.
+
+## Failure Signs
+
+- Abstraction is justified as cleaner without a concrete future requirement.
+- Operational ownership is ignored.
+- The boring alternative is not considered.
+
 ## When To Use
 
 - A change adds a dependency, framework, queue, cache, state machine, agent, or abstraction.
@@ -77,4 +93,3 @@ Do not include confidential architecture diagrams, private vendor contracts, or 
 - Do not ignore deletion cost.
 - Do not hide operational ownership.
 - Do not recommend abstraction because it feels cleaner.
-

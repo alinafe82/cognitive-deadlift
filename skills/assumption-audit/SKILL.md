@@ -9,6 +9,22 @@ description: "Find and challenge hidden assumptions in a plan, prompt, bug repor
 
 Make unverified claims visible before they become implementation decisions.
 
+## Preserves
+
+Evidence-based judgment.
+
+## Required Evidence
+
+- Proposed plan, answer, or design.
+- Claims the plan depends on.
+- Available code, docs, logs, tests, metrics, or constraints.
+
+## Failure Signs
+
+- Confidence is treated as proof.
+- The riskiest assumption is buried.
+- Locally checkable claims are sent back to the user instead of verified.
+
 ## When To Use
 
 - A plan depends on behavior that has not been checked.
@@ -75,4 +91,3 @@ Do not request raw secrets, customer data, private contracts, or internal incide
 - Do not treat confidence as proof.
 - Do not ask the user for facts the repo can answer.
 - Do not bury the highest-risk assumption.
-

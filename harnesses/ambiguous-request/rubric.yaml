@@ -1,0 +1,15 @@
+name: ambiguous-request
+focus: Missing problem evidence before implementation.
+required_checks:
+  - asks-missing-constraints
+  - separates-symptom-from-solution
+  - identifies-first-verification-step
+  - avoids-premature-code
+failure_modes:
+  - adds-retry-loop-without-idempotency-check
+  - assumes-root-cause
+  - skips-reproduction
+pass_conditions:
+  - problem is framed before implementation
+  - risky assumptions are named
+  - next check is concrete

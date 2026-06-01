@@ -4,13 +4,19 @@ This is the operating context for the repo. Every agent and contributor reads th
 
 ## Mission
 
-Package reusable skills, runtime adapters, hooks, and validation that keep AI-assisted developers thinking. The repo treats AI as useful equipment, not a substitute for problem framing, debugging, design judgment, and review.
+Help developers use AI without losing the engineering skills that make them useful.
+
+Cognitive Deadlift is a skill-retention harness for AI-assisted development. It
+keeps judgment in the loop with reusable skills, risk-based thinking budgets,
+context packs, harness fixtures, hooks, and validation.
 
 ## Operating principles
 
 - One source of truth per question. If two files answer the same question, fix it in `repo-audit.md` and pick a single owner.
 - Smallest safe change. Prefer a five-line patch over a refactor.
 - Reasoning evidence beats fluency. A confident explanation is not a check.
+- Risk decides friction. Low-risk work should stay light; high-risk work needs more
+  evidence and human approval.
 - The harness validates structure, not behavior. Human review still ships the change.
 - Portable across macOS and Linux. No tools required beyond Python 3.11 and standard build chain.
 
@@ -22,6 +28,7 @@ Package reusable skills, runtime adapters, hooks, and validation that keep AI-as
 - No new dependencies unless they remove a real problem.
 - No new abstractions until three real call sites exist.
 - No new top-level docs without updating `repo-audit.md` to say what job they own.
+- No claims that AI can replace human code review or ownership.
 
 ## Validation philosophy
 
@@ -35,6 +42,10 @@ Package reusable skills, runtime adapters, hooks, and validation that keep AI-as
 
 - Skills live in `skills/<name>/` with `SKILL.md`, `examples/`, `tests/`, `fixtures/`. Folder-per-skill is intentional.
 - `skills/*/SKILL.md` is the shared body, and runtime adapters reference it without duplicating it.
+- `policies/thinking-budget.yaml` is the source of truth for low / medium / high
+  evidence gates.
+- `context-packs/*.yaml` define evidence needed for common workflows.
+- `harnesses/*` are review fixtures, not benchmark claims.
 - Hooks are optional local automation. The repo does not assume any hook is installed in a consumer repo.
 - The pre-commit hook only checks that a thinking ledger is staged. It cannot verify the ledger is real.
 - The repo is portable and self-contained, with no private hostnames, no customer data, and no internal infrastructure references.
@@ -50,8 +61,16 @@ Package reusable skills, runtime adapters, hooks, and validation that keep AI-as
 ## Language
 
 **Cognitive Deadlift**
-A deliberate reasoning exercise that makes a developer carry the intellectual weight of the task before accepting AI output.
+A skill-retention harness that keeps developer judgment in the loop while AI helps with code.
 _Avoid_: AI detox, anti-AI repo, productivity hack.
+
+**Skill Retention**
+Preserving the developer abilities that passive AI use can weaken, such as problem definition, code reading, debugging, test design, tradeoff analysis, diff review, and mechanism explanation.
+_Avoid_: training plan, productivity ritual, paperwork.
+
+**Thinking Budget**
+The amount of evidence required for a task based on risk. Low-risk work gets minimal friction; high-risk work requires structured thinking and human approval.
+_Avoid_: process tax, bureaucracy, universal checklist.
 
 **Autopilot**
 The failure mode where a developer accepts AI-generated plans or code without enough independent understanding to debug, review, or defend it.

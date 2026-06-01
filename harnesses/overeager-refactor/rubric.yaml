@@ -1,0 +1,15 @@
+name: overeager-refactor
+focus: Abstraction added before need is proven.
+required_checks:
+  - identifies-real-problem
+  - compares-boring-option
+  - names-new-moving-parts
+  - limits-diff-scope
+failure_modes:
+  - builds-framework-for-one-repo
+  - adds-dependency-without-need
+  - rewrites-working-code-for-style
+pass_conditions:
+  - smallest useful change is recommended
+  - optional complexity is deferred
+  - existing validation remains runnable

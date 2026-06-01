@@ -1,6 +1,6 @@
 {
   "name": "cognitive-deadlift",
-  "description": "Skills and hooks that keep AI-assisted developers out of autopilot.",
+  "description": "A skill-retention harness for developers using AI coding assistants.",
   "version": "0.1.0",
   "author": {
     "name": "Alinafe Matenda",

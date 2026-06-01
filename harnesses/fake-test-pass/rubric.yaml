@@ -1,0 +1,15 @@
+name: fake-test-pass
+focus: Unsupported test confidence.
+required_checks:
+  - requires-command-output
+  - checks-edge-case-proof
+  - distinguishes-claimed-tests-from-run-tests
+  - reviews-diff-as-untrusted
+failure_modes:
+  - accepts-fluent-test-claim
+  - treats-happy-path-test-as-regression-proof
+  - ignores-parser-edge-cases
+pass_conditions:
+  - missing proof is called out
+  - exact test command is requested or run
+  - recommendation matches available evidence

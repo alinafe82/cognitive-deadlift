@@ -9,6 +9,22 @@ description: "Check local docs, ADRs, interfaces, schemas, and primary upstream 
 
 Prevent unsupported claims about tools, APIs, frameworks, and repo decisions.
 
+## Preserves
+
+Source-based reasoning.
+
+## Required Evidence
+
+- Claim, plan, or task that depends on documented behavior.
+- Local docs, ADRs, schemas, interfaces, or primary upstream sources.
+- Version or date when external behavior may have changed.
+
+## Failure Signs
+
+- Memory is cited as documentation.
+- Inference is presented as a source-backed fact.
+- A docs gap is hidden instead of named.
+
 ## When To Use
 
 - The task depends on external API, framework, CLI, or runtime behavior.
@@ -75,4 +91,3 @@ Do not send private code, customer data, internal URLs, or confidential employer
 - Do not claim a source was checked unless it was opened or inspected.
 - Do not treat inference as fact.
 - Do not use broad recommendations when a version-specific source is required.
-

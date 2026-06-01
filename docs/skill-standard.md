@@ -19,16 +19,19 @@ skills/<skill-name>/
 Each skill must include:
 
 1. `Purpose`
-2. `When To Use`
-3. `When Not To Use`
-4. `Inputs Expected`
-5. `Output Expected`
-6. `Process`
-7. `Quality Bar`
-8. `Examples`
-9. `Failure Modes`
-10. `Safety And Privacy`
-11. `Anti-Slop Rules`
+2. `Preserves`
+3. `Required Evidence`
+4. `Failure Signs`
+5. `When To Use`
+6. `When Not To Use`
+7. `Inputs Expected`
+8. `Output Expected`
+9. `Process`
+10. `Quality Bar`
+11. `Examples`
+12. `Failure Modes`
+13. `Safety And Privacy`
+14. `Anti-Slop Rules`
 
 ## Metadata
 
@@ -57,6 +60,9 @@ A good skill has:
 - a real developer problem
 - clear trigger conditions
 - clear non-trigger conditions
+- the developer ability it preserves
+- required evidence before action
+- signs that the skill is being skipped or performed badly
 - explicit inputs
 - explicit outputs
 - constraints and boundaries

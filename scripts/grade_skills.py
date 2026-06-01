@@ -12,6 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 REQUIRED_SECTIONS = [
     "Purpose",
+    "Preserves",
+    "Required Evidence",
+    "Failure Signs",
     "When To Use",
     "When Not To Use",
     "Inputs Expected",

@@ -9,6 +9,22 @@ description: "Compare viable solution paths before implementation. Use when arch
 
 Prevent the first plausible implementation from becoming the decision by default.
 
+## Preserves
+
+Tradeoff analysis.
+
+## Required Evidence
+
+- Decision to be made.
+- Constraints that affect reversibility, blast radius, cost, or testability.
+- Existing architecture notes or code boundaries if available.
+
+## Failure Signs
+
+- Only the anchored solution is considered.
+- The no-build or minimal option is hidden.
+- Complexity is recommended without naming the cost it buys.
+
 ## When To Use
 
 - The change affects architecture, data shape, workflow, dependencies, or public behavior.
@@ -76,4 +92,3 @@ Do not include private vendor details, customer names, or confidential architect
 - Do not hide the no-build option.
 - Do not recommend a complex option without naming the complexity it buys.
 - Do not use vague tradeoff words without specifics.
-

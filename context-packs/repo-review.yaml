@@ -1,0 +1,29 @@
+purpose: Review a repository for clarity, runnable checks, and unsupported claims.
+required_evidence:
+  - README
+  - declared commands
+  - tests or validation scripts
+  - CI workflows
+  - current git status
+optional_evidence:
+  - architecture docs
+  - ADRs
+  - security notes
+  - package metadata
+forbidden_context:
+  - private employer details
+  - real credentials
+  - claims that cannot be checked
+freshness_rules:
+  - commands should be checked against the current Makefile or package scripts
+  - findings should cite files or command output
+output_contract:
+  - top risks first
+  - unsupported claims
+  - missing checks
+  - smallest useful fixes
+recommended_skills:
+  - read-the-docs-first
+  - assumption-audit
+  - diff-interrogation
+  - complexity-budget

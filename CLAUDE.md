@@ -21,6 +21,11 @@ When a request touches implementation, review, debugging, architecture, or learn
 - `debugging-lab-notebook` for hard bugs.
 - `complexity-budget` before adding abstraction.
 
+Use `policies/thinking-budget.yaml` to choose friction by risk. Low-risk work needs
+intent and a basic check. Medium-risk work needs trace, behavior proof, and diff
+review. High-risk work needs framing, assumption audit, alternatives, rollback,
+human approval, and final mechanism explanation.
+
 ## Model choice
 
 - Use Opus for repo audit, architecture decisions, doc contract changes, and security-sensitive work.
