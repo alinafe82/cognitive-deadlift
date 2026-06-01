@@ -11,7 +11,6 @@ except ImportError:  # pragma: no cover - exercised when imported as a package i
     from scripts.contract_yaml import read_contract_yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-HARNESSES_DIR = ROOT / "harnesses"
 
 REQUIRED_HARNESSES = [
     "ambiguous-request",
