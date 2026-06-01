@@ -1,0 +1,33 @@
+purpose: Prepare a high-risk change before implementation.
+required_evidence:
+  - problem statement
+  - blast radius
+  - rollback plan
+  - approval gate
+  - test evidence
+  - security note if applicable
+optional_evidence:
+  - migration notes
+  - monitoring or logging plan
+  - compatibility constraints
+  - incident or failure history
+forbidden_context:
+  - production credentials
+  - raw personal data
+  - private incident details not needed for the decision
+freshness_rules:
+  - approval status must be current
+  - rollback plan must match the implementation path
+  - test evidence must cover the risky boundary
+output_contract:
+  - framed problem
+  - assumptions and unknowns
+  - options considered
+  - selected path and rollback
+  - human approval status
+recommended_skills:
+  - problem-framing
+  - assumption-audit
+  - alternatives-before-code
+  - complexity-budget
+  - explain-without-ai

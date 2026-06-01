@@ -1,0 +1,39 @@
+low:
+  description: Mechanical or reversible work.
+  required:
+    - summarize-intent
+    - run-basic-check
+  examples:
+    - formatting
+    - typo fixes
+    - small docs edits
+
+medium:
+  description: Normal code change where behavior can break.
+  required:
+    - trace-the-code
+    - failing-test-first
+    - diff-interrogation
+  examples:
+    - bug fix
+    - small feature
+    - dependency bump
+    - validation change
+
+high:
+  description: Risky change with security, data, public API, permissions, or destructive behavior.
+  required:
+    - problem-framing
+    - assumption-audit
+    - alternatives-before-code
+    - rollback-plan
+    - human-approval
+    - explain-without-ai
+  examples:
+    - auth changes
+    - permissions
+    - destructive scripts
+    - migrations
+    - public API changes
+    - production config
+    - tool or agent permissions

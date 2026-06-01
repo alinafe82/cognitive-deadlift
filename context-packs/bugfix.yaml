@@ -1,0 +1,29 @@
+purpose: Debug and fix a reported behavior without guessing.
+required_evidence:
+  - bug description
+  - reproduction or failing test
+  - related code path
+  - existing tests
+  - command to run tests
+optional_evidence:
+  - recent error logs
+  - relevant issue or user report
+  - suspected regression commit
+forbidden_context:
+  - raw credentials
+  - customer identifiers
+  - private production logs
+freshness_rules:
+  - reproduction should match the current branch
+  - test command should be runnable in the current checkout
+output_contract:
+  - failing signal before fix
+  - changed files
+  - passing signal after fix
+  - residual risk
+recommended_skills:
+  - problem-framing
+  - trace-the-code
+  - failing-test-first
+  - debugging-lab-notebook
+  - diff-interrogation

@@ -1,0 +1,29 @@
+purpose: Change structure while preserving behavior.
+required_evidence:
+  - current entry point
+  - affected call path
+  - behavior that must not change
+  - existing tests or smoke command
+  - reason the refactor is needed
+optional_evidence:
+  - duplication examples
+  - performance or maintainability complaint
+  - prior ADR or design note
+forbidden_context:
+  - unrelated cleanup requests
+  - private source not needed for the path
+  - unsupported scale claims
+freshness_rules:
+  - trace must use the current branch
+  - tests should run after the structural change
+output_contract:
+  - behavior preserved
+  - smallest changed boundary
+  - tests or smoke check
+  - explanation of rejected broader refactor
+recommended_skills:
+  - trace-the-code
+  - alternatives-before-code
+  - complexity-budget
+  - diff-interrogation
+  - explain-without-ai
