@@ -209,13 +209,19 @@ make policy-check   # thinking budget policy
 make harness-check  # harness fixtures
 make context-check  # context packs
 make docs-check     # repo contract
-make slop-scan      # filler, placeholders, and obvious secret patterns
+make slop-scan      # filler, unfinished markers, and obvious secret patterns
 make doctor         # readiness check
+make repowave-check # optional RepoWave scan, if the CLI is installed
 make test           # pytest
 make lint           # ruff
 ```
 
 CI runs the same meaningful checks.
+
+`make repowave-check` is intentionally optional. It uses the local `repowave`
+CLI when present. Its default threshold matches `repowave.toml`: scan from
+`low`, fail on `critical`. It is not part of `make prod-gate` because RepoWave
+is not declared as a project dependency here.
 
 ## Runtime Adapters
 
