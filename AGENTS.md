@@ -64,23 +64,7 @@ When asked to clean or review this repo:
 2. Identify the real purpose of the project.
 3. Remove AI-slop from README, docs, comments, examples, and code.
 4. Remove dead code, unused files, commented-out blocks, fake examples, empty tests, and misleading stubs.
-5. Search for:
-   - TODO
-   - FIXME
-   - pass
-   - NotImplementedError
-   - placeholder
-   - dummy
-   - fake
-   - stub
-   - mock
-   - lorem
-   - enterprise-grade
-   - production-ready
-   - cutting-edge
-   - seamless
-   - robust
-   - revolutionary
+5. Search for unfinished-work markers, empty implementations, placeholder copy, filler claims, and fake examples.
 6. Implement small missing pieces only when they fit the repo purpose.
 7. Delete misleading or unfinished features.
 8. Keep documentation factual and runnable.
