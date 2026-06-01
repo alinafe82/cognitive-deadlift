@@ -3,7 +3,7 @@
 Date: 2026-05-31
 Branch: `fix/dashboard-reported-docs`
 
-This is the standing audit. Refresh in place — do not start a new file.
+This is the standing audit. Refresh it in place rather than starting a new file.
 
 ## Purpose
 
@@ -65,10 +65,10 @@ Ten skills, all classification B (keep but iterate) from the prior audit; struct
 | `assumption-audit` | Before plan acceptance | `problem-framing` (this tests, that defines) |
 | `alternatives-before-code` | Before architecture | `complexity-budget` (this compares, that prices) |
 | `failing-test-first` | Before fix | `debugging-lab-notebook` (this proves, that investigates) |
-| `trace-the-code` | Before edit | — |
-| `read-the-docs-first` | Before claim | — |
-| `explain-without-ai` | Before merge | — |
-| `diff-interrogation` | Before accept | — |
+| `trace-the-code` | Before edit | (none) |
+| `read-the-docs-first` | Before claim | (none) |
+| `explain-without-ai` | Before merge | (none) |
+| `diff-interrogation` | Before accept | (none) |
 | `debugging-lab-notebook` | Hard bugs | `failing-test-first` (this investigates, that proves) |
 | `complexity-budget` | Before abstraction | `alternatives-before-code` (this prices, that compares) |
 

@@ -36,11 +36,11 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 
 ## What belongs where
 
-- **`scripts/`** — Python checkers and harness logic. New checks land here.
-- **`hooks/`** — Local automation invoked by git. The repo does not assume hooks are installed in consumer repos.
-- **`skills/`** — Reusable skill bodies. The single source of truth for any skill. Runtime adapters reference these, never copy them.
-- **`docs/`** — Deeper documentation: architecture rationale, ADRs, security model, skill standard, review checklist, paid offer. Not the contract surface.
-- **`tests/`** — Pytest tests that lock harness behavior (validators, doc contract, slop scanner). Not behavior tests for the AI.
+- **`scripts/`** holds Python checkers and harness logic. New checks land here.
+- **`hooks/`** holds local automation invoked by git. The repo does not assume hooks are installed in consumer repos.
+- **`skills/`** holds reusable skill bodies and is the single source of truth for any skill. Runtime adapters reference these and never copy them.
+- **`docs/`** holds deeper documentation like architecture rationale, ADRs, the security model, the skill standard, the review checklist, and the paid offer. It is not the contract surface.
+- **`tests/`** holds pytest tests that lock harness behavior (validators, doc contract, slop scanner). These are not behavior tests for the AI.
 
 ## Skill lifecycle
 
@@ -84,7 +84,7 @@ If skill count grows beyond ~30, switch to generation. The threshold for that de
 
 ## Runtime adapter contract
 
-Adapters route discovery to the shared skills; they never carry a skill body.
+Adapters route discovery to the shared skills, and they never carry a skill body.
 
 | Runtime | Manifest | Context file |
 | --- | --- | --- |

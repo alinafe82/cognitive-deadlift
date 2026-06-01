@@ -34,10 +34,10 @@ Package reusable skills, runtime adapters, hooks, and validation that keep AI-as
 ## Current assumptions
 
 - Skills live in `skills/<name>/` with `SKILL.md`, `examples/`, `tests/`, `fixtures/`. Folder-per-skill is intentional.
-- `skills/*/SKILL.md` is the shared body. Runtime adapters reference it; they do not duplicate it.
+- `skills/*/SKILL.md` is the shared body, and runtime adapters reference it without duplicating it.
 - Hooks are optional local automation. The repo does not assume any hook is installed in a consumer repo.
 - The pre-commit hook only checks that a thinking ledger is staged. It cannot verify the ledger is real.
-- The repo is portable and self-contained: no private hostnames, no customer data, no internal infrastructure references.
+- The repo is portable and self-contained, with no private hostnames, no customer data, and no internal infrastructure references.
 
 ## What agents must read before editing
 
@@ -82,7 +82,7 @@ A small manifest or instruction file that lets one shared skill library work in 
 _Avoid_: Fork, duplicate skill, compatibility hack.
 
 **Reasoning Evidence**
-Concrete traces that the developer understood the work: hypotheses, code paths, tests, alternatives, constraints, or review notes.
+Concrete traces that the developer understood the work, such as hypotheses, code paths, tests, alternatives, constraints, or review notes.
 _Avoid_: Explanation, confidence, vibes.
 
 **Workflow Audit**
@@ -100,7 +100,7 @@ _Avoid_: Test artifact, audit report.
 ## Flagged ambiguities
 
 **"Against AI"**
-The repo is not against AI use. The canonical stance is against autopilot: using AI in ways that remove human understanding from engineering decisions.
+The repo is not against AI use. The canonical stance is against autopilot, which means using AI in ways that remove human understanding from engineering decisions.
 
 **"Force developers to think"**
 The repo should force reasoning evidence at decision points, not add performative friction to every action.
@@ -109,4 +109,4 @@ The repo should force reasoning evidence at decision points, not add performativ
 The shared skill source is `skills/*/SKILL.md`. Codex, Claude, and Gemini each get a runtime adapter instead of separate duplicated skill bodies.
 
 **"CrowdStrike level security"**
-The repo cannot honestly claim commercial EDR or enterprise SOC capability. The canonical interpretation is enterprise-style repository security: least privilege, supply-chain checks, secret scanning, threat modeling, protected branches, and auditable security gates.
+The repo cannot claim commercial EDR or enterprise SOC capability. The canonical interpretation is enterprise-style repository security covering least privilege, supply-chain checks, secret scanning, threat modeling, protected branches, and auditable security gates.
