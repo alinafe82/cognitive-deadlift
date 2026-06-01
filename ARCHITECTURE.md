@@ -16,6 +16,7 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 ├── hooks/                     # Optional pre-commit hook
 ├── tests/                     # Pytest tests for the harness
 ├── docs/                      # Deeper supporting docs, ADRs, security
+├── specs/                     # Planning and review documents (portfolio-wide work, etc.)
 ├── .codex-plugin/             # Codex runtime adapter manifest
 ├── .claude-plugin/            # Claude runtime adapter manifest
 ├── .gemini/                   # Gemini runtime adapter note
@@ -40,6 +41,7 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 - **`hooks/`** holds local automation invoked by git. The repo does not assume hooks are installed in consumer repos.
 - **`skills/`** holds reusable skill bodies and is the single source of truth for any skill. Runtime adapters reference these and never copy them.
 - **`docs/`** holds deeper documentation like architecture rationale, ADRs, the security model, the skill standard, the review checklist, and the paid offer. It is not the contract surface.
+- **`specs/`** holds planning and review documents that span multiple repos or set scope for upcoming work. The portfolio-wide review lives here.
 - **`tests/`** holds pytest tests that lock harness behavior (validators, doc contract, slop scanner). These are not behavior tests for the AI.
 
 ## Skill lifecycle

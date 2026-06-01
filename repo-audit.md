@@ -25,13 +25,18 @@ It is not a runtime, not a hosted service, not a benchmark, not a generic prompt
 | `docs/` | Deeper supporting docs (architecture rationale, ADRs, security, skill standard). |
 | `repo-audit.md` | This file. Standing audit of duplication, gaps, risks. |
 | `productionization-report.md` | Standing prod-readiness status, checks available, commands run, risks. |
+| `specs/` | Planning and review documents that span multiple repos or set scope for upcoming work. |
 | `skills_index.json` | Machine-readable index of `skills/`. Must match `skills/`. |
 
 Each file should answer questions only in its column. If two files answer the same question, the audit must say so here.
 
 ## Findings
 
-### Resolved in this pass (2026-05-31)
+### Resolved in this pass (2026-06-01)
+
+- New top-level `specs/` directory added to hold cross-repo planning documents. `specs/public-portfolio-repo-review.md` is the source of truth for portfolio-wide repo differentiation work. `ARCHITECTURE.md` and the source-of-truth contract above updated to register the new directory.
+
+### Resolved in earlier pass (2026-05-31)
 
 - `ARCHITECTURE.md` previously delegated everything to `docs/architecture.md`. It now carries the canonical top-level structure and lifecycles; `docs/architecture.md` keeps the deeper rationale and alternatives.
 - `CONTEXT.md` previously held only a glossary. It now leads with mission, principles, anti-slop rules, validation philosophy, and assumptions; glossary remains at the end.
