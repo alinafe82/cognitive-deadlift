@@ -8,12 +8,24 @@ This is a portfolio-wide planning document. It lives in this repo for convenienc
 
 ## Scope honesty
 
-The user asked for a full review and code-change pass on 11 public repos in one shot. That is multiple days of focused work. This document is the source of truth, but the code changes shipped in this branch are scoped to:
+The user asked for a full review and code-change pass on 11 public repos. This document is the source of truth.
 
-1. This planning doc (full audit, decisions, per-repo plans).
-2. GitHub repo description fixes on all 11 public repos (low effort, high impact for first impressions).
-3. Exception-leak fixes in `mlops-factory`, `ticket-triage-agent`, and `compliance-copilot` (real security finding).
-4. Recommendation list for what each per-repo PR should contain.
+**What ships in this `cognitive-deadlift` branch (only):**
+
+- `specs/public-portfolio-repo-review.md` (this file).
+- The thinking ledger that accompanies it.
+- Registration of the new `specs/` directory in `ARCHITECTURE.md` and `repo-audit.md`.
+
+**What ships as separate PRs in other repos (referenced here, not part of this branch):**
+
+- mlops-factory: exception-leak fix.
+- ticket-triage-agent: exception-leak fix.
+- compliance-copilot: exception-leak fix.
+- Each per-repo PR listed below under "Per-repo plans".
+
+**What ships as GitHub metadata (no commit, no PR):**
+
+- All 11 public repo descriptions updated via `gh repo edit`.
 
 Everything else is documented here as planned follow-up. Do not assume a repo's README has been rewritten unless this doc explicitly lists it as shipped.
 
