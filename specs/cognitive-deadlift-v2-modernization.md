@@ -277,11 +277,10 @@ Validation commands to run after implementation:
 
 ## Manual follow-up
 
-- Decide whether the paid offer page still belongs in the public README after the v2
-  repositioning. The page can remain as a supporting doc, but it should not distract from
-  the skill-retention thesis.
+- The old commercial service page was reframed as a quieter workflow audit note and kept
+  outside the README.
 - Periodically review real agent sessions to see whether the harness fixtures catch the
   right failure modes. The repo can validate structure, but human review still judges
   behavior.
-- Consider whether `docs/paid-offer.md` should be revised or removed in a later PR so it
-  does not distract from the vendor-neutral harness story.
+- Review `docs/workflow-audit.md` later if the repo needs a stricter separation between
+  open-source docs and service notes.

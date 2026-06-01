@@ -43,7 +43,7 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 - **`scripts/`** holds Python checkers and harness logic. New deterministic checks land here.
 - **`hooks/`** holds local automation invoked by git. The repo does not assume hooks are installed in consumer repos.
 - **`skills/`** holds reusable skill bodies and is the single source of truth for any skill. Runtime adapters reference these and never copy them.
-- **`docs/`** holds deeper documentation like architecture rationale, ADRs, the security model, the skill standard, the review checklist, and the paid offer. It is not the contract surface.
+- **`docs/`** holds deeper documentation like architecture rationale, ADRs, the security model, the skill standard, the review checklist, and the workflow audit note. It is not the contract surface.
 - **`specs/`** holds planning and review documents for repo-level changes.
 - **`policies/`** holds risk-based evidence policy. `thinking-budget.yaml` is the source of truth for low / medium / high gates.
 - **`context-packs/`** holds workflow-specific context contracts for bug fixes, refactors, repo review, and risky changes.
