@@ -1,15 +1,14 @@
-# Cognitive Deadlift Skill Catalog
+# Cognitive Deadlift Catalog
+
+Index of skills, hooks, scripts, and runtime adapters. Keep this concise — purpose only.
 
 Search phrases this repo is intended to answer:
 
-- Codex skills for software engineering
-- Claude skills for developers
-- Gemini CLI extension for coding
+- Codex / Claude / Gemini skills for software engineering
 - AI coding hooks
 - agent skills for critical thinking
 - AI-assisted development guardrails
 - anti-vibe-coding developer tools
-- software engineering thinking skills
 
 ## Skills
 
@@ -32,10 +31,20 @@ Search phrases this repo is intended to answer:
 | --- | --- |
 | `hooks/pre-commit` | Blocks staged source changes unless a thinking ledger is staged. |
 
-## Runtime Adapters
+## Scripts
 
-| Runtime | Files |
+| Script | Purpose |
 | --- | --- |
-| Codex | `.codex-plugin/plugin.json`, `AGENTS.md` |
-| Claude | `.claude-plugin/plugin.json`, `CLAUDE.md` |
-| Gemini | `gemini-extension.json`, `GEMINI.md` |
+| `scripts/validate_repo.py` | Repo contract: required files, manifests, skills index, doc contract, untracked artifacts. |
+| `scripts/validate_skills.py` | Skill format + slop scanner: structure, frontmatter, sections, examples, links, banned filler, secrets. |
+| `scripts/grade_skills.py` | Heuristic rubric grading skills against the skill standard. |
+| `scripts/security_scan.py` | Security hygiene: secret patterns, dangerous shell, workflow permissions, CODEOWNERS coverage. |
+| `scripts/cognitive_deadlift_check.py` | Pre-commit ledger check. Used by `hooks/pre-commit`. |
+
+## Runtime adapters
+
+| Runtime | Manifest | Context file |
+| --- | --- | --- |
+| Codex | `.codex-plugin/plugin.json` | `AGENTS.md` |
+| Claude | `.claude-plugin/plugin.json` | `CLAUDE.md` |
+| Gemini | `gemini-extension.json` | `GEMINI.md` |

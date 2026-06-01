@@ -1,10 +1,14 @@
 # Gemini Instructions
 
-Cognitive Deadlift exposes the same shared skills to Gemini through this context file and `gemini-extension.json`.
+Gemini-specific rules. Read `AGENTS.md` first — these are additions, not replacements.
 
-Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in every environment. Use this file as the Gemini entry point, then read the relevant `skills/*/SKILL.md` file before acting.
+## Gemini adapter
 
-## Skill Routing
+Gemini reads the shared skills through `gemini-extension.json` and uses this file as the context entry point. The shared body in `skills/*/SKILL.md` is the only body; do not generate Gemini-specific copies.
+
+Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in every environment. When in doubt, read the relevant `skills/<name>/SKILL.md` directly before acting.
+
+## Skill routing
 
 - For unclear requests, read `skills/problem-framing/SKILL.md`.
 - For plans or assumptions, read `skills/assumption-audit/SKILL.md`.
@@ -16,6 +20,10 @@ Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in ever
 - For hard bugs, read `skills/debugging-lab-notebook/SKILL.md`.
 - Before merge or handoff, read `skills/explain-without-ai/SKILL.md`.
 
-## Gemini-Specific Rule
+## Gemini-specific rule
 
-When Gemini is used for broad synthesis, force it back to local evidence: files, docs, tests, logs, traces, and explicit assumptions.
+When Gemini is used for broad synthesis, force it back to local evidence: files, docs, tests, logs, traces, and explicit assumptions. A synthesis without file paths or commands is a draft, not an answer.
+
+## Before finishing
+
+Run `make prod-gate`. If it fails, fix the real issue. Do not weaken the gate.
