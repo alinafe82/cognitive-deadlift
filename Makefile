@@ -1,6 +1,8 @@
 PYTHON ?= python3
+REPOWAVE_MIN_SEVERITY ?= low
+REPOWAVE_FAIL_ON ?= critical
 
-.PHONY: help repo-check skills-check policy-check harness-check context-check docs-check slop-scan grade lint test security doctor check prod-gate validate
+.PHONY: help repo-check skills-check policy-check harness-check context-check docs-check slop-scan grade lint test security doctor repowave-check check prod-gate validate
 
 help:
 	@echo "Targets:"
@@ -11,12 +13,13 @@ help:
 	@echo "  harness-check Validate harness fixtures"
 	@echo "  context-check Validate context packs"
 	@echo "  docs-check   Validate doc contract only (alias of repo-check)"
-	@echo "  slop-scan    Scan for banned filler, placeholders, secret patterns"
+	@echo "  slop-scan    Scan for banned filler, unfinished markers, secret patterns"
 	@echo "  grade        Score skills against the rubric (min 90)"
 	@echo "  lint         Ruff lint"
 	@echo "  test         Pytest"
 	@echo "  security     Security hygiene scan"
 	@echo "  doctor       Print repo readiness for AI-assisted work"
+	@echo "  repowave-check Optional RepoWave scan if repowave is installed"
 	@echo "  check        Back-compat alias for prod-gate"
 
 repo-check:
@@ -53,6 +56,14 @@ test:
 
 doctor:
 	$(PYTHON) scripts/doctor.py
+
+repowave-check:
+	@command -v repowave >/dev/null 2>&1 || { \
+		echo "repowave-check: repowave CLI is not installed."; \
+		echo "Install RepoWave locally before running this optional gate."; \
+		exit 2; \
+	}
+	repowave scan . --output-format json --min-severity $(REPOWAVE_MIN_SEVERITY) --fail-on $(REPOWAVE_FAIL_ON)
 
 prod-gate: repo-check skills-check policy-check harness-check context-check slop-scan grade lint security doctor test
 
