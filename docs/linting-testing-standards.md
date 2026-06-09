@@ -6,7 +6,7 @@ languages touched by the change.
 ## Required Gates
 
 - Start from the default branch and keep the PR focused on one reviewable change.
-- Run `git diff --check` before committing.
+- Run `git diff --check` and `git diff --cached --check` before committing.
 - Run `repowave scan .` when `repowave.toml` is present.
 - Run every applicable language command below. If a command needs credentials, a live service, or unavailable
   platform tooling, state that in the PR and run the closest local gate.
@@ -24,5 +24,6 @@ languages touched by the change.
 - Install: `uv sync --extra test --extra lint`.
 - Lint: `make lint`.
 - Tests: `make test`.
-- Full local gate: `make validate`.
+- Focused repository validation: `make validate`.
+- Full local gate: `make check`.
 - Production gate when relevant: `make prod-gate`.
