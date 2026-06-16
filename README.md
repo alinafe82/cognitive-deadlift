@@ -238,8 +238,11 @@ Cognitive Deadlift is free to use. If it helps your team keep better judgment in
 AI-assisted development, voluntary support is available through GitHub Sponsors.
 
 Sponsorship does not change the repo's purpose, license, or vendor-neutral
-stance. Teams that want help applying the workflow can read
-[docs/workflow-audit.md](docs/workflow-audit.md).
+stance.
+
+Teams that want help applying the workflow can buy a fixed-scope
+[workflow audit](docs/workflow-audit.md). That page defines the paid offer, price,
+scope, deliverables, and first-contact path.
 
 ## What This Repo Deliberately Does Not Do
 

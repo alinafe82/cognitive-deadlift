@@ -8,6 +8,35 @@ The repository is useful without this audit. The audit is for teams that want an
 outside review of where AI-assisted work is losing judgment, evidence, or review
 quality.
 
+## Paid Offer
+
+**AI-assisted engineering workflow audit**
+
+Price: USD 1,500 fixed fee.
+
+Format: one-week async review plus a 60-minute readout.
+
+Buyer: engineering leads, founders, or staff engineers responsible for a small team
+using AI coding assistants in real pull requests.
+
+Outcome: a written audit that identifies where AI-assisted work is missing reasoning
+evidence, review quality, debugging discipline, or test proof, then maps the gaps to
+specific Cognitive Deadlift skills, context packs, harness fixtures, and lightweight
+repo gates.
+
+Included:
+
+- Review of up to five recent AI-assisted pull requests, tickets, change writeups, or
+  agent instruction files.
+- Reasoning evidence gap analysis across planning, code reading, testing, debugging,
+  diff review, and handoff.
+- Recommended workflow using this repo's skills and thinking budget.
+- Short adoption plan with the first three gates or habits to add.
+- 60-minute walkthrough of the findings and recommended next steps.
+
+Follow-on implementation, custom skill authoring, team training, or commercial licensing
+is scoped separately.
+
 ## Best Fit
 
 - A small engineering team already using AI coding assistants.
@@ -47,8 +76,8 @@ Commercial licensing or custom implementation can be scoped separately.
 
 ## First Contact
 
-Contact the maintainer through the GitHub profile listed in `.codex-plugin/plugin.json`
-with the subject `Cognitive Deadlift Workflow Audit`.
+Contact [Alinafe Matenda](https://github.com/alinafe82) with the subject
+`Paid Cognitive Deadlift Workflow Audit`.
 
 Include:
 

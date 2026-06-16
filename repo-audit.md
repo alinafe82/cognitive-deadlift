@@ -29,6 +29,7 @@ It is not a runtime, not a hosted service, not a benchmark, not a generic prompt
 | `repo-audit.md` | This file. Standing audit of duplication, gaps, risks. |
 | `productionization-report.md` | Standing prod-readiness status, checks available, commands run, risks. |
 | `specs/` | Planning and review documents for repo-level changes. |
+| `docs/workflow-audit.md` | Paid workflow audit offer, price, scope, deliverables, and contact path. |
 | `skills_index.json` | Machine-readable index of `skills/`. Must match `skills/`. |
 
 Each file should answer questions only in its column. If two files answer the same question, the audit must say so here.
