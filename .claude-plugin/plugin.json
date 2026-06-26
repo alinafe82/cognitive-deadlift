@@ -19,6 +19,16 @@
     "./skills/explain-without-ai",
     "./skills/diff-interrogation",
     "./skills/debugging-lab-notebook",
-    "./skills/complexity-budget"
+    "./skills/complexity-budget",
+    "./skills/skill-authoring-gate",
+    "./skills/skill-overlap-audit",
+    "./skills/runtime-adapter-smoke",
+    "./skills/transcript-review",
+    "./skills/thinking-ledger-review",
+    "./skills/evidence-to-test",
+    "./skills/release-readiness",
+    "./skills/skill-deprecation-review",
+    "./skills/agent-security-boundary",
+    "./skills/docs-claim-audit"
   ]
 }

@@ -12,7 +12,6 @@ except ImportError:  # pragma: no cover - exercised when imported as a package i
     from scripts.contract_yaml import read_contract_yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS_INDEX = ROOT / "skills_index.json"
 
 REQUIRED_PACKS = ["bugfix", "refactor", "repo-review", "risky-change"]
 REQUIRED_FIELDS = [
@@ -26,48 +25,62 @@ REQUIRED_FIELDS = [
 ]
 
 
-def known_skills() -> set[str]:
-    data = json.loads(SKILLS_INDEX.read_text(encoding="utf-8"))
+def relative(path: Path, root: Path) -> str:
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def known_skills(root: Path = ROOT) -> set[str]:
+    data = json.loads((root / "skills_index.json").read_text(encoding="utf-8"))
     return {entry["name"] for entry in data.get("skills", [])}
 
 
-def validate_pack(path: Path, skills: set[str]) -> list[str]:
+def validate_pack(path: Path, skills: set[str], root: Path = ROOT) -> list[str]:
     findings: list[str] = []
     data = read_contract_yaml(path)
-    relative = path.relative_to(ROOT)
+    pack_path = relative(path, root)
 
     for field in REQUIRED_FIELDS:
         if field not in data:
-            findings.append(f"{relative} missing field: {field}")
+            findings.append(f"{pack_path} missing field: {field}")
             continue
         value = data[field]
         if field == "purpose" and not str(value).strip():
-            findings.append(f"{relative} purpose is empty")
+            findings.append(f"{pack_path} purpose is empty")
         if field != "purpose" and (not isinstance(value, list) or not value):
-            findings.append(f"{relative} {field} must be a non-empty list")
+            findings.append(f"{pack_path} {field} must be a non-empty list")
 
     recommended = data.get("recommended_skills", [])
     if isinstance(recommended, list):
         unknown = sorted(set(recommended) - skills)
         if unknown:
-            findings.append(f"{relative} recommends unknown skills: {unknown}")
+            findings.append(f"{pack_path} recommends unknown skills: {unknown}")
 
     return findings
 
 
 def validate_context_packs(root: Path = ROOT) -> list[str]:
+    root = root.resolve()
     findings: list[str] = []
     packs_dir = root / "context-packs"
     if not (packs_dir / "README.md").exists():
         findings.append("context-packs/README.md is missing")
 
-    skills = known_skills()
+    skills_index = root / "skills_index.json"
+    if not skills_index.exists():
+        findings.append("skills_index.json is missing")
+        skills: set[str] = set()
+    else:
+        skills = known_skills(root)
+
     for pack in REQUIRED_PACKS:
         path = packs_dir / f"{pack}.yaml"
         if not path.exists():
             findings.append(f"missing context pack: context-packs/{pack}.yaml")
             continue
-        findings.extend(validate_pack(path, skills))
+        findings.extend(validate_pack(path, skills, root))
 
     return findings
 

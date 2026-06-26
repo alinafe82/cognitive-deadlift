@@ -96,3 +96,97 @@ def test_validator_detects_tracked_artifact(monkeypatch: pytest.MonkeyPatch) -> 
     validate_repo.validate_generated_artifacts(findings)
     assert any("__pycache__" in f for f in findings)
     assert not any("main.py" in f for f in findings)
+
+
+def test_validator_requires_prod_gate_in_pr_template(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from scripts import validate_repo
+
+    fake_root = tmp_path
+    pr_template = fake_root / ".github" / "PULL_REQUEST_TEMPLATE.md"
+    pr_template.parent.mkdir()
+    pr_template.write_text("- [ ] `make validate` passes\n", encoding="utf-8")
+    monkeypatch.setattr(validate_repo, "ROOT", fake_root)
+
+    findings: list[str] = []
+    validate_repo.validate_pr_template(findings)
+
+    assert any("make prod-gate" in finding for finding in findings)
+
+
+def test_validator_detects_runtime_adapter_version_drift(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from scripts import validate_repo
+
+    fake_root = tmp_path
+    (fake_root / ".codex-plugin").mkdir()
+    (fake_root / ".claude-plugin").mkdir()
+    (fake_root / "pyproject.toml").write_text(
+        '[project]\nname = "cognitive-deadlift"\nversion = "0.1.0"\n',
+        encoding="utf-8",
+    )
+    (fake_root / ".codex-plugin" / "plugin.json").write_text(
+        '{"name": "cognitive-deadlift", "version": "0.1.0", "description": "x", '
+        '"skills": "./skills/", "interface": {"displayName": "Cognitive Deadlift", '
+        '"shortDescription": "x", "longDescription": "x", "developerName": "x", '
+        '"category": "Productivity", "capabilities": ["Read"], "defaultPrompt": ["x"]}}\n',
+        encoding="utf-8",
+    )
+    (fake_root / ".claude-plugin" / "plugin.json").write_text(
+        '{"name": "cognitive-deadlift", "version": "9.9.9", "description": "x", '
+        '"skills": []}\n',
+        encoding="utf-8",
+    )
+    (fake_root / "gemini-extension.json").write_text(
+        '{"name": "cognitive-deadlift", "version": "0.1.0", "description": "x", '
+        '"contextFileName": "GEMINI.md"}\n',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(validate_repo, "ROOT", fake_root)
+
+    findings: list[str] = []
+    validate_repo.validate_runtime_adapter_metadata(findings)
+
+    assert any(".claude-plugin/plugin.json version" in finding for finding in findings)
+
+
+def test_validator_detects_runtime_context_skill_routing_drift(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from scripts import validate_repo
+
+    fake_root = tmp_path
+    for skill in ("problem-framing", "runtime-adapter-smoke"):
+        (fake_root / "skills" / skill).mkdir(parents=True)
+
+    (fake_root / "AGENTS.md").write_text(
+        "- `problem-framing` before implementation.\n",
+        encoding="utf-8",
+    )
+    (fake_root / "CLAUDE.md").write_text(
+        "- `problem-framing` before implementation.\n",
+        encoding="utf-8",
+    )
+    (fake_root / "GEMINI.md").write_text(
+        "- `skills/problem-framing/SKILL.md` before implementation.\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(validate_repo, "ROOT", fake_root)
+
+    findings: list[str] = []
+    validate_repo.validate_runtime_context_skill_routing(findings)
+
+    assert any(
+        "AGENTS.md" in finding and "runtime-adapter-smoke" in finding
+        for finding in findings
+    )
+    assert any(
+        "CLAUDE.md" in finding and "runtime-adapter-smoke" in finding
+        for finding in findings
+    )
+    assert any(
+        "GEMINI.md" in finding and "runtime-adapter-smoke" in finding
+        for finding in findings
+    )

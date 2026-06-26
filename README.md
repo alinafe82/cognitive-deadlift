@@ -1,5 +1,12 @@
 # Cognitive Deadlift
 
+## At a Glance
+
+- **Use case:** Keep developer judgment active while using AI coding assistants.
+- **Audience:** Developers and teams adopting Codex, Claude, Gemini, Cursor, or similar coding agents.
+- **Core workflow:** Use skills, context packs, harness fixtures, and gates to require evidence at the right risk level.
+- **Start here:** Run `make doctor`, then `make prod-gate`.
+
 Cognitive Deadlift is a skill-retention harness for developers using AI coding
 assistants.
 
@@ -110,6 +117,21 @@ make lint
 | `diff-interrogation` | Review judgment |
 | `debugging-lab-notebook` | Systematic debugging |
 | `complexity-budget` | Systems thinking and operational judgment |
+
+## Repository Lifecycle Skills
+
+| Skill | Preserves |
+| --- | --- |
+| `skill-authoring-gate` | Skill design judgment |
+| `skill-overlap-audit` | Skill boundary discipline |
+| `runtime-adapter-smoke` | Runtime compatibility judgment |
+| `transcript-review` | Real-session review judgment |
+| `thinking-ledger-review` | Reasoning evidence quality |
+| `evidence-to-test` | Turning gaps into executable proof |
+| `release-readiness` | Publication and release judgment |
+| `skill-deprecation-review` | Skill set curation |
+| `agent-security-boundary` | Agent security judgment |
+| `docs-claim-audit` | Documentation honesty |
 
 See [CATALOG.md](CATALOG.md) for the full catalog.
 
@@ -238,8 +260,8 @@ Cognitive Deadlift is free to use. If it helps your team keep better judgment in
 AI-assisted development, voluntary support is available through GitHub Sponsors.
 
 Sponsorship does not change the repo's purpose, license, or vendor-neutral
-stance. Teams that want help applying the workflow can read
-[docs/workflow-audit.md](docs/workflow-audit.md).
+stance. Teams that want help applying the workflow can book a fixed-scope
+[Workflow Audit](docs/workflow-audit.md).
 
 ## What This Repo Deliberately Does Not Do
 

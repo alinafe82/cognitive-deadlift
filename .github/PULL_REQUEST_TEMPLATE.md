@@ -17,6 +17,6 @@
 
 ## Checklist
 
-- [ ] `make validate` passes
+- [ ] `make prod-gate` passes
 - [ ] New or changed skills keep `SKILL.md` frontmatter concise
 - [ ] Non-trivial changes include a thinking ledger

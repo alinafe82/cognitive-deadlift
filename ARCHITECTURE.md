@@ -93,7 +93,8 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 ```text
 make prod-gate
   ├── make repo-check     -> scripts/validate_repo.py
-  │                          (required files, manifests, skills_index, doc contract, no tracked build artifacts)
+  │                          (required files, manifests, adapter metadata, runtime context routing,
+  │                           PR template, skills_index, doc contract, no tracked build artifacts)
   ├── make skills-check   -> scripts/validate_skills.py
   │                          (skill structure, frontmatter, sections, examples, links)
   ├── make policy-check   -> scripts/validate_policies.py
@@ -103,7 +104,8 @@ make prod-gate
   ├── make context-check  -> scripts/validate_context_packs.py
   │                          (context pack fields and skill references)
   ├── make slop-scan      -> scripts/validate_skills.py --slop-only
-  │                          (banned filler, placeholders, secret patterns across all markdown)
+  │                          (banned filler, placeholders, secret patterns across Markdown,
+  │                           YAML, TOML, and JSON contract files)
   ├── make grade          -> scripts/grade_skills.py --min-score 90
   ├── make lint           -> ruff check
   ├── make security       -> scripts/security_scan.py
@@ -130,8 +132,10 @@ Adapters route discovery to the shared skills, and they never carry a skill body
 | Codex | `.codex-plugin/plugin.json` | `AGENTS.md` |
 | Gemini | `gemini-extension.json` | `GEMINI.md` |
 
-The validator checks that each manifest points at `skills/` correctly and that Claude's explicit skill list matches the directory.
+The validator checks that each manifest has consistent name and version metadata,
+that each manifest points at the expected runtime context, and that Claude's
+explicit skill list matches the directory.
 
 ## Source-control hygiene
 
-Generated artifacts (`*.egg-info/`, `.pytest_cache/`, `.ruff_cache/`, `__pycache__/`, `.venv/`, `dist/`, `build/`, `htmlcov/`, `coverage.xml`) are gitignored and validated as untracked by `scripts/validate_repo.py`. If any of them appears in `git ls-files`, the gate fails.
+Generated artifacts (`*.egg-info/`, `.pytest_cache/`, `.ruff_cache/`, `__pycache__/`, `.venv/`, `dist/`, `build/`, `htmlcov/`, `coverage.xml`) are gitignored and validated as untracked by `scripts/validate_repo.py`. Local agent context directories such as `.specs/` and `.serena/` stay ignored. If a generated artifact appears in `git ls-files`, the gate fails.
