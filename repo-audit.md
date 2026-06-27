@@ -1,7 +1,7 @@
 # Repository Audit
 
-Date: 2026-06-01
-Branch: `modernize-skill-retention-harness`
+Date: 2026-06-24
+Branch: `main`
 
 This is the standing audit. Refresh it in place rather than starting a new file.
 
@@ -35,6 +35,33 @@ It is not a runtime, not a hosted service, not a benchmark, not a generic prompt
 Each file should answer questions only in its column. If two files answer the same question, the audit must say so here.
 
 ## Findings
+
+### Resolved in this pass (2026-06-24, revenue CTA)
+
+- `docs/workflow-audit.md` now owns the fixed-scope paid Workflow Audit terms.
+- `README.md` routes interested teams to that page without duplicating the price or
+  scope, keeping the offer terms in one public source of truth.
+
+### Resolved in this pass (2026-06-19, validator hardening)
+
+- Added ten repository-lifecycle skills: `skill-authoring-gate`,
+  `skill-overlap-audit`, `runtime-adapter-smoke`, `transcript-review`,
+  `thinking-ledger-review`, `evidence-to-test`, `release-readiness`,
+  `skill-deprecation-review`, `agent-security-boundary`, and
+  `docs-claim-audit`.
+- `.github/PULL_REQUEST_TEMPLATE.md` now points reviewers at `make prod-gate`
+  instead of the narrower compatibility target.
+- `scripts/validate_repo.py` now checks PR template drift and runtime adapter
+  name/version metadata against `pyproject.toml`, plus runtime context routing
+  for every shared skill.
+- `scripts/validate_context_packs.py` and `scripts/validate_harnesses.py` now
+  validate custom roots cleanly, which makes negative fixture tests meaningful.
+- `scripts/validate_skills.py --slop-only` now scans Markdown, YAML, TOML, and
+  JSON contract files instead of Markdown only.
+- `.serena/` is ignored as local agent tooling state.
+- Validator tests now cover negative cases for policies, context packs, harnesses,
+  doctor readiness, runtime adapter drift, PR template drift, and non-Markdown
+  slop scanning.
 
 ### Resolved in this pass (2026-06-01, skill-retention modernization)
 
@@ -73,13 +100,15 @@ Each file should answer questions only in its column. If two files answer the sa
 ### Non-issues confirmed
 
 - No secrets in tracked files (`scripts/security_scan.py` is clean).
-- `skills_index.json` matches the ten directories under `skills/`.
+- `skills_index.json` matches the twenty directories under `skills/`.
 - `.claude-plugin/plugin.json` skill list matches `skills/` (existing check).
+- `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` route all twenty skills.
 - Each skill has `SKILL.md`, two examples, fixtures, and tests/README per the skill standard.
+- Local `.serena/` agent state is ignored and excluded from slop scanning.
 
 ## Skill inventory
 
-Ten skills, all classification B (keep but iterate) from the prior audit; structural validators are passing and the grade rubric reports 94.7 across the board. Concrete boundaries are documented in each `SKILL.md` and `docs/skill-standard.md`.
+Twenty skills are present. The original ten developer-practice skills and the ten repository-lifecycle skills are structurally validated. Concrete boundaries are documented in each `SKILL.md` and `docs/skill-standard.md`.
 
 | Skill | Stage | Distinct from |
 | --- | --- | --- |
@@ -93,6 +122,16 @@ Ten skills, all classification B (keep but iterate) from the prior audit; struct
 | `diff-interrogation` | Before accept | (none) |
 | `debugging-lab-notebook` | Hard bugs | `failing-test-first` (this investigates, that proves) |
 | `complexity-budget` | Before abstraction | `alternatives-before-code` (this prices, that compares) |
+| `skill-authoring-gate` | Before adding or changing a skill | `skill-overlap-audit` (this checks quality, that checks boundaries) |
+| `skill-overlap-audit` | Before adding a nearby skill | `skill-authoring-gate` (this checks overlap, that checks readiness) |
+| `runtime-adapter-smoke` | Before adapter publication | `release-readiness` (this checks runtime routing, that checks release state) |
+| `transcript-review` | After real agent sessions | `diff-interrogation` (this reviews session behavior, that reviews code diffs) |
+| `thinking-ledger-review` | Before accepting reasoning evidence | `cognitive_deadlift_check.py` hook (this checks substance, that checks presence) |
+| `evidence-to-test` | After a repo gap or repeated failure | `failing-test-first` (this designs the check, that proves behavior before a fix) |
+| `release-readiness` | Before tagging or publishing | `runtime-adapter-smoke` (this checks release state, that checks adapter routing) |
+| `skill-deprecation-review` | Before removing or merging skills | `skill-overlap-audit` (this decides lifecycle, that maps overlap) |
+| `agent-security-boundary` | Before tool-using agent changes | `diff-interrogation` (this checks agent security boundaries, that reviews diffs) |
+| `docs-claim-audit` | Before public docs claims merge | `read-the-docs-first` (this audits claims, that gathers sources) |
 
 ## Next refresh triggers
 

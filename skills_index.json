@@ -19,9 +19,18 @@
     "hooks"
   ],
   "runtimes": {
-    "codex": [".codex-plugin/plugin.json", "AGENTS.md"],
-    "claude": [".claude-plugin/plugin.json", "CLAUDE.md"],
-    "gemini": ["gemini-extension.json", "GEMINI.md"]
+    "codex": [
+      ".codex-plugin/plugin.json",
+      "AGENTS.md"
+    ],
+    "claude": [
+      ".claude-plugin/plugin.json",
+      "CLAUDE.md"
+    ],
+    "gemini": [
+      "gemini-extension.json",
+      "GEMINI.md"
+    ]
   },
   "skills": [
     {
@@ -73,6 +82,56 @@
       "name": "complexity-budget",
       "path": "skills/complexity-budget/SKILL.md",
       "purpose": "Challenge unnecessary abstraction and dependency creep."
+    },
+    {
+      "name": "skill-authoring-gate",
+      "path": "skills/skill-authoring-gate/SKILL.md",
+      "purpose": "Gate new or changed skills before review."
+    },
+    {
+      "name": "skill-overlap-audit",
+      "path": "skills/skill-overlap-audit/SKILL.md",
+      "purpose": "Check whether a proposed skill overlaps confusingly with existing skills."
+    },
+    {
+      "name": "runtime-adapter-smoke",
+      "path": "skills/runtime-adapter-smoke/SKILL.md",
+      "purpose": "Verify runtime adapters can discover shared skill bodies before publication."
+    },
+    {
+      "name": "transcript-review",
+      "path": "skills/transcript-review/SKILL.md",
+      "purpose": "Review real agent sessions against expected skill behavior."
+    },
+    {
+      "name": "thinking-ledger-review",
+      "path": "skills/thinking-ledger-review/SKILL.md",
+      "purpose": "Check thinking ledgers for substantive reasoning evidence."
+    },
+    {
+      "name": "evidence-to-test",
+      "path": "skills/evidence-to-test/SKILL.md",
+      "purpose": "Convert repo gaps or repeated failures into deterministic tests or checks."
+    },
+    {
+      "name": "release-readiness",
+      "path": "skills/release-readiness/SKILL.md",
+      "purpose": "Check versioning, docs, adapters, licenses, and gates before release."
+    },
+    {
+      "name": "skill-deprecation-review",
+      "path": "skills/skill-deprecation-review/SKILL.md",
+      "purpose": "Decide whether stale or overlapping skills should be kept, merged, renamed, archived, or deleted."
+    },
+    {
+      "name": "agent-security-boundary",
+      "path": "skills/agent-security-boundary/SKILL.md",
+      "purpose": "Review security boundaries for tool-using agent skills and workflows."
+    },
+    {
+      "name": "docs-claim-audit",
+      "path": "skills/docs-claim-audit/SKILL.md",
+      "purpose": "Verify documentation claims against repository evidence."
     }
   ]
 }

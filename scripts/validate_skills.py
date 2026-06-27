@@ -57,6 +57,7 @@ LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 
 FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+SCANNABLE_TEXT_SUFFIXES = {".json", ".md", ".toml", ".yaml", ".yml"}
 
 
 def strip_code(text: str) -> str:
@@ -111,7 +112,15 @@ def markdown_files(root: Path) -> list[Path]:
     return sorted(path for path in root.rglob("*.md") if path.is_file())
 
 
-def is_excluded_markdown(path: Path, root: Path) -> bool:
+def scannable_text_files(root: Path) -> list[Path]:
+    return sorted(
+        path
+        for path in root.rglob("*")
+        if path.is_file() and path.suffix.lower() in SCANNABLE_TEXT_SUFFIXES
+    )
+
+
+def is_excluded_text_file(path: Path, root: Path) -> bool:
     try:
         parts = path.relative_to(root).parts
     except ValueError:
@@ -119,6 +128,7 @@ def is_excluded_markdown(path: Path, root: Path) -> bool:
 
     excluded_prefixes = [
         (".git",),
+        (".serena",),
         (".venv",),
         ("tests", "fixtures"),
     ]
@@ -250,24 +260,25 @@ def validate_all(root: Path = ROOT) -> ValidationResult:
         seen_names.add(name)
         errors.extend(validate_skill(directory, root))
 
-    for md_file in markdown_files(root):
-        if is_excluded_markdown(md_file, root):
+    for text_file in scannable_text_files(root):
+        if is_excluded_text_file(text_file, root):
             continue
-        content = md_file.read_text(encoding="utf-8")
-        validate_no_bad_text(md_file, content, root, errors)
-        validate_links(md_file, content, root, errors)
+        content = text_file.read_text(encoding="utf-8")
+        validate_no_bad_text(text_file, content, root, errors)
+        if text_file.suffix.lower() == ".md":
+            validate_links(text_file, content, root, errors)
 
     return ValidationResult(errors)
 
 
 def slop_scan(root: Path = ROOT) -> ValidationResult:
-    """Scan all repo markdown for banned filler, placeholders, and secret patterns."""
+    """Scan repo contract text files for banned filler, placeholders, and secrets."""
     errors: list[str] = []
-    for md_file in markdown_files(root):
-        if is_excluded_markdown(md_file, root):
+    for text_file in scannable_text_files(root):
+        if is_excluded_text_file(text_file, root):
             continue
-        content = md_file.read_text(encoding="utf-8")
-        validate_no_bad_text(md_file, content, root, errors)
+        content = text_file.read_text(encoding="utf-8")
+        validate_no_bad_text(text_file, content, root, errors)
     return ValidationResult(errors)
 
 

@@ -25,6 +25,16 @@ Search phrases this repo is intended to answer:
 | `diff-interrogation` | Codex, Claude, Gemini | Review generated or human diffs as untrusted code. |
 | `debugging-lab-notebook` | Codex, Claude, Gemini | Reproduce, hypothesize, instrument, and verify hard bugs. |
 | `complexity-budget` | Codex, Claude, Gemini | Challenge unnecessary abstraction and dependency creep. |
+| `skill-authoring-gate` | Codex, Claude, Gemini | Gate new or changed skills before review. |
+| `skill-overlap-audit` | Codex, Claude, Gemini | Check whether a proposed skill overlaps confusingly with existing skills. |
+| `runtime-adapter-smoke` | Codex, Claude, Gemini | Verify runtime adapters can discover shared skill bodies before publication. |
+| `transcript-review` | Codex, Claude, Gemini | Review real agent sessions against expected skill behavior. |
+| `thinking-ledger-review` | Codex, Claude, Gemini | Check thinking ledgers for substantive reasoning evidence. |
+| `evidence-to-test` | Codex, Claude, Gemini | Convert repo gaps or repeated failures into deterministic tests or checks. |
+| `release-readiness` | Codex, Claude, Gemini | Check versioning, docs, adapters, licenses, and gates before release. |
+| `skill-deprecation-review` | Codex, Claude, Gemini | Decide whether stale or overlapping skills should be kept, merged, renamed, archived, or deleted. |
+| `agent-security-boundary` | Codex, Claude, Gemini | Review security boundaries for tool-using agent skills and workflows. |
+| `docs-claim-audit` | Codex, Claude, Gemini | Verify documentation claims against repository evidence. |
 
 ## Hooks
 
@@ -60,8 +70,8 @@ Search phrases this repo is intended to answer:
 
 | Script | Purpose |
 | --- | --- |
-| `scripts/validate_repo.py` | Repo contract: required files, manifests, skills index, doc contract, untracked artifacts. |
-| `scripts/validate_skills.py` | Skill format + slop scanner: structure, frontmatter, sections, examples, links, banned filler, secrets. |
+| `scripts/validate_repo.py` | Repo contract: required files, adapter metadata, PR template, skills index, doc contract, untracked artifacts. |
+| `scripts/validate_skills.py` | Skill format + slop scanner: structure, frontmatter, sections, examples, links, banned filler, secrets across contract text files. |
 | `scripts/validate_policies.py` | Thinking budget validator. |
 | `scripts/validate_context_packs.py` | Context pack validator. |
 | `scripts/validate_harnesses.py` | Harness fixture validator. |

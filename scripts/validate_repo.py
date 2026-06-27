@@ -4,6 +4,7 @@
 Checks:
 - required files exist
 - runtime adapter manifests are consistent
+- runtime context files route every shared skill
 - skills_index.json matches the skills/ directory
 - top-level docs each own their declared job (doc contract)
 - generated artifacts stay untracked
@@ -33,6 +34,7 @@ REQUIRED_ROOT_FILES = [
     "skills_index.json",
     "repo-audit.md",
     "productionization-report.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
     ".codex-plugin/plugin.json",
     ".claude-plugin/plugin.json",
     "gemini-extension.json",
@@ -126,6 +128,16 @@ def load_json(path: Path) -> dict:
         return json.load(handle)
 
 
+def load_project_metadata() -> dict[str, str]:
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    metadata: dict[str, str] = {}
+    for field in ("name", "version"):
+        match = re.search(rf"(?m)^{field}\s*=\s*\"([^\"]+)\"", text)
+        if match:
+            metadata[field] = match.group(1)
+    return metadata
+
+
 def skill_dirs() -> list[Path]:
     return sorted(path for path in (ROOT / "skills").iterdir() if path.is_dir())
 
@@ -182,6 +194,79 @@ def validate_gemini_manifest(findings: list[str]) -> None:
         fail("gemini-extension.json must use GEMINI.md as contextFileName", findings)
 
 
+def validate_runtime_adapter_metadata(findings: list[str]) -> None:
+    project = load_project_metadata()
+    expected_name = project.get("name")
+    expected_version = project.get("version")
+    manifests = [
+        (".codex-plugin/plugin.json", load_json(ROOT / ".codex-plugin" / "plugin.json")),
+        (".claude-plugin/plugin.json", load_json(ROOT / ".claude-plugin" / "plugin.json")),
+        ("gemini-extension.json", load_json(ROOT / "gemini-extension.json")),
+    ]
+
+    for label, manifest in manifests:
+        for field in ("name", "version", "description"):
+            value = manifest.get(field)
+            if not isinstance(value, str) or not value.strip():
+                fail(f"{label} missing non-empty field: {field}", findings)
+        if expected_name and manifest.get("name") != expected_name:
+            fail(f"{label} name must match pyproject.toml name {expected_name!r}", findings)
+        if expected_version and manifest.get("version") != expected_version:
+            fail(
+                f"{label} version must match pyproject.toml version {expected_version!r}",
+                findings,
+            )
+
+    codex_manifest = manifests[0][1]
+    interface = codex_manifest.get("interface")
+    if not isinstance(interface, dict):
+        fail(".codex-plugin/plugin.json missing interface object", findings)
+        return
+
+    for field in (
+        "displayName",
+        "shortDescription",
+        "longDescription",
+        "developerName",
+        "category",
+    ):
+        value = interface.get(field)
+        if not isinstance(value, str) or not value.strip():
+            fail(f".codex-plugin/plugin.json interface missing non-empty field: {field}", findings)
+
+    for field in ("capabilities", "defaultPrompt"):
+        value = interface.get(field)
+        if (
+            not isinstance(value, list)
+            or not value
+            or not all(isinstance(item, str) for item in value)
+        ):
+            fail(
+                f".codex-plugin/plugin.json interface {field} "
+                "must be a non-empty string list",
+                findings,
+            )
+
+
+def validate_runtime_context_skill_routing(findings: list[str]) -> None:
+    skills = [path.name for path in skill_dirs()]
+    context_requirements = [
+        ("AGENTS.md", lambda name: f"`{name}`"),
+        ("CLAUDE.md", lambda name: f"`{name}`"),
+        ("GEMINI.md", lambda name: f"`skills/{name}/SKILL.md`"),
+    ]
+
+    for relative, expected_ref in context_requirements:
+        path = ROOT / relative
+        if not path.exists():
+            fail(f"runtime context {relative} missing", findings)
+            continue
+        text = path.read_text(encoding="utf-8")
+        for skill in skills:
+            if expected_ref(skill) not in text:
+                fail(f"runtime context {relative} does not route skill: {skill}", findings)
+
+
 def validate_skills_index(findings: list[str]) -> None:
     index_path = ROOT / "skills_index.json"
     index = load_json(index_path)
@@ -236,6 +321,17 @@ def validate_doc_contract(findings: list[str]) -> None:
                 fail(f"doc contract: {relative} missing '## {heading}' section", findings)
 
 
+def validate_pr_template(findings: list[str]) -> None:
+    path = ROOT / ".github" / "PULL_REQUEST_TEMPLATE.md"
+    if not path.exists():
+        fail(".github/PULL_REQUEST_TEMPLATE.md is missing", findings)
+        return
+
+    text = path.read_text(encoding="utf-8")
+    if "make prod-gate" not in text:
+        fail(".github/PULL_REQUEST_TEMPLATE.md must require `make prod-gate`", findings)
+
+
 def git_tracked_files() -> list[str]:
     result = subprocess.run(
         ["git", "ls-files"],
@@ -269,8 +365,11 @@ def main() -> int:
     validate_claude_manifest(findings)
     validate_codex_manifest(findings)
     validate_gemini_manifest(findings)
+    validate_runtime_adapter_metadata(findings)
+    validate_runtime_context_skill_routing(findings)
     validate_skills_index(findings)
     validate_doc_contract(findings)
+    validate_pr_template(findings)
     validate_generated_artifacts(findings)
 
     if findings:

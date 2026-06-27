@@ -22,39 +22,47 @@ REQUIRED_FILES = ["task.md", "expected-behavior.md", "rubric.yaml"]
 REQUIRED_RUBRIC_FIELDS = ["name", "focus", "required_checks", "failure_modes", "pass_conditions"]
 
 
-def validate_harness(path: Path) -> list[str]:
+def relative(path: Path, root: Path) -> str:
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def validate_harness(path: Path, root: Path = ROOT) -> list[str]:
     findings: list[str] = []
     for filename in REQUIRED_FILES:
         file_path = path / filename
-        relative = file_path.relative_to(ROOT)
+        file_path_label = relative(file_path, root)
         if not file_path.exists():
-            findings.append(f"missing harness file: {relative}")
+            findings.append(f"missing harness file: {file_path_label}")
             continue
         if not file_path.read_text(encoding="utf-8").strip():
-            findings.append(f"harness file is empty: {relative}")
+            findings.append(f"harness file is empty: {file_path_label}")
 
     rubric_path = path / "rubric.yaml"
     if not rubric_path.exists():
         return findings
 
     rubric = read_contract_yaml(rubric_path)
-    relative = rubric_path.relative_to(ROOT)
+    rubric_label = relative(rubric_path, root)
     if rubric.get("name") != path.name:
-        findings.append(f"{relative} name must match directory")
+        findings.append(f"{rubric_label} name must match directory")
     for field in REQUIRED_RUBRIC_FIELDS:
         if field not in rubric:
-            findings.append(f"{relative} missing field: {field}")
+            findings.append(f"{rubric_label} missing field: {field}")
             continue
         value = rubric[field]
         if field in {"name", "focus"} and not str(value).strip():
-            findings.append(f"{relative} {field} is empty")
+            findings.append(f"{rubric_label} {field} is empty")
         if field not in {"name", "focus"} and (not isinstance(value, list) or not value):
-            findings.append(f"{relative} {field} must be a non-empty list")
+            findings.append(f"{rubric_label} {field} must be a non-empty list")
 
     return findings
 
 
 def validate_harnesses(root: Path = ROOT) -> list[str]:
+    root = root.resolve()
     findings: list[str] = []
     harnesses_dir = root / "harnesses"
     if not (harnesses_dir / "README.md").exists():
@@ -64,7 +72,7 @@ def validate_harnesses(root: Path = ROOT) -> list[str]:
         if not path.is_dir():
             findings.append(f"missing harness directory: harnesses/{harness}")
             continue
-        findings.extend(validate_harness(path))
+        findings.extend(validate_harness(path, root))
     return findings
 
 

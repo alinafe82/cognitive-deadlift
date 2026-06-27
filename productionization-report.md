@@ -1,6 +1,6 @@
 # Productionization Report
 
-Date: 2026-06-01
+Date: 2026-06-24
 
 ## Summary
 
@@ -12,12 +12,12 @@ The validation harness runs structural checks only. It does not evaluate agent b
 
 | Check | Script | What it enforces |
 | --- | --- | --- |
-| Repo contract | `scripts/validate_repo.py` | Required files exist, runtime adapter manifests are consistent, `skills_index.json` matches `skills/`, top-level docs each cover their declared sections, no generated artifacts are tracked. |
+| Repo contract | `scripts/validate_repo.py` | Required files exist, runtime adapter manifests and metadata are consistent, runtime context files route every shared skill, the PR template names `make prod-gate`, `skills_index.json` matches `skills/`, top-level docs each cover their declared sections, no generated artifacts are tracked. |
 | Skill structure | `scripts/validate_skills.py` | Each skill has the required folders, frontmatter, sections, examples, and no broken internal links. |
 | Thinking budget | `scripts/validate_policies.py` | Low / medium / high policy levels exist with required evidence and examples. |
 | Harness fixtures | `scripts/validate_harnesses.py` | Each review fixture has a task, expected behavior, and rubric. |
 | Context packs | `scripts/validate_context_packs.py` | Each workflow pack has required fields and known recommended skills. |
-| Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no placeholder text (`TODO`, `TBD`, `coming soon`, `lorem ipsum`), no obvious secret patterns in any markdown file. |
+| Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no placeholder text (`TODO`, `TBD`, `coming soon`, `lorem ipsum`), no obvious secret patterns in Markdown, YAML, TOML, or JSON contract files. |
 | Skill grading | `scripts/grade_skills.py --min-score 90` | Skills score above a rubric threshold. Heuristic, not a substitute for review. |
 | Lint | `ruff check .` | Python style and common bug patterns. |
 | Security hygiene | `scripts/security_scan.py` | Secret patterns, dangerous shell, GitHub Actions permissions, action pinning, CODEOWNERS coverage. |
@@ -29,39 +29,27 @@ All checks run via `make prod-gate`.
 ## Commands run
 
 ```bash
-uv sync --all-extras
-.venv/bin/python scripts/validate_repo.py
-.venv/bin/python scripts/validate_skills.py
-.venv/bin/python scripts/validate_policies.py
-.venv/bin/python scripts/validate_harnesses.py
-.venv/bin/python scripts/validate_context_packs.py
-.venv/bin/python scripts/validate_skills.py --slop-only
-.venv/bin/python scripts/grade_skills.py --min-score 90
-.venv/bin/python -m ruff check .
-.venv/bin/python scripts/security_scan.py
-.venv/bin/python scripts/doctor.py
-.venv/bin/python -m pytest
 make PYTHON=.venv/bin/python prod-gate
+make repowave-check
 ```
 
-Final result: `make prod-gate` passes locally on the v2 modernization branch.
+Final result: `make PYTHON=.venv/bin/python prod-gate` passes locally on `main`.
 
 ## Test results
 
-- repo contract: ok (files, manifests, skills_index, doc contract, artifacts)
-- skill validation: ok (10 skills)
+- repo contract: ok (files, manifests, runtime context routing, skills_index, doc contract, artifacts)
+- skill validation: ok (20 skills)
 - thinking budget: ok
 - harness fixtures: ok
 - context packs: ok
 - slop scan: ok
-- skill grading: 10 skills at 94.7 average
+- skill grading: 20 skills above the minimum score
 - ruff: clean
 - security hygiene: ok
 - doctor: ready
-- pytest: 19 passed
+- pytest: 27 passed
 
-Pytest reported one local cache warning because the sandbox blocked writing
-`.pytest_cache`; tests still passed.
+RepoWave reported zero findings in the local optional scan.
 
 ## Remaining risks
 
