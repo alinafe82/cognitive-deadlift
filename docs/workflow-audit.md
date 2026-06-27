@@ -16,6 +16,17 @@ quality.
 - A lead who wants concrete reasoning evidence in AI-assisted work, not a generic AI
   adoption workshop.
 
+## Paid Offer
+
+Baseline audit: USD 1,500 fixed scope.
+
+That covers one team workflow, up to five recent AI-assisted pull requests, tickets, or
+change writeups, one 60-minute review call, and a written gap analysis with recommended
+Cognitive Deadlift skills, gates, and adoption steps.
+
+Larger teams, custom implementation, commercial licensing, or private codebase work are
+quoted separately before work starts.
+
 ## Scope
 
 The audit reviews workflow evidence and maps gaps to the repo's existing skill-retention

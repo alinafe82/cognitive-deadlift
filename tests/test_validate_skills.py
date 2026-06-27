@@ -85,6 +85,18 @@ def test_slop_scanner_catches_banned_phrase_in_prose(tmp_path: Path) -> None:
     assert any("world-class" in e for e in errors)
 
 
+def test_slop_scan_checks_yaml_and_json_files(tmp_path: Path) -> None:
+    yaml_file = tmp_path / "context.yaml"
+    json_file = tmp_path / "plugin.json"
+    yaml_file.write_text("description: seamlessly connected checks\n", encoding="utf-8")
+    json_file.write_text('{"description": "world-class adapter"}\n', encoding="utf-8")
+
+    result = validate_skills.slop_scan(tmp_path)
+
+    assert any("context.yaml" in error and "seamlessly" in error for error in result.errors)
+    assert any("plugin.json" in error and "world-class" in error for error in result.errors)
+
+
 def test_slop_scanner_ignores_fenced_code_block(tmp_path: Path) -> None:
     md = tmp_path / "doc.md"
     md.write_text(

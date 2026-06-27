@@ -20,6 +20,19 @@ Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in ever
 - For hard bugs, read `skills/debugging-lab-notebook/SKILL.md`.
 - Before merge or handoff, read `skills/explain-without-ai/SKILL.md`.
 
+For repository-lifecycle work, read the matching shared skill before acting:
+
+- `skills/skill-authoring-gate/SKILL.md` before adding or materially changing a skill.
+- `skills/skill-overlap-audit/SKILL.md` before adding a skill near an existing one.
+- `skills/runtime-adapter-smoke/SKILL.md` before adapter, manifest, or runtime context changes.
+- `skills/transcript-review/SKILL.md` after real agent sessions.
+- `skills/thinking-ledger-review/SKILL.md` before accepting staged reasoning evidence.
+- `skills/evidence-to-test/SKILL.md` after finding a repeated repo gap or failure.
+- `skills/release-readiness/SKILL.md` before tagging or publishing.
+- `skills/skill-deprecation-review/SKILL.md` before merging, archiving, renaming, or deleting a skill.
+- `skills/agent-security-boundary/SKILL.md` for tool, file, shell, secret, or permission boundaries.
+- `skills/docs-claim-audit/SKILL.md` before public docs or README claim changes.
+
 Use `policies/thinking-budget.yaml` to choose friction by risk. Low-risk work needs
 intent and a basic check. Medium-risk work needs trace, behavior proof, and diff
 review. High-risk work needs framing, assumption audit, alternatives, rollback,
