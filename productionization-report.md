@@ -1,6 +1,6 @@
 # Productionization Report
 
-Date: 2026-06-24
+Date: 2026-07-12
 
 ## Summary
 
@@ -30,26 +30,25 @@ All checks run via `make prod-gate`.
 
 ```bash
 make PYTHON=.venv/bin/python prod-gate
-make repowave-check
 ```
 
-Final result: `make PYTHON=.venv/bin/python prod-gate` passes locally on `main`.
+Final result: `make PYTHON=.venv/bin/python prod-gate` passes locally.
 
 ## Test results
 
 - repo contract: ok (files, manifests, runtime context routing, skills_index, doc contract, artifacts)
-- skill validation: ok (20 skills)
+- skill validation: ok (21 skills)
 - thinking budget: ok
 - harness fixtures: ok
 - context packs: ok
 - slop scan: ok
-- skill grading: 20 skills above the minimum score
+- skill grading: 21 skills above the minimum score
 - ruff: clean
 - security hygiene: ok
 - doctor: ready
 - pytest: 27 passed
 
-RepoWave reported zero findings in the local optional scan.
+RepoWave was not rerun in this pass.
 
 ## Remaining risks
 

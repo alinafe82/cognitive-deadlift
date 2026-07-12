@@ -19,6 +19,7 @@ Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in ever
 - For generated diffs, read `skills/diff-interrogation/SKILL.md`.
 - For hard bugs, read `skills/debugging-lab-notebook/SKILL.md`.
 - Before merge or handoff, read `skills/explain-without-ai/SKILL.md`.
+- For explicit god mode requests or complex cross-skill orchestration, read `skills/god-mode/SKILL.md`.
 
 For repository-lifecycle work, read the matching shared skill before acting:
 

@@ -20,6 +20,7 @@ When a request touches implementation, review, debugging, architecture, or learn
 - `diff-interrogation` before accepting generated changes.
 - `debugging-lab-notebook` for hard bugs.
 - `complexity-budget` before adding abstraction.
+- `god-mode` for explicit god mode requests or complex work that must route through several skills.
 
 Use the repository-lifecycle skills when changing or publishing this skill repo:
 

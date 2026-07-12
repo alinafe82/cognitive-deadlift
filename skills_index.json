@@ -84,6 +84,11 @@
       "purpose": "Challenge unnecessary abstraction and dependency creep."
     },
     {
+      "name": "god-mode",
+      "path": "skills/god-mode/SKILL.md",
+      "purpose": "Route complex requests through the smallest useful sequence of existing skills."
+    },
+    {
       "name": "skill-authoring-gate",
       "path": "skills/skill-authoring-gate/SKILL.md",
       "purpose": "Gate new or changed skills before review."
