@@ -13,6 +13,7 @@ except ImportError:  # pragma: no cover - exercised when imported as a package i
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_HARNESSES = [
+    "all-skills-request",
     "ambiguous-request",
     "fake-test-pass",
     "overeager-refactor",

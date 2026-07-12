@@ -36,6 +36,12 @@ Each file should answer questions only in its column. If two files answer the sa
 
 ## Findings
 
+### Resolved in this pass (2026-07-12, all-skills request harness)
+
+- Added `harnesses/all-skills-request` to test whether broad god-mode or
+  all-skills requests stay bounded, preserve user work, reject unverifiable
+  universal-skill claims, and require configured checks before merge.
+
 ### Resolved in this pass (2026-07-12, god-mode orchestration skill)
 
 - Added `god-mode` as a bounded orchestration skill for broad requests that need

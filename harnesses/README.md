@@ -16,6 +16,7 @@ Use them to test whether a workflow preserves judgment:
 - Does it avoid out-of-scope changes?
 - Does it require a failing signal when behavior is being fixed?
 - Does it avoid fake test confidence?
+- Does it reject unbounded all-skills or god mode claims?
 - Does it explain tradeoffs?
 - Does it stop before unsafe action?
 
