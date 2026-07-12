@@ -25,6 +25,7 @@ Search phrases this repo is intended to answer:
 | `diff-interrogation` | Codex, Claude, Gemini | Review generated or human diffs as untrusted code. |
 | `debugging-lab-notebook` | Codex, Claude, Gemini | Reproduce, hypothesize, instrument, and verify hard bugs. |
 | `complexity-budget` | Codex, Claude, Gemini | Challenge unnecessary abstraction and dependency creep. |
+| `god-mode` | Codex, Claude, Gemini | Route complex requests through the smallest useful sequence of existing skills. |
 | `skill-authoring-gate` | Codex, Claude, Gemini | Gate new or changed skills before review. |
 | `skill-overlap-audit` | Codex, Claude, Gemini | Check whether a proposed skill overlaps confusingly with existing skills. |
 | `runtime-adapter-smoke` | Codex, Claude, Gemini | Verify runtime adapters can discover shared skill bodies before publication. |

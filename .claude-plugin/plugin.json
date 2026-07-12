@@ -20,6 +20,7 @@
     "./skills/diff-interrogation",
     "./skills/debugging-lab-notebook",
     "./skills/complexity-budget",
+    "./skills/god-mode",
     "./skills/skill-authoring-gate",
     "./skills/skill-overlap-audit",
     "./skills/runtime-adapter-smoke",

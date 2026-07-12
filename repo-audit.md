@@ -1,6 +1,6 @@
 # Repository Audit
 
-Date: 2026-06-24
+Date: 2026-07-12
 Branch: `main`
 
 This is the standing audit. Refresh it in place rather than starting a new file.
@@ -35,6 +35,13 @@ It is not a runtime, not a hosted service, not a benchmark, not a generic prompt
 Each file should answer questions only in its column. If two files answer the same question, the audit must say so here.
 
 ## Findings
+
+### Resolved in this pass (2026-07-12, god-mode orchestration skill)
+
+- Added `god-mode` as a bounded orchestration skill for broad requests that need
+  explicit skill routing, evidence selection, and verification.
+- The skill rejects literal universal-coverage claims and routes work through
+  verified local skills instead of replacing the existing catalog.
 
 ### Resolved in this pass (2026-06-24, revenue CTA)
 
@@ -100,15 +107,18 @@ Each file should answer questions only in its column. If two files answer the sa
 ### Non-issues confirmed
 
 - No secrets in tracked files (`scripts/security_scan.py` is clean).
-- `skills_index.json` matches the twenty directories under `skills/`.
+- `skills_index.json` matches the twenty-one directories under `skills/`.
 - `.claude-plugin/plugin.json` skill list matches `skills/` (existing check).
-- `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` route all twenty skills.
+- `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` route all twenty-one skills.
 - Each skill has `SKILL.md`, two examples, fixtures, and tests/README per the skill standard.
 - Local `.serena/` agent state is ignored and excluded from slop scanning.
 
 ## Skill inventory
 
-Twenty skills are present. The original ten developer-practice skills and the ten repository-lifecycle skills are structurally validated. Concrete boundaries are documented in each `SKILL.md` and `docs/skill-standard.md`.
+Twenty-one skills are present. The original ten developer-practice skills, the
+`god-mode` orchestration skill, and the ten repository-lifecycle skills are
+structurally validated. Concrete boundaries are documented in each `SKILL.md`
+and `docs/skill-standard.md`.
 
 | Skill | Stage | Distinct from |
 | --- | --- | --- |
@@ -122,6 +132,7 @@ Twenty skills are present. The original ten developer-practice skills and the te
 | `diff-interrogation` | Before accept | (none) |
 | `debugging-lab-notebook` | Hard bugs | `failing-test-first` (this investigates, that proves) |
 | `complexity-budget` | Before abstraction | `alternatives-before-code` (this prices, that compares) |
+| `god-mode` | Cross-skill orchestration | All narrower skills (this routes and sequences, those perform the work) |
 | `skill-authoring-gate` | Before adding or changing a skill | `skill-overlap-audit` (this checks quality, that checks boundaries) |
 | `skill-overlap-audit` | Before adding a nearby skill | `skill-authoring-gate` (this checks overlap, that checks readiness) |
 | `runtime-adapter-smoke` | Before adapter publication | `release-readiness` (this checks runtime routing, that checks release state) |
