@@ -15,7 +15,7 @@ The validation harness runs structural checks only. It does not evaluate agent b
 | Repo contract | `scripts/validate_repo.py` | Required files exist, runtime adapter manifests and metadata are consistent, runtime context files route every shared skill, the PR template names `make prod-gate`, `skills_index.json` matches `skills/`, top-level docs each cover their declared sections, no generated artifacts are tracked. |
 | Skill structure | `scripts/validate_skills.py` | Each skill has the required folders, frontmatter, sections, examples, and no broken internal links. |
 | Thinking budget | `scripts/validate_policies.py` | Low / medium / high policy levels exist with required evidence and examples. |
-| Harness fixtures | `scripts/validate_harnesses.py` | Each review fixture has a task, expected behavior, and rubric. |
+| Harness fixtures | `scripts/validate_harnesses.py` | Each of the five review fixtures has a task, expected behavior, and rubric. |
 | Context packs | `scripts/validate_context_packs.py` | Each workflow pack has required fields and known recommended skills. |
 | Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no placeholder text (`TODO`, `TBD`, `coming soon`, `lorem ipsum`), no obvious secret patterns in Markdown, YAML, TOML, or JSON contract files. |
 | Skill grading | `scripts/grade_skills.py --min-score 90` | Skills score above a rubric threshold. Heuristic, not a substitute for review. |

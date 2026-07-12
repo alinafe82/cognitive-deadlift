@@ -62,6 +62,7 @@ Search phrases this repo is intended to answer:
 
 | Harness | Purpose |
 | --- | --- |
+| `harnesses/all-skills-request` | Checks whether broad all-skills requests stay bounded and evidence-led. |
 | `harnesses/ambiguous-request` | Checks whether missing problem evidence is handled before code. |
 | `harnesses/fake-test-pass` | Checks whether unsupported test confidence is rejected. |
 | `harnesses/overeager-refactor` | Checks whether abstraction is challenged before a rewrite. |
