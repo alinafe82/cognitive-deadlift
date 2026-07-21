@@ -1,6 +1,6 @@
 # Productionization Report
 
-Date: 2026-07-12
+Date: 2026-07-21
 
 ## Summary
 
@@ -34,6 +34,9 @@ make PYTHON=.venv/bin/python prod-gate
 
 Final result: `make PYTHON=.venv/bin/python prod-gate` passes locally.
 
+For the workflow audit sample update, the repo architecture gate and RepoWave scan
+were also run locally.
+
 ## Test results
 
 - repo contract: ok (files, manifests, runtime context routing, skills_index, doc contract, artifacts)
@@ -48,7 +51,7 @@ Final result: `make PYTHON=.venv/bin/python prod-gate` passes locally.
 - doctor: ready
 - pytest: 27 passed
 
-RepoWave was not rerun in this pass.
+- RepoWave: zero findings
 
 ## Remaining risks
 

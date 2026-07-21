@@ -37,6 +37,9 @@ Included:
 Follow-on implementation, custom skill authoring, team training, or commercial licensing
 is scoped separately.
 
+Review the [sample audit deliverable](workflow-audit-sample.md) to see the expected
+shape before first contact.
+
 ## Best Fit
 
 - A small engineering team already using AI coding assistants.
@@ -45,7 +48,7 @@ is scoped separately.
 - A lead who wants concrete reasoning evidence in AI-assisted work, not a generic AI
   adoption workshop.
 
-## Paid Offer
+## Fixed Scope
 
 Baseline audit: USD 1,500 fixed scope.
 
