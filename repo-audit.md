@@ -30,6 +30,7 @@ It is not a runtime, not a hosted service, not a benchmark, not a generic prompt
 | `productionization-report.md` | Standing prod-readiness status, checks available, commands run, risks. |
 | `specs/` | Planning and review documents for repo-level changes. |
 | `docs/workflow-audit.md` | Paid workflow audit offer, price, scope, deliverables, and contact path. |
+| `docs/workflow-audit-sample.md` | Illustrative buyer-facing sample of the paid audit output shape. |
 | `skills_index.json` | Machine-readable index of `skills/`. Must match `skills/`. |
 
 Each file should answer questions only in its column. If two files answer the same question, the audit must say so here.
@@ -41,6 +42,13 @@ Each file should answer questions only in its column. If two files answer the sa
 - Added `harnesses/all-skills-request` to test whether broad god-mode or
   all-skills requests stay bounded, preserve user work, reject unverifiable
   universal-skill claims, and require configured checks before merge.
+
+### Resolved in this pass (2026-07-21, workflow audit sample)
+
+- Added `docs/workflow-audit-sample.md` as an illustrative deliverable preview for
+  teams evaluating the fixed-scope Workflow Audit.
+- `docs/workflow-audit.md` now links to the sample and uses a distinct fixed-scope
+  section instead of repeating the `Paid Offer` heading.
 
 ### Resolved in this pass (2026-07-12, god-mode orchestration skill)
 

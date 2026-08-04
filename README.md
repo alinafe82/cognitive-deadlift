@@ -261,7 +261,8 @@ AI-assisted development, voluntary support is available through GitHub Sponsors.
 
 Sponsorship does not change the repo's purpose, license, or vendor-neutral
 stance. Teams that want help applying the workflow can book a fixed-scope
-[Workflow Audit](docs/workflow-audit.md).
+[Workflow Audit](docs/workflow-audit.md) and review a
+[sample audit deliverable](docs/workflow-audit-sample.md) first.
 
 ## What This Repo Deliberately Does Not Do
 
