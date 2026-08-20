@@ -104,6 +104,12 @@ DOC_CONTRACT: list[tuple[str, list[str]]] = [
     ),
 ]
 
+
+def _strip_dot_slash(path: str) -> str:
+    if path.startswith("./"):
+        return path[2:]
+    return path
+
 # Glob patterns for generated artifacts that must not be tracked.
 FORBIDDEN_TRACKED_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"(^|/)\.pytest_cache(/|$)"),
@@ -176,7 +182,7 @@ def validate_skill_dirs(findings: list[str]) -> None:
 
 def validate_claude_manifest(findings: list[str]) -> None:
     manifest = load_json(ROOT / ".claude-plugin" / "plugin.json")
-    listed = sorted(Path(item).as_posix().removeprefix("./") for item in manifest.get("skills", []))
+    listed = sorted(_strip_dot_slash(Path(item).as_posix()) for item in manifest.get("skills", []))
     actual = sorted(path.relative_to(ROOT).as_posix() for path in skill_dirs())
     if listed != actual:
         fail(".claude-plugin/plugin.json skills list does not match skills/", findings)
