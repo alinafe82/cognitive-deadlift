@@ -66,6 +66,40 @@ def test_validator_detects_skills_index_drift(
     assert any("ghost-skill" in f for f in findings)
 
 
+def test_validator_detects_duplicate_skill_names(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from scripts import validate_repo
+
+    real_index = json.loads((REPO_ROOT / "skills_index.json").read_text(encoding="utf-8"))
+    duplicate_index = {"skills": [*real_index["skills"], real_index["skills"][0]]}
+    monkeypatch.setattr(validate_repo, "ROOT", REPO_ROOT)
+    monkeypatch.setattr(validate_repo, "load_json", lambda _path: duplicate_index)
+
+    findings: list[str] = []
+    validate_repo.validate_skills_index(findings)
+
+    assert any("duplicate skill name" in finding for finding in findings)
+
+
+def test_validator_rejects_non_string_skill_metadata(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from scripts import validate_repo
+
+    invalid_index = json.loads(
+        (REPO_ROOT / "skills_index.json").read_text(encoding="utf-8")
+    )
+    invalid_index["skills"][0]["purpose"] = ["not", "text"]
+    monkeypatch.setattr(validate_repo, "ROOT", REPO_ROOT)
+    monkeypatch.setattr(validate_repo, "load_json", lambda _path: invalid_index)
+
+    findings: list[str] = []
+    validate_repo.validate_skills_index(findings)
+
+    assert any("purpose must be a non-empty string" in finding for finding in findings)
+
+
 def test_validator_detects_missing_doc_section(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

@@ -281,10 +281,14 @@ def validate_skills_index(findings: list[str]) -> None:
             fail(f"skills_index.json: entry {i} is not an object", findings)
             continue
         for field in ("name", "path", "purpose"):
-            if not entry.get(field):
-                fail(f"skills_index.json: entry {i} missing '{field}'", findings)
-        name = entry.get("name", "")
-        path = entry.get("path", "")
+            value = entry.get(field)
+            if not isinstance(value, str) or not value.strip():
+                fail(
+                    f"skills_index.json: entry {i} {field} must be a non-empty string",
+                    findings,
+                )
+        name = entry.get("name") if isinstance(entry.get("name"), str) else ""
+        path = entry.get("path") if isinstance(entry.get("path"), str) else ""
         indexed_names.append(name)
         if name and path:
             expected_path = f"skills/{name}/SKILL.md"
@@ -296,6 +300,12 @@ def validate_skills_index(findings: list[str]) -> None:
                 )
             if not (ROOT / path).exists():
                 fail(f"skills_index.json: entry '{name}' path does not exist on disk", findings)
+
+    duplicate_names = sorted(
+        name for name in set(indexed_names) if name and indexed_names.count(name) > 1
+    )
+    for name in duplicate_names:
+        fail(f"skills_index.json: duplicate skill name: {name}", findings)
 
     on_disk = sorted(path.name for path in skill_dirs())
     indexed_sorted = sorted(indexed_names)
