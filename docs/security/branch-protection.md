@@ -1,6 +1,6 @@
 # Branch Protection
 
-Last reviewed: 2026-05-25.
+Last reviewed: 2026-08-23.
 
 Recommended `main` branch settings:
 
@@ -19,6 +19,10 @@ Required checks should include:
 
 - `validate`
 - `security-hygiene`
-- CodeQL analysis when available
+- `check`
+- `Python 3.13 compatibility`
+- `Analyze Python`
+- `dependency-review`
+- `gitleaks`
 
 These settings are repository configuration, not source files. They must be applied in GitHub after workflows exist.

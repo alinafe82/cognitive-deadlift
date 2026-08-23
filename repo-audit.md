@@ -57,6 +57,18 @@ Each file should answer questions only in its column. If two files answer the sa
 - The skill rejects literal universal-coverage claims and routes work through
   verified local skills instead of replacing the existing catalog.
 
+### Resolved in this pass (2026-08-23, CI/CD productionization)
+
+- CI runs the full gate on the declared Python 3.11 minimum and a compatibility
+  test job on Python 3.13, both with lockfile-keyed package caches and a manual
+  dispatch path for incident reproduction.
+- Every workflow now declares bounded concurrency and immutable action pins.
+- Dependabot now covers Python dependencies as well as GitHub Actions.
+- Default-branch CI failures reconcile against the latest authoritative run,
+  create an automation-labeled owner-assigned issue, and close only after the
+  affected workflow recovers. GitHub account notifications remain the email
+  delivery channel for failed workflow runs.
+
 ### Resolved in this pass (2026-06-24, revenue CTA)
 
 - `docs/workflow-audit.md` now owns the fixed-scope paid Workflow Audit terms.

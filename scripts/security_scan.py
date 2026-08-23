@@ -42,9 +42,6 @@ DANGEROUS_TEXT_PATTERNS = [
     ),
 ]
 
-ALLOWED_UNPINNED_ACTION_OWNERS = {"actions", "github"}
-
-
 def repo_files() -> list[Path]:
     result = subprocess.run(
         ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
@@ -110,7 +107,9 @@ def extract_uses(line: str) -> str | None:
     stripped = line.strip()
     if not stripped.startswith("uses:"):
         return None
-    return stripped.split(":", 1)[1].strip().strip('"').strip("'")
+    value = stripped.split(":", 1)[1].strip()
+    value = value.split(" #", 1)[0].strip()
+    return value.strip('"').strip("'")
 
 
 def action_is_pinned_or_allowed(action: str) -> bool:
@@ -118,11 +117,8 @@ def action_is_pinned_or_allowed(action: str) -> bool:
         return True
     if "@" not in action:
         return False
-    repo, ref = action.rsplit("@", 1)
-    owner = repo.split("/", 1)[0]
-    if re.fullmatch(r"[a-f0-9]{40}", ref):
-        return True
-    return owner in ALLOWED_UNPINNED_ACTION_OWNERS and re.fullmatch(r"v\d+(?:\.\d+){0,2}", ref)
+    _, ref = action.rsplit("@", 1)
+    return re.fullmatch(r"[a-f0-9]{40}", ref) is not None
 
 
 def check_workflows(findings: list[str]) -> None:
@@ -147,7 +143,7 @@ def check_workflows(findings: list[str]) -> None:
             if action and not action_is_pinned_or_allowed(action):
                 message = (
                     f"{relative}:{line_number} action is not pinned or "
-                    f"first-party semver: {action}"
+                    f"to an immutable commit SHA: {action}"
                 )
                 fail(
                     findings,
