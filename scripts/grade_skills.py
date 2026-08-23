@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -364,10 +365,35 @@ def render_report(grades: list[SkillGrade]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--min-score", type=float, default=90.0)
+    parser.add_argument("--skill", action="append", default=[], help="Grade only this skill")
+    parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
     args = parser.parse_args()
 
-    grades = [grade_skill(path) for path in skill_files()]
-    print(render_report(grades))
+    paths = skill_files()
+    if args.skill:
+        requested = set(args.skill)
+        paths = [path for path in paths if path.parent.name in requested]
+        missing = sorted(requested - {path.parent.name for path in paths})
+        if missing:
+            parser.error(f"unknown skill(s): {', '.join(missing)}")
+
+    grades = [grade_skill(path) for path in paths]
+    if args.json:
+        print(json.dumps([
+            {
+                "name": grade.name,
+                "score": round(grade.score, 1),
+                "letter": grade.letter,
+                "axes": [
+                    {"axis": axis.axis, "score": axis.score, "letter": axis.letter,
+                     "finding": axis.finding}
+                    for axis in grade.axes
+                ],
+            }
+            for grade in grades
+        ], indent=2))
+    else:
+        print(render_report(grades))
 
     failures = [grade for grade in grades if grade.score < args.min_score]
     if failures:
