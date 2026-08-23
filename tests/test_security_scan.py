@@ -21,3 +21,7 @@ def test_extract_uses_preserves_quoted_reference() -> None:
 
     assert action == "gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e"
     assert action_is_pinned_or_allowed(action)
+
+
+def test_mutable_first_party_action_tag_is_rejected() -> None:
+    assert not action_is_pinned_or_allowed("actions/checkout@v7")

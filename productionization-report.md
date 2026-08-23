@@ -24,6 +24,11 @@ The validation harness runs structural checks only. It does not evaluate agent b
 | Doctor | `scripts/doctor.py` | Readiness check for contract artifacts needed for AI-assisted work. |
 | Tests | `pytest` | Locks harness behavior (validators, doc contract, slop scanner, repo contract). |
 
+Required `main` status contexts are `validate`, `security-hygiene`, `check`,
+`Python 3.13 compatibility`, `Analyze Python`, `dependency-review`, and `gitleaks`.
+[`docs/security/branch-protection.md`](docs/security/branch-protection.md) is the procedural
+GitHub-settings mapping for this inventory.
+
 All checks run via `make prod-gate`.
 
 Repository automation also enforces immutable action references, least-privilege

@@ -59,13 +59,15 @@ Each file should answer questions only in its column. If two files answer the sa
 
 ### Resolved in this pass (2026-08-23, CI/CD productionization)
 
-- CI now runs on Python 3.13 with a lockfile-keyed package cache and retains a
-  manual dispatch path for incident reproduction.
+- CI runs the full gate on the declared Python 3.11 minimum and a compatibility
+  test job on Python 3.13, both with lockfile-keyed package caches and a manual
+  dispatch path for incident reproduction.
 - Every workflow now declares bounded concurrency and immutable action pins.
 - Dependabot now covers Python dependencies as well as GitHub Actions.
-- Default-branch CI failures create an owner-assigned issue that closes only
-  after the affected workflow recovers on the default branch. GitHub account
-  notifications remain the email delivery channel for failed workflow runs.
+- Default-branch CI failures reconcile against the latest authoritative run,
+  create an automation-labeled owner-assigned issue, and close only after the
+  affected workflow recovers. GitHub account notifications remain the email
+  delivery channel for failed workflow runs.
 
 ### Resolved in this pass (2026-06-24, revenue CTA)
 

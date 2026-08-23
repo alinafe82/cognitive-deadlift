@@ -1,8 +1,10 @@
 # CI/CD operations
 
-## Required checks
+## Check inventory
 
-Repository contract, grader, tests, lint, security hygiene, CodeQL, and dependency review.
+[`../productionization-report.md`](../productionization-report.md) owns the standing check
+inventory. [`security/branch-protection.md`](security/branch-protection.md) maps that inventory to
+the exact GitHub status-check contexts required on `main`.
 
 All workflows use explicit token permissions, bounded runtimes, concurrency controls, and
 immutable commit pins for external actions where actions are used.

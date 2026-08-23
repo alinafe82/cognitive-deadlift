@@ -116,6 +116,16 @@ make prod-gate
 
 Each check exits nonzero on real failure. `make prod-gate` chains them and propagates the first failure.
 
+## CI failure-alert lifecycle
+
+1. A monitored default-branch workflow completes and emits a `workflow_run` event.
+2. The alert workflow queries GitHub for that workflow's authoritative latest completed run and
+   ignores delayed or replayed events that are no longer current.
+3. A current failure creates or updates an issue carrying the automation-owned
+   `ci-failure-alert` label; ordinary issues are never selected by title alone.
+4. A current successful run closes the matching open alert. Pull-request-only dependency review
+   remains visible in required checks and GitHub notifications but does not create branch incidents.
+
 ## Skills index
 
 `skills_index.json` is hand-maintained, not generated. The repo prefers a small artifact under review over a generator. `scripts/validate_repo.py` enforces that the index lists exactly the directories under `skills/`, each with `name`, `path`, and `purpose`.
