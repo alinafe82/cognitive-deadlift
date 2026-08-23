@@ -110,7 +110,9 @@ def extract_uses(line: str) -> str | None:
     stripped = line.strip()
     if not stripped.startswith("uses:"):
         return None
-    return stripped.split(":", 1)[1].strip().strip('"').strip("'")
+    value = stripped.split(":", 1)[1].strip()
+    value = value.split(" #", 1)[0].strip()
+    return value.strip('"').strip("'")
 
 
 def action_is_pinned_or_allowed(action: str) -> bool:
