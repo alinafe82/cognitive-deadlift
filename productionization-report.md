@@ -1,6 +1,6 @@
 # Productionization Report
 
-Date: 2026-07-21
+Date: 2026-08-23
 
 ## Summary
 
@@ -26,6 +26,11 @@ The validation harness runs structural checks only. It does not evaluate agent b
 
 All checks run via `make prod-gate`.
 
+Repository automation also enforces immutable action references, least-privilege
+tokens, bounded concurrency and timeouts, dependency review, CodeQL, security
+hygiene, and default-branch failure/recovery issues. GitHub account notifications
+send email for failed workflow runs.
+
 ## Commands run
 
 ```bash
@@ -33,6 +38,9 @@ make PYTHON=.venv/bin/python prod-gate
 ```
 
 Final result: `make PYTHON=.venv/bin/python prod-gate` passes locally.
+
+The CI/CD productionization pass also ran `make prod-gate` and validated every
+workflow with `actionlint`; live GitHub results are linked from the maintenance PR.
 
 For the workflow audit sample update, the repo architecture gate and RepoWave scan
 were also run locally.
