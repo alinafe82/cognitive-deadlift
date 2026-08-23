@@ -18,7 +18,7 @@ The validation harness runs structural checks only. It does not evaluate agent b
 | Harness fixtures | `scripts/validate_harnesses.py` | Each of the five review fixtures has a task, expected behavior, and rubric. |
 | Context packs | `scripts/validate_context_packs.py` | Each workflow pack has required fields and known recommended skills. |
 | Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no placeholder text (`TODO`, `TBD`, `coming soon`, `lorem ipsum`), no obvious secret patterns in Markdown, YAML, TOML, or JSON contract files. |
-| Skill grading | `scripts/grade_skills.py --min-score 90` | Skills score above a rubric threshold. Heuristic, not a substitute for review. |
+| Skill grading | `scripts/grade_skills.py --min-score 90` | Skills score above a rubric threshold. Supports targeted `--skill` checks and machine-readable `--json` output. Heuristic, not a substitute for review. |
 | Lint | `ruff check .` | Python style and common bug patterns. |
 | Security hygiene | `scripts/security_scan.py` | Secret patterns, dangerous shell, GitHub Actions permissions, action pinning, CODEOWNERS coverage. |
 | Doctor | `scripts/doctor.py` | Readiness check for contract artifacts needed for AI-assisted work. |
@@ -49,7 +49,7 @@ were also run locally.
 - ruff: clean
 - security hygiene: ok
 - doctor: ready
-- pytest: 27 passed
+- pytest: 31 passed
 
 - RepoWave: zero findings
 
