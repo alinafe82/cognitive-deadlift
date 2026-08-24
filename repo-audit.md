@@ -37,6 +37,13 @@ Each file should answer questions only in its column. If two files answer the sa
 
 ## Findings
 
+### Resolved in this pass (2026-08-24, local gate entrypoint)
+
+- `make prod-gate` now uses `.venv/bin/python` when the documented `uv sync
+  --all-extras` setup has created it, while retaining `python3` for CI and
+  system installs. This keeps Ruff and pytest on the same project environment
+  as the other validation scripts.
+
 ### Resolved in this pass (2026-07-12, all-skills request harness)
 
 - Added `harnesses/all-skills-request` to test whether broad god-mode or
