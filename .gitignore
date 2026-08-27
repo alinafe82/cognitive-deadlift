@@ -23,3 +23,4 @@ grade-report.md
 # Local architecture-agent context. Do not publish.
 .specs/
 .serena/
+.scratch/

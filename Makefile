@@ -1,4 +1,4 @@
-PYTHON ?= python3
+PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python3)
 REPOWAVE_MIN_SEVERITY ?= low
 REPOWAVE_FAIL_ON ?= critical
 
