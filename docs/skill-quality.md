@@ -14,21 +14,24 @@ Run:
 make grade
 ```
 
-The grader checks ten axes:
+The grader checks eleven axes:
 
 - Description quality
 - Scope discipline
 - Progressive disclosure
-- Anti-pattern coverage
-- Self-contained tooling expectations
 - Activation precision
-- Visual artifacts
-- Output contracts
-- Temporal awareness
+- Input/output contract
+- Process specificity
+- Example coverage
+- Failure handling
+- Safety and privacy
+- Anti-slop rules
 - Documentation quality
 
-The default minimum score is 90. CI runs the same check.
+A score of `100.0` means a skill hit the full-contract branch on every axis.
+Lower scores identify the first missing or thin contract surfaces. The default
+minimum score is 100. CI runs the same check.
 
 ## Current Standard
 
-As of 2026-05-25, all ten initial skills grade `A` with a score of `94.1`.
+As of 2026-09-06, all twenty-one skills grade `A+` with a score of `100.0`.

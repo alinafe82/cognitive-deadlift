@@ -14,7 +14,7 @@ help:
 	@echo "  context-check Validate context packs"
 	@echo "  docs-check   Validate doc contract only (alias of repo-check)"
 	@echo "  slop-scan    Scan for banned filler, unfinished markers, secret patterns"
-	@echo "  grade        Score skills against the rubric (min 90)"
+	@echo "  grade        Score skills against the rubric (min 100)"
 	@echo "  lint         Ruff lint"
 	@echo "  test         Pytest"
 	@echo "  security     Security hygiene scan"
@@ -43,7 +43,7 @@ slop-scan:
 	$(PYTHON) scripts/validate_skills.py --slop-only
 
 grade:
-	$(PYTHON) scripts/grade_skills.py --min-score 90
+	$(PYTHON) scripts/grade_skills.py --min-score 100
 
 security:
 	$(PYTHON) scripts/security_scan.py

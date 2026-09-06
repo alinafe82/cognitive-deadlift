@@ -104,9 +104,9 @@ make prod-gate
   ├── make context-check  -> scripts/validate_context_packs.py
   │                          (context pack fields and skill references)
   ├── make slop-scan      -> scripts/validate_skills.py --slop-only
-  │                          (banned filler, placeholders, secret patterns across Markdown,
+  │                          (banned filler, unfinished markers, secret patterns across Markdown,
   │                           YAML, TOML, and JSON contract files)
-  ├── make grade          -> scripts/grade_skills.py --min-score 90
+  ├── make grade          -> scripts/grade_skills.py --min-score 100
   ├── make lint           -> ruff check
   ├── make security       -> scripts/security_scan.py
   ├── make doctor         -> scripts/doctor.py
