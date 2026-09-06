@@ -132,6 +132,23 @@ def test_validator_detects_tracked_artifact(monkeypatch: pytest.MonkeyPatch) -> 
     assert not any("main.py" in f for f in findings)
 
 
+def test_validator_detects_tracked_local_agent_state(monkeypatch: pytest.MonkeyPatch) -> None:
+    from scripts import validate_repo
+
+    monkeypatch.setattr(
+        validate_repo,
+        "git_tracked_files",
+        lambda: [".serena/project.yml", ".specs/STATE.md", ".scratch/notes.md"],
+    )
+
+    findings: list[str] = []
+    validate_repo.validate_generated_artifacts(findings)
+
+    assert any(".serena/project.yml" in finding for finding in findings)
+    assert any(".specs/STATE.md" in finding for finding in findings)
+    assert any(".scratch/notes.md" in finding for finding in findings)
+
+
 def test_validator_requires_prod_gate_in_pr_template(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

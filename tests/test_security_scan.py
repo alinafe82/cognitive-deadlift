@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from scripts.security_scan import action_is_pinned_or_allowed, extract_uses
+from scripts.security_scan import SECRET_PATTERNS, action_is_pinned_or_allowed, extract_uses
 
 
 def test_extract_uses_ignores_human_readable_pin_comment() -> None:
@@ -25,3 +25,15 @@ def test_extract_uses_preserves_quoted_reference() -> None:
 
 def test_mutable_first_party_action_tag_is_rejected() -> None:
     assert not action_is_pinned_or_allowed("actions/checkout@v7")
+
+
+def test_project_scoped_openai_keys_are_detected() -> None:
+    token = "sk-" + "proj-" + ("A" * 40)
+
+    assert any(pattern.search(token) for pattern in SECRET_PATTERNS)
+
+
+def test_fine_grained_github_tokens_are_detected() -> None:
+    token = "github_" + "pat_" + ("A" * 40)
+
+    assert any(pattern.search(token) for pattern in SECRET_PATTERNS)

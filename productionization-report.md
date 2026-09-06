@@ -1,6 +1,6 @@
 # Productionization Report
 
-Date: 2026-08-23
+Date: 2026-09-05
 
 ## Summary
 
@@ -20,7 +20,7 @@ The validation harness runs structural checks only. It does not evaluate agent b
 | Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no placeholder text (`TODO`, `TBD`, `coming soon`, `lorem ipsum`), no obvious secret patterns in Markdown, YAML, TOML, or JSON contract files. |
 | Skill grading | `scripts/grade_skills.py --min-score 90` | Skills score above a rubric threshold. Supports targeted `--skill` checks and machine-readable `--json` output. Heuristic, not a substitute for review. |
 | Lint | `ruff check .` | Python style and common bug patterns. |
-| Security hygiene | `scripts/security_scan.py` | Secret patterns, dangerous shell, GitHub Actions permissions, action pinning, CODEOWNERS coverage. |
+| Security hygiene | `scripts/security_scan.py` | Secret patterns including fine-grained GitHub tokens and project-scoped OpenAI keys, dangerous shell, GitHub Actions permissions, action pinning, CODEOWNERS coverage. |
 | Doctor | `scripts/doctor.py` | Readiness check for contract artifacts needed for AI-assisted work. |
 | Tests | `pytest` | Locks harness behavior (validators, doc contract, slop scanner, repo contract). |
 
@@ -62,7 +62,7 @@ were also run locally.
 - ruff: clean
 - security hygiene: ok
 - doctor: ready
-- pytest: 31 passed
+- pytest: 37 passed
 
 - RepoWave: zero findings
 
