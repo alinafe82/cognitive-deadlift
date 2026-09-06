@@ -26,6 +26,8 @@ SECRET_PATTERNS = [
     re.compile(r"-----BEGIN (?:RSA |DSA |EC |OPENSSH |PGP )?PRIVATE KEY-----"),
     re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
     re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{36,}\b"),
+    re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}\b"),
+    re.compile(r"\bsk-(?:proj|svcacct)-[A-Za-z0-9_-]{20,}\b"),
     re.compile(r"\bsk-[A-Za-z0-9]{32,}\b"),
     re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{20,}\b"),
     re.compile(r"(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*['\"][^'\"\s]{16,}['\"]"),

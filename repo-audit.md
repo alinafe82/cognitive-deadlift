@@ -37,6 +37,19 @@ Each file should answer questions only in its column. If two files answer the sa
 
 ## Findings
 
+### Resolved in this pass (2026-09-05, local-state and token coverage)
+
+- Removed tracked `.serena/` project state from source control and extended the
+  repo validator to reject tracked `.serena/`, `.specs/`, and `.scratch/`
+  paths. These directories remain local-only through `.gitignore`.
+- Preserved `.env.example`, `.env.sample`, and `.env.template` visibility while
+  expanding ignored local secret, platform, cache, and agent state paths.
+- `scripts/security_scan.py` now detects fine-grained GitHub tokens and
+  project-scoped OpenAI keys, with regression tests covering both token families
+  without committing realistic secret literals.
+- Refreshed `uv.lock` so CI's locked install path can reproduce the declared
+  dependency set.
+
 ### Resolved in this pass (2026-08-24, local gate entrypoint)
 
 - `make prod-gate` now uses `.venv/bin/python` when the documented `uv sync

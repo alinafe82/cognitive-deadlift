@@ -7,7 +7,7 @@ Checks:
 - runtime context files route every shared skill
 - skills_index.json matches the skills/ directory
 - top-level docs each own their declared job (doc contract)
-- generated artifacts stay untracked
+- generated and local-only artifacts stay untracked
 """
 
 from __future__ import annotations
@@ -110,11 +110,14 @@ def _strip_dot_slash(path: str) -> str:
         return path[2:]
     return path
 
-# Glob patterns for generated artifacts that must not be tracked.
+# Glob patterns for generated artifacts and local-only agent state that must not be tracked.
 FORBIDDEN_TRACKED_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"(^|/)\.pytest_cache(/|$)"),
     re.compile(r"(^|/)\.ruff_cache(/|$)"),
     re.compile(r"(^|/)\.mypy_cache(/|$)"),
+    re.compile(r"(^|/)\.serena(/|$)"),
+    re.compile(r"(^|/)\.specs(/|$)"),
+    re.compile(r"(^|/)\.scratch(/|$)"),
     re.compile(r"(^|/)__pycache__(/|$)"),
     re.compile(r"\.egg-info(/|$)"),
     re.compile(r"(^|/)dist(/|$)"),
@@ -369,7 +372,7 @@ def validate_generated_artifacts(findings: list[str]) -> None:
     for path in tracked:
         for pattern in FORBIDDEN_TRACKED_PATTERNS:
             if pattern.search(path):
-                fail(f"generated artifact is tracked: {path}", findings)
+                fail(f"forbidden generated or local-only path is tracked: {path}", findings)
                 break
 
 
