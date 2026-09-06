@@ -136,8 +136,8 @@ def grade_description(frontmatter: dict[str, str]) -> AxisGrade:
     if has_name and has_use and has_not and 25 <= len(words) <= 70:
         return AxisGrade(
             "Description Quality",
-            95,
-            "Specific trigger, exclusions, and compact length.",
+            100,
+            "Specific trigger, exclusions, and compact length meet the full contract.",
         )
     if has_name and has_use and has_not:
         return AxisGrade(
@@ -160,7 +160,11 @@ def grade_scope(text: str) -> AxisGrade:
         "When Not To Use",
     )
     if has_heading(text, "When To Use") and has_negative_boundary:
-        return AxisGrade("Scope Discipline", 95, "Explicit use and non-use boundaries.")
+        return AxisGrade(
+            "Scope Discipline",
+            100,
+            "Explicit use and non-use boundaries meet the full contract.",
+        )
     if has_heading(text, "When To Use") or has_negative_boundary:
         return AxisGrade("Scope Discipline", 82, "Only one scope boundary section is present.")
     return AxisGrade("Scope Discipline", 60, "No explicit scope boundaries.")
@@ -169,7 +173,11 @@ def grade_scope(text: str) -> AxisGrade:
 def grade_progressive(text: str) -> AxisGrade:
     lines = len(text.splitlines())
     if lines <= 160:
-        return AxisGrade("Progressive Disclosure", 94, f"Compact SKILL.md ({lines} lines).")
+        return AxisGrade(
+            "Progressive Disclosure",
+            100,
+            f"Compact SKILL.md ({lines} lines) meets the full contract.",
+        )
     if lines <= 300:
         return AxisGrade("Progressive Disclosure", 88, f"Readable SKILL.md ({lines} lines).")
     if lines <= 500:
@@ -186,8 +194,8 @@ def grade_activation(frontmatter: dict[str, str], text: str) -> AxisGrade:
     if "Use when" in description and "NOT for" in description and has_heading(text, "When To Use"):
         return AxisGrade(
             "Activation Precision",
-            94,
-            "Activation and false-positive boundaries are explicit.",
+            100,
+            "Activation and false-positive boundaries meet the full contract.",
         )
     if "Use when" in description:
         return AxisGrade(
@@ -205,8 +213,8 @@ def grade_io(text: str) -> AxisGrade:
     if has_inputs and has_outputs and "```md" in output:
         return AxisGrade(
             "Input/Output Contract",
-            95,
-            "Inputs and fenced output shape are explicit.",
+            100,
+            "Inputs and fenced output shape meet the full contract.",
         )
     if has_inputs and has_outputs:
         return AxisGrade(
@@ -221,7 +229,11 @@ def grade_process(text: str) -> AxisGrade:
     process = section_text(text, "Process")
     steps = numbered_step_count(process)
     if steps >= 5:
-        return AxisGrade("Process Specificity", 95, f"Process has {steps} concrete steps.")
+        return AxisGrade(
+            "Process Specificity",
+            100,
+            f"Process has {steps} concrete steps and meets the full contract.",
+        )
     if steps >= 3:
         return AxisGrade("Process Specificity", 84, f"Process has {steps} steps.")
     return AxisGrade("Process Specificity", 65, "Process is missing or too thin.")
@@ -233,7 +245,11 @@ def grade_examples(path: Path, text: str) -> AxisGrade:
     has_simple = "Simple case:" in examples
     has_complex = "Complex case:" in examples or "edge case" in examples.lower()
     if len(example_files) >= 2 and has_simple and has_complex:
-        return AxisGrade("Example Coverage", 95, "Simple and complex examples are present.")
+        return AxisGrade(
+            "Example Coverage",
+            100,
+            "Simple and complex examples meet the full contract.",
+        )
     if len(example_files) >= 2:
         return AxisGrade(
             "Example Coverage",
@@ -249,8 +265,8 @@ def grade_failure_modes(text: str) -> AxisGrade:
     if bullets >= 4:
         return AxisGrade(
             "Failure Handling",
-            94,
-            "Failure modes cover common missing-context cases.",
+            100,
+            "Failure modes cover common missing-context cases and meet the full contract.",
         )
     if bullets >= 2:
         return AxisGrade("Failure Handling", 84, "Failure modes exist but could cover more cases.")
@@ -264,8 +280,8 @@ def grade_safety(text: str) -> AxisGrade:
     if hits >= 2:
         return AxisGrade(
             "Safety and Privacy",
-            94,
-            "Safety notes name concrete data or action risks.",
+            100,
+            "Safety notes name concrete data or action risks and meet the full contract.",
         )
     if safety.strip():
         return AxisGrade("Safety and Privacy", 82, "Safety section exists but risks are broad.")
@@ -276,7 +292,11 @@ def grade_anti_slop(text: str) -> AxisGrade:
     anti_slop = section_text(text, "Anti-Slop Rules")
     do_not_rules = sum(1 for line in anti_slop.splitlines() if line.startswith("- Do not "))
     if do_not_rules >= 3:
-        return AxisGrade("Anti-Slop Rules", 94, "Concrete anti-slop rules are present.")
+        return AxisGrade(
+            "Anti-Slop Rules",
+            100,
+            "Concrete anti-slop rules meet the full contract.",
+        )
     if anti_slop.strip():
         return AxisGrade("Anti-Slop Rules", 82, "Anti-slop section exists but is thin.")
     return AxisGrade("Anti-Slop Rules", 60, "Anti-slop section is missing.")
@@ -297,8 +317,8 @@ def grade_docs(text: str) -> AxisGrade:
     if present == len(REQUIRED_SECTIONS) and repo_docs:
         return AxisGrade(
             "Documentation Quality",
-            96,
-            "Skill standard sections and repo docs exist.",
+            100,
+            "Skill standard sections and repo docs meet the full contract.",
         )
     if present >= len(REQUIRED_SECTIONS) - 2:
         return AxisGrade("Documentation Quality", 84, "Most expected sections are present.")

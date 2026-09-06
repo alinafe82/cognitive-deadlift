@@ -17,8 +17,8 @@ The validation harness runs structural checks only. It does not evaluate agent b
 | Thinking budget | `scripts/validate_policies.py` | Low / medium / high policy levels exist with required evidence and examples. |
 | Harness fixtures | `scripts/validate_harnesses.py` | Each of the five review fixtures has a task, expected behavior, and rubric. |
 | Context packs | `scripts/validate_context_packs.py` | Each workflow pack has required fields and known recommended skills. |
-| Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no placeholder text (`TODO`, `TBD`, `coming soon`, `lorem ipsum`), no obvious secret patterns in Markdown, YAML, TOML, or JSON contract files. |
-| Skill grading | `scripts/grade_skills.py --min-score 90` | Skills score above a rubric threshold. Supports targeted `--skill` checks and machine-readable `--json` output. Heuristic, not a substitute for review. |
+| Slop scan | `scripts/validate_skills.py --slop-only` | No banned filler phrases, no unfinished marker text, no obvious secret patterns in Markdown, YAML, TOML, or JSON contract files. |
+| Skill grading | `scripts/grade_skills.py --min-score 100` | Skills must meet every full-contract branch in the local rubric. Supports targeted `--skill` checks and machine-readable `--json` output. Heuristic, not a substitute for review. |
 | Lint | `ruff check .` | Python style and common bug patterns. |
 | Security hygiene | `scripts/security_scan.py` | Secret patterns including fine-grained GitHub tokens and project-scoped OpenAI keys, dangerous shell, GitHub Actions permissions, action pinning, CODEOWNERS coverage. |
 | Doctor | `scripts/doctor.py` | Readiness check for contract artifacts needed for AI-assisted work. |
@@ -58,11 +58,11 @@ were also run locally.
 - harness fixtures: ok
 - context packs: ok
 - slop scan: ok
-- skill grading: 21 skills above the minimum score
+- skill grading: 21 skills at 100.0 on the local rubric
 - ruff: clean
 - security hygiene: ok
 - doctor: ready
-- pytest: 37 passed
+- pytest: 39 passed
 
 - RepoWave: zero findings
 

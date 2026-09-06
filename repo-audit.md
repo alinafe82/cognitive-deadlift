@@ -37,6 +37,16 @@ Each file should answer questions only in its column. If two files answer the sa
 
 ## Findings
 
+### Resolved in this pass (2026-09-06, 100-point skill gate)
+
+- `scripts/grade_skills.py` now awards 100 only when a skill hits the
+  full-contract branch on every grading axis instead of capping complete skills
+  at 94-96.
+- `make grade` now requires `--min-score 100`, so `make prod-gate` enforces the
+  stronger local skill-quality bar.
+- Regression tests prove the current skill set passes the 100-point gate while
+  a thin skill fixture still scores below 100.
+
 ### Resolved in this pass (2026-09-05, local-state and token coverage)
 
 - Removed tracked `.serena/` project state from source control and extended the
