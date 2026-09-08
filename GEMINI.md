@@ -1,48 +1,5 @@
-# Gemini Instructions
+# Gemini adapter
 
-Gemini-specific rules. Read `AGENTS.md` first, and treat the rules below as additions to that file rather than replacements for it.
+Follow [AGENTS.md](AGENTS.md) for repository work. `gemini-extension.json` is the runtime manifest; [skills_index.json](skills_index.json) lists shared skill paths. Read a selected `skills/<name>/SKILL.md` only when that workflow applies. Do not copy skill bodies or force all tasks through the catalog.
 
-## Gemini adapter
-
-Gemini reads the shared skills through `gemini-extension.json` and uses this file as the context entry point. The shared body in `skills/*/SKILL.md` is the only body, and you should not generate Gemini-specific copies.
-
-Gemini may not treat `SKILL.md` directories exactly like Codex or Claude in every environment. When in doubt, read the relevant `skills/<name>/SKILL.md` directly before acting.
-
-## Skill routing
-
-- For unclear requests, read `skills/problem-framing/SKILL.md`.
-- For plans or assumptions, read `skills/assumption-audit/SKILL.md`.
-- For design choices, read `skills/alternatives-before-code/SKILL.md` and `skills/complexity-budget/SKILL.md`.
-- For fixes, read `skills/failing-test-first/SKILL.md`.
-- For unfamiliar code, read `skills/trace-the-code/SKILL.md`.
-- For external behavior, read `skills/read-the-docs-first/SKILL.md`.
-- For generated diffs, read `skills/diff-interrogation/SKILL.md`.
-- For hard bugs, read `skills/debugging-lab-notebook/SKILL.md`.
-- Before merge or handoff, read `skills/explain-without-ai/SKILL.md`.
-- For explicit god mode requests or complex cross-skill orchestration, read `skills/god-mode/SKILL.md`.
-
-For repository-lifecycle work, read the matching shared skill before acting:
-
-- `skills/skill-authoring-gate/SKILL.md` before adding or materially changing a skill.
-- `skills/skill-overlap-audit/SKILL.md` before adding a skill near an existing one.
-- `skills/runtime-adapter-smoke/SKILL.md` before adapter, manifest, or runtime context changes.
-- `skills/transcript-review/SKILL.md` after real agent sessions.
-- `skills/thinking-ledger-review/SKILL.md` before accepting staged reasoning evidence.
-- `skills/evidence-to-test/SKILL.md` after finding a repeated repo gap or failure.
-- `skills/release-readiness/SKILL.md` before tagging or publishing.
-- `skills/skill-deprecation-review/SKILL.md` before merging, archiving, renaming, or deleting a skill.
-- `skills/agent-security-boundary/SKILL.md` for tool, file, shell, secret, or permission boundaries.
-- `skills/docs-claim-audit/SKILL.md` before public docs or README claim changes.
-
-Use `policies/thinking-budget.yaml` to choose friction by risk. Low-risk work needs
-intent and a basic check. Medium-risk work needs trace, behavior proof, and diff
-review. High-risk work needs framing, assumption audit, alternatives, rollback,
-human approval, and final mechanism explanation.
-
-## Gemini-specific rule
-
-When Gemini is used for broad synthesis, force it back to local evidence like files, docs, tests, logs, traces, and explicit assumptions. A synthesis without file paths or commands is a draft, not an answer.
-
-## Before finishing
-
-Run `make prod-gate`. If it fails, fix the real issue. Do not weaken the gate.
+Use the session's configured model unless the user requests a change. Static manifest checks establish path consistency, not proof that this runtime loaded or executed a skill. Report actual runtime smoke evidence separately.

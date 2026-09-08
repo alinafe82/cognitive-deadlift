@@ -1,6 +1,6 @@
 # Cognitive Deadlift Context
 
-This is the operating context for the repo. Every agent and contributor reads this before editing.
+This file explains the mission and policies. Read the relevant section when a task depends on those decisions.
 
 ## Mission
 
@@ -16,7 +16,7 @@ context packs, harness fixtures, hooks, and validation.
 - Smallest safe change. Prefer a five-line patch over a refactor.
 - Reasoning evidence beats fluency. A confident explanation is not a check.
 - Risk decides friction. Low-risk work should stay light; high-risk work needs more
-  evidence and human approval.
+  evidence and an authorization check for consequential actions.
 - The harness validates structure, not behavior. Human review still ships the change.
 - Portable across macOS and Linux. No tools required beyond Python 3.11 and standard build chain.
 
@@ -33,14 +33,14 @@ context packs, harness fixtures, hooks, and validation.
 ## Validation philosophy
 
 - Structural over semantic. The validator catches missing sections, broken links, banned phrases, secret patterns, index drift, and tracked build artifacts. It cannot judge whether a skill is good.
-- Deterministic and fast. Every check finishes in under a second on this repo.
+- Deterministic and fast. Use affected checks during edits and the full gate before merge or release.
 - Standard library only where possible. The supply chain stays small.
 - Fail loudly. A real problem makes `make prod-gate` exit nonzero.
 - One command. `make prod-gate` runs every meaningful check.
 
 ## Current assumptions
 
-- Skills live in `skills/<name>/` with `SKILL.md`, `examples/`, `tests/`, `fixtures/`. Folder-per-skill is intentional.
+- Skills live in `skills/<name>/` with `SKILL.md`, worked `examples/` and routing cases under `tests/`; fixtures are optional. Folder-per-skill is intentional.
 - `skills/*/SKILL.md` is the shared body, and runtime adapters reference it without duplicating it.
 - `policies/thinking-budget.yaml` is the source of truth for low / medium / high
   evidence gates.
@@ -50,13 +50,9 @@ context packs, harness fixtures, hooks, and validation.
 - The pre-commit hook only checks that a thinking ledger is staged. It cannot verify the ledger is real.
 - The repo is portable and self-contained, with no private hostnames, no customer data, and no internal infrastructure references.
 
-## What agents must read before editing
+## Context routing
 
-1. This file.
-2. `repo-audit.md` for the standing list of duplications, gaps, and risks.
-3. `ARCHITECTURE.md` for the current structure.
-4. `AGENTS.md` for generic agent behavior, then the agent-specific file (`CLAUDE.md` or `GEMINI.md`).
-5. The relevant `skills/<name>/SKILL.md` if the change touches that skill.
+AGENTS.md contains the working agreement. Consult ARCHITECTURE.md for structural changes, repo-audit.md for known contract drift, and docs/skill-standard.md for skill authoring. Select workflows through skills_index.json; read a skill only when relevant. Coaching exercises are opt-in, not prerequisites for routine maintenance.
 
 ## Language
 
@@ -69,7 +65,7 @@ Preserving the developer abilities that passive AI use can weaken, such as probl
 _Avoid_: training plan, productivity ritual, paperwork.
 
 **Thinking Budget**
-The amount of evidence required for a task based on risk. Low-risk work gets minimal friction; high-risk work requires structured thinking and human approval.
+The amount of evidence required for a task based on risk. Low-risk work gets minimal friction; high-risk work requires stronger evidence and checking whether consequential actions are already authorized.
 _Avoid_: process tax, bureaucracy, universal checklist.
 
 **Autopilot**

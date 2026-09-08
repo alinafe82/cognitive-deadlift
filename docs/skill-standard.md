@@ -1,129 +1,21 @@
 # Skill Standard
 
-A skill is a reusable engineering instruction artifact. It is not a prompt dump.
+A skill should add useful task-specific guidance. Keep its description short and its root focused; load worked examples only when needed.
 
-## Required Files
+## Package contract
 
-```text
-skills/<skill-name>/
-├── SKILL.md
-├── examples/
-├── tests/
-└── fixtures/
-```
+- `SKILL.md` has frontmatter with a name matching the folder and a non-empty task-specific description. Descriptions have no mandatory wording or minimum length; the static grade budget is 240 characters.
+- The body explains scope, workflow, evidence needed/produced, and relevant data/action boundaries. The compact format uses `Scope`, `Workflow`, `Evidence`, and `Boundaries`; legacy equivalent sections remain accepted. There is no required number of steps, output fields or warnings.
+- Include two non-empty worked examples in `examples/` and link supporting resources from the root. Keep detailed teaching material outside the root; the static grade budget is 450 words.
+- `tests/routing.json` records non-empty `use` and `skip` lists of objects with `request` and `reason`. Requests must be distinct, including across decisions. These are review cases, not a model benchmark.
+- Add executable tests or fixtures only when they verify a real behavior. Existing legacy fixture packages remain valid; new compact skills need routing cases.
 
-`examples/`, `tests/`, and `fixtures/` may contain short markdown notes, but the directories must exist so every skill has a consistent review surface.
+## Review
 
-## Required `SKILL.md` Sections
+Check that a concrete request selects this skill rather than its nearest neighbor. Evaluate the workflow against its examples: can it produce a useful result without unnecessary questions or ceremony? Do not infer quality from section counts or repeated safety prose.
 
-Each skill must include:
+Preserve factual evidence, data boundaries and applicable authorization requirements. Reuse authorization already supplied for an action. Reversible preparation and read-only work should continue; sending, publication, destruction and widening permissions need authorization when absent.
 
-1. `Purpose`
-2. `Preserves`
-3. `Required Evidence`
-4. `Failure Signs`
-5. `When To Use`
-6. `When Not To Use`
-7. `Inputs Expected`
-8. `Output Expected`
-9. `Process`
-10. `Quality Bar`
-11. `Examples`
-12. `Failure Modes`
-13. `Safety And Privacy`
-14. `Anti-Slop Rules`
+## Verification
 
-## Metadata
-
-Frontmatter must include:
-
-- `name`
-- `description`
-
-The `description` must explain:
-
-- what the skill does
-- when it should activate
-- when it should not activate
-
-Use this pattern:
-
-```yaml
-description: "Do X for Y. Use when ... NOT for ..."
-```
-
-## Good Skill Requirements
-
-A good skill has:
-
-- a clear name
-- a real developer problem
-- clear trigger conditions
-- clear non-trigger conditions
-- the developer ability it preserves
-- required evidence before action
-- signs that the skill is being skipped or performed badly
-- explicit inputs
-- explicit outputs
-- constraints and boundaries
-- simple and complex examples
-- failure-mode behavior
-- safety and privacy notes
-- no hidden assumptions
-- no unsupported claims
-- no generic filler
-- no confusing overlap with another skill
-
-## Examples
-
-Every skill must include at least two examples:
-
-- simple case
-- complex case or edge case
-
-Examples should show realistic input and expected output shape. They do not need to be long.
-
-## Failure Modes
-
-Every skill must say what to do when:
-
-- required files are missing
-- context is ambiguous
-- permissions are missing
-- tests fail
-- the user asks for unsafe behavior
-- the assistant cannot verify a claim
-
-## Safety And Privacy
-
-Every skill must explicitly protect:
-
-- secrets
-- tokens
-- private keys
-- private employer details
-- customer names
-- personal data
-- legal, medical, and financial high-stakes claims
-- destructive operations
-
-## Anti-Slop Rules
-
-Every skill must forbid:
-
-- generic summaries
-- fake certainty
-- unsupported claims
-- unnecessary verbosity
-- boilerplate
-- pretending a check was run when it was not
-- vague praise
-- buzzword stuffing
-
-## Banned Filler
-
-Do not use inflated marketing language or vague praise in skill instructions. The exact banned phrase list is enforced in `scripts/validate_skills.py` so it can be tested without duplicating policy text across docs and code.
-
-## Review Standard
-
-If a skill cannot explain what problem it solves, when it triggers, what output it produces, and how it fails safely, do not merge it.
+Run affected validators and tests during edits; `make prod-gate` is required before merge/release or changes to the validation contract. Keep metadata, links, examples, routing cases, adapter lists and the shared skills index consistent. Static checks cannot establish actual activation accuracy or model performance.

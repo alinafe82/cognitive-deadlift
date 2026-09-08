@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Compare a queue with scheduled retries for failed billing sync.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Rename this variable to match the existing convention.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

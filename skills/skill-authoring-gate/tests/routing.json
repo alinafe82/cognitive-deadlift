@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Review whether this new parser-debugging skill is useful and correctly scoped.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Fix a typo in a skill title.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

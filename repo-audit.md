@@ -37,6 +37,14 @@ Each file should answer questions only in its column. If two files answer the sa
 
 ## Findings
 
+### Resolved 2026-09-07: compact instructions and authorization boundaries
+
+- Skill roots now load only workflow-specific guidance; 14-section boilerplate and mandatory trigger phrases are no longer required.
+- Runtime contexts link skills_index.json instead of loading every skill trigger. Coaching and god-mode are opt-in.
+- Validators preserve evidence, examples, links and metadata checks, and reject missing or contradictory routing review cases. The grader reports static contract completion, not model quality.
+- Existing authorization remains valid; local security fixes do not automatically require another approval.
+
+
 ### Resolved in this pass (2026-09-06, 100-point skill gate)
 
 - `scripts/grade_skills.py` now awards 100 only when a skill hits the

@@ -1,64 +1,17 @@
 ---
 name: skill-deprecation-review
-description: "Review whether a stale, overlapping, unused, or harmful skill should be kept, merged, renamed, archived, or deleted. Use when a skill overlaps with another, stops matching repo purpose, has weak usage evidence, or creates routing confusion. NOT for adding new skills or for minor edits that keep scope intact."
+description: "Assess whether an existing skill should be retained, merged, renamed, or retired, including migration impacts."
 ---
 
 # Skill Deprecation Review
 
-## Purpose
-
 Keep the skill set small, memorable, and aligned with real repeated work.
 
-## Preserves
+## Scope
 
-Curation judgment and maintenance discipline.
+Use for the task in the description. For example: Assess retiring an unused skill and migrating its adapter references. Do not activate for: Propose a new skill with no retirement decision.
 
-## Required Evidence
-
-- Skill path and current description.
-- Usage evidence or absence of usage evidence.
-- Nearby skills and overlap notes.
-- Risks of keeping, changing, or removing the skill.
-
-## Failure Signs
-
-- A skill is kept because it sounds useful without usage or distinct scope.
-- Deletion is recommended without checking adapter and index impacts.
-- The review ignores migration guidance for users.
-
-## When To Use
-
-- A skill overlaps with another skill.
-- A skill is stale, unused, or hard to trigger correctly.
-- The skill set is being pruned.
-- A skill no longer matches repo purpose or quality bar.
-
-## When Not To Use
-
-- A new skill is being proposed; use skill-authoring-gate.
-- The issue is only trigger overlap for a proposed addition; use skill-overlap-audit.
-- The task is a typo or example refresh.
-
-## Inputs Expected
-
-- Skill folder or SKILL.md text.
-- Catalog and skill index entries.
-- Usage notes, transcript evidence, or reviewer reports.
-- Nearby skills and runtime adapter references.
-
-## Output Expected
-
-```md
-Skill:
-Current job:
-Usage evidence:
-Overlap or staleness:
-Options:
-Recommendation:
-Migration and cleanup:
-```
-
-## Process
+## Workflow
 
 1. Identify the skill's current preserved ability and trigger surface.
 2. Check usage evidence, examples, and current fit with repo purpose.
@@ -66,35 +19,14 @@ Migration and cleanup:
 4. Evaluate risks of keeping versus removing.
 5. If deprecating, list required updates to catalog, index, adapters, docs, and tests.
 
-## Quality Bar
+## Evidence
 
-A good deprecation review protects users from churn while removing skills that dilute routing or quality.
+Skill path and current description. Usage evidence or absence of usage evidence. Nearby skills and overlap notes. Risks of keeping, changing, or removing the skill. Report the outcome with relevant skill, current job, usage evidence, overlap or staleness. Adapt the format to the task; omit empty fields. Never claim checks ran without observed results.
 
-## Examples
+## Boundaries
 
-Simple case: Review whether to keep a skill that duplicates docs-claim-audit. The skill should compare distinct jobs and usage evidence.
+Keep secrets and private records out of shared artifacts. Use redacted or synthetic evidence. External sends, publication, destructive operations and permission widening need explicit authorization; reuse authorization already given for the action. Continue authorized read-only and reversible local work through the requested outcome. If evidence is missing, inspect available sources before asking; report limits honestly.
 
-Complex case: Review a popular but broad skill that overlaps with five narrower skills. The skill should consider migration path before deletion.
+## References
 
-See `examples/simple.md` and `examples/edge-case.md`.
-
-## Failure Modes
-
-- Required files missing: state what could not be checked and ask for the smallest missing artifact.
-- Context ambiguous: list the plausible interpretations and pick the one that affects the decision most.
-- Permissions missing: name the command, file, or approval needed without inventing results.
-- Tests or checks fail: report the failure and do not recommend acceptance until the failure is understood.
-- Unsafe request: refuse the unsafe step and offer a safe review or evidence-gathering path.
-- Claim cannot be verified: mark it as unsupported and require evidence or limitation language.
-
-## Safety And Privacy
-
-Do not request or expose secrets, tokens, private keys, customer records, private employer details, personal data, or production credentials. Use redacted examples and require approval before destructive, external-send, permission-widening, or publication actions.
-
-## Anti-Slop Rules
-
-- Do not approve a skill, claim, release, or workflow on confident wording alone.
-- Do not treat file presence as evidence of substance.
-- Do not invent command results, runtime behavior, usage evidence, or reviewer approval.
-- Do not broaden scope to make the recommendation sound more useful.
-- Do not hide missing evidence in a generic summary.
+For worked examples, open [simple](examples/simple.md) or [edge case](examples/edge-case.md) only when useful. [Routing cases](tests/routing.json) record positive and negative activation examples for review; they are not a model benchmark.

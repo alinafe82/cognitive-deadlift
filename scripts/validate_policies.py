@@ -41,7 +41,7 @@ def validate_thinking_budget(path: Path = POLICY) -> list[str]:
     if isinstance(high, dict):
         required = high.get("required", [])
         if isinstance(required, list):
-            for item in ("human-approval", "rollback-plan"):
+            for item in ("authorization-check", "rollback-plan"):
                 if item not in required:
                     findings.append(f"high required list must include {item}")
 

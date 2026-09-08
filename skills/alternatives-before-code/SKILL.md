@@ -1,94 +1,32 @@
 ---
 name: alternatives-before-code
-description: "Compare viable solution paths before implementation. Use when architecture, refactors, data model changes, workflow changes, tool choices, or irreversible decisions make the first idea too sticky. NOT for one-line fixes, constrained chores, or changes with only one safe path."
+description: "Compare viable approaches when an unresolved design decision has meaningful cost or reversibility tradeoffs."
 ---
 
 # Alternatives Before Code
 
-## Purpose
-
 Prevent the first plausible implementation from becoming the decision by default.
 
-## Preserves
+## Scope
 
-Tradeoff analysis.
+Use for the task in the description. For example: Compare a queue with scheduled retries for failed billing sync. Do not activate for: Rename this variable to match the existing convention.
 
-## Required Evidence
-
-- Decision to be made.
-- Constraints that affect reversibility, blast radius, cost, or testability.
-- Existing architecture notes or code boundaries if available.
-
-## Failure Signs
-
-- Only the anchored solution is considered.
-- The no-build or minimal option is hidden.
-- Complexity is recommended without naming the cost it buys.
-
-## When To Use
-
-- The change affects architecture, data shape, workflow, dependencies, or public behavior.
-- Multiple implementation strategies are plausible.
-- Reversibility, blast radius, or testability matters.
-- The user has already anchored on one solution.
-
-## When Not To Use
-
-- One-line fixes with obvious verification.
-- Formatting, renames, generated files, or lockfile-only work.
-- Emergency mitigation where delay would increase impact.
-
-## Inputs Expected
-
-- Decision to be made.
-- Constraints such as time, compatibility, migration risk, ownership, and test surface.
-- Existing architecture notes, ADRs, or code boundaries if available.
-
-## Output Expected
-
-```md
-Decision:
-Option A - Minimal:
-Option B - Structural:
-Option C - Conservative/no-build:
-Recommendation:
-Change-my-mind evidence:
-```
-
-## Process
+## Workflow
 
 1. Name the decision in one sentence.
-2. Produce a minimal option, a structural option, and a conservative/no-build option.
+2. Compare only viable options, including a minimal or no-change path when useful; do not invent options to fill a quota.
 3. Compare cost, reversibility, blast radius, testability, and cognitive load.
 4. Recommend one option.
 5. State what evidence would change the recommendation.
 
-## Quality Bar
+## Evidence
 
-A good alternatives pass makes the tradeoff obvious enough that a reviewer can disagree with the recommendation without first reconstructing the decision.
+Decision to be made. Constraints that affect reversibility, blast radius, cost, or testability. Existing architecture notes or code boundaries if available. Report the outcome with relevant decision, option a - minimal, option b - structural, option c - conservative/no-build. Adapt the format to the task; omit empty fields. Never claim checks ran without observed results.
 
-## Examples
+## Boundaries
 
-Simple case: "Should we add a config flag or hardcode this timeout?" The skill should compare local constant, config flag, and no-change options.
+Do not include private vendor details, customer names, or confidential architecture diagrams. Use generic labels when examples need sensitive context. Continue authorized read-only and reversible local work through the requested outcome. If evidence is missing, inspect available sources before asking; report limits honestly.
 
-Complex case: "Should failed billing sync move to a queue?" The skill should compare synchronous retry, scheduled retry, queue-based retry, and no-build operational mitigation.
+## References
 
-See `examples/simple.md` and `examples/edge-case.md`.
-
-## Failure Modes
-
-- Only one option appears viable: explain which constraints eliminated the others.
-- Missing architecture context: inspect ADRs or code before recommending.
-- Emergency request: recommend immediate mitigation and defer deeper alternatives.
-- The boring option looks worse: explain the specific cost it fails to handle.
-
-## Safety And Privacy
-
-Do not include private vendor details, customer names, or confidential architecture diagrams. Use generic labels when examples need sensitive context.
-
-## Anti-Slop Rules
-
-- Do not create fake options just to fill a template.
-- Do not hide the no-build option.
-- Do not recommend a complex option without naming the complexity it buys.
-- Do not use vague tradeoff words without specifics.
+For worked examples, open [simple](examples/simple.md) or [edge case](examples/edge-case.md) only when useful. [Routing cases](tests/routing.json) record positive and negative activation examples for review; they are not a model benchmark.

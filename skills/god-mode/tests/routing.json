@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Use god mode to coordinate the relevant workflows for this repository cleanup.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Fix this ordinary bug end to end.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

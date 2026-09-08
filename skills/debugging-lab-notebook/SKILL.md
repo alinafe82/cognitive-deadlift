@@ -1,62 +1,17 @@
 ---
 name: debugging-lab-notebook
-description: "Debug hard failures with reproduction, hypotheses, instrumentation, experiments, and regression proof. Use when bugs are flaky, poorly understood, production-facing, performance-related, or AI starts guessing fixes. NOT for simple bugs that already have a deterministic failing test."
+description: "Investigate hard or intermittent failures by tracking hypotheses, experiments, and regression evidence."
 ---
 
 # Debugging Lab Notebook
 
-## Purpose
-
 Turn hard debugging into a recorded experiment loop instead of a sequence of guesses.
 
-## Preserves
+## Scope
 
-Systematic debugging and error interpretation.
+Use for the task in the description. For example: Investigate a worker that intermittently drops messages under concurrency. Do not activate for: Fix this parser assertion with an already-isolated deterministic regression.
 
-## Required Evidence
-
-- Symptom and reproduction attempt.
-- Logs, traces, metrics, failing command, or user report if available.
-- Code area or workflow likely involved.
-
-## Failure Signs
-
-- A patch is proposed before a hypothesis.
-- Only one favored hypothesis is kept.
-- Negative findings are dropped.
-
-## When To Use
-
-- A bug is hard, flaky, or poorly understood.
-- The failure crosses services, time, state, or concurrency boundaries.
-- AI starts proposing fixes without a hypothesis.
-- Negative findings need to be preserved.
-
-## When Not To Use
-
-- Simple bugs that already have a failing test.
-- Purely visual defects with an obvious screenshot reproduction.
-- Incidents where immediate mitigation must happen before root-cause analysis.
-
-## Inputs Expected
-
-- Symptom and reproduction attempt.
-- Logs, traces, metrics, failing command, or user report if available.
-- Code area or workflow likely involved.
-- Constraints on instrumentation or environment access.
-
-## Output Expected
-
-```md
-Reproduction:
-Hypotheses:
-Experiment:
-Result:
-Next hypothesis:
-Regression proof:
-```
-
-## Process
+## Workflow
 
 1. Build the smallest available reproduction or observation signal.
 2. Write competing hypotheses.
@@ -65,32 +20,14 @@ Regression proof:
 5. Record negative findings.
 6. Add regression proof after the fix.
 
-## Quality Bar
+## Evidence
 
-A good notebook lets another engineer see what was tried, what was ruled out, and why the final fix is credible.
+Symptom and reproduction attempt. Logs, traces, metrics, failing command, or user report if available. Code area or workflow likely involved. Report the outcome with relevant reproduction, hypotheses, experiment, result. Adapt the format to the task; omit empty fields. Never claim checks ran without observed results.
 
-## Examples
+## Boundaries
 
-Simple case: a CLI sometimes exits zero after failure. The skill should reproduce the command, list hypotheses around exception handling, and add a regression check.
+Do not expose raw production logs, tokens, customer data, internal hostnames, or private incident details. Remove exploratory instrumentation unless it is intentionally kept. Continue authorized read-only and reversible local work through the requested outcome. If evidence is missing, inspect available sources before asking; report limits honestly.
 
-Complex case: a worker drops messages under load. The skill should separate queue delivery, concurrency, retry, timeout, and persistence hypotheses before changing code.
+## References
 
-See `examples/simple.md` and `examples/edge-case.md`.
-
-## Failure Modes
-
-- Reproduction unavailable: define the next best observation point and explain the uncertainty.
-- Flaky signal: measure frequency before and after changes.
-- Logs contain sensitive data: request redacted or synthetic traces.
-- Permissions missing: ask for specific command output rather than broad access.
-
-## Safety And Privacy
-
-Do not expose raw production logs, tokens, customer data, internal hostnames, or private incident details. Remove exploratory instrumentation unless it is intentionally kept.
-
-## Anti-Slop Rules
-
-- Do not patch before naming a hypothesis.
-- Do not keep only one favored hypothesis.
-- Do not drop negative findings.
-- Do not claim root cause until the experiment supports it.
+For worked examples, open [simple](examples/simple.md) or [edge case](examples/edge-case.md) only when useful. [Routing cases](tests/routing.json) record positive and negative activation examples for review; they are not a model benchmark.

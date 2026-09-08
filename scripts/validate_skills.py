@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shlex
 from dataclasses import dataclass
@@ -11,22 +12,61 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-REQUIRED_SECTIONS = [
-    "Purpose",
-    "Preserves",
-    "Required Evidence",
-    "Failure Signs",
-    "When To Use",
-    "When Not To Use",
-    "Inputs Expected",
-    "Output Expected",
-    "Process",
-    "Quality Bar",
-    "Examples",
-    "Failure Modes",
-    "Safety And Privacy",
-    "Anti-Slop Rules",
-]
+# Legacy names remain accepted; compact roots combine related evidence.
+SECTION_GROUPS = {
+    "Scope": [("Scope",), ("When To Use", "When Not To Use")],
+    "Workflow": [("Workflow",), ("Process",)],
+    "Evidence": [("Evidence",), ("Inputs Expected", "Output Expected")],
+    "Boundaries": [("Boundaries",), ("Safety And Privacy",)],
+}
+
+
+def section_content(text: str, heading: str) -> str:
+    match = re.search(r"^## " + re.escape(heading) + r"\n(.*?)(?=^## |\Z)", text, re.M | re.S)
+    return match.group(1).strip() if match else ""
+
+
+def missing_contract_sections(text: str) -> list[str]:
+    return [
+        label
+        for label, alternatives in SECTION_GROUPS.items()
+        if not any(
+            all(section_content(text, heading) for heading in names) for names in alternatives
+        )
+    ]
+
+
+def validate_routing_cases(path: Path) -> list[str]:
+    """Validate review examples, not a model's actual routing performance."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        return [f"routing cases unavailable: {path.name}: {exc}"]
+    if not isinstance(data, dict):
+        return ["routing cases must be an object"]
+    errors = []
+    requests: dict[str, set[str]] = {}
+    for decision in ("use", "skip"):
+        cases = data.get(decision)
+        requests[decision] = set()
+        if not isinstance(cases, list) or not cases:
+            errors.append(f"routing cases require non-empty {decision} examples")
+            continue
+        for case in cases:
+            if not isinstance(case, dict) or any(
+                not isinstance(case.get(key), str) or not case[key].strip()
+                for key in ("request", "reason")
+            ):
+                errors.append(f"routing {decision} case requires request and reason")
+                continue
+            request = " ".join(case["request"].casefold().split())
+            if request in requests[decision]:
+                errors.append(f"duplicate routing {decision} request")
+            requests[decision].add(request)
+    if requests["use"] & requests["skip"]:
+        errors.append("routing request appears in both use and skip")
+    return errors
+
 
 BANNED_PHRASES = [
     "seamlessly",
@@ -135,10 +175,6 @@ def is_excluded_text_file(path: Path, root: Path) -> bool:
     return any(parts[: len(prefix)] == prefix for prefix in excluded_prefixes)
 
 
-def has_heading(text: str, heading: str) -> bool:
-    return f"\n## {heading}\n" in text or text.startswith(f"## {heading}\n")
-
-
 def relative(path: Path, root: Path = ROOT) -> str:
     try:
         return path.relative_to(root).as_posix()
@@ -209,21 +245,17 @@ def validate_skill(skill_dir: Path, root: Path = ROOT) -> list[str]:
     description = metadata.get("description", "")
     if not description:
         errors.append(f"{relative(skill_file, root)} missing description")
-    if "Use when" not in description:
-        errors.append(f"{relative(skill_file, root)} description must include 'Use when'")
-    if "NOT for" not in description:
-        errors.append(f"{relative(skill_file, root)} description must include 'NOT for'")
+    if len(description) > 1024:
+        errors.append(f"{relative(skill_file, root)} description exceeds 1024 characters")
+    for section in missing_contract_sections(text):
+        errors.append(f"{relative(skill_file, root)} missing section or content: {section}")
 
-    for section in REQUIRED_SECTIONS:
-        if not has_heading(text, section):
-            errors.append(f"{relative(skill_file, root)} missing section: {section}")
-
-    for directory in ["examples", "tests", "fixtures"]:
-        child = skill_dir / directory
-        if not child.is_dir():
-            errors.append(f"{relative(skill_dir, root)} missing {directory}/")
-        elif not any(child.iterdir()):
-            errors.append(f"{relative(child, root)} is empty")
+    # Older packaged skills remain readable without rewriting historical fixtures.
+    routing = skill_dir / "tests" / "routing.json"
+    if section_content(text, "Scope") or routing.exists():
+        errors.extend(
+            f"{relative(skill_file, root)} {error}" for error in validate_routing_cases(routing)
+        )
 
     examples_dir = skill_dir / "examples"
     examples = sorted(examples_dir.glob("*.md")) if examples_dir.exists() else []

@@ -20,7 +20,7 @@ The repo intentionally keeps dependencies small. Do not add a dependency unless 
 3. Keep one skill focused on one reasoning workflow.
 4. Add or update `SKILL.md`.
 5. Add at least two examples under `examples/`.
-6. Add fixtures or notes under `fixtures/` or `tests/` when practical.
+6. Add positive/negative cases in `tests/routing.json`; add executable fixtures only where useful.
 7. Update `CATALOG.md`, `skills_index.json`, and `.claude-plugin/plugin.json` when a skill is added or renamed.
 8. Run `make check`.
 

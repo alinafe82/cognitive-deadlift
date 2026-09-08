@@ -1,61 +1,17 @@
 ---
 name: diff-interrogation
-description: "Review a human or AI-generated diff as an untrusted claim. Use when merging, committing, or accepting changes that may hide regressions, missing tests, security risk, data loss, or unexplained behavior. NOT for formatting-only diffs or already-reviewed changes with no new code."
+description: "Review a code diff for behavioral regressions, missing evidence, and security or data risks."
 ---
 
 # Diff Interrogation
 
-## Purpose
-
 Force a diff to prove its behavior, test coverage, and risk profile before acceptance.
 
-## Preserves
+## Scope
 
-Review judgment.
+Use for the task in the description. For example: Review this retry diff for duplicate payment side effects. Do not activate for: Reformat these comments without changing behavior.
 
-## Required Evidence
-
-- Diff or PR summary.
-- Test output if available.
-- Relevant files, issue, expected behavior, and security-sensitive areas.
-
-## Failure Signs
-
-- The review summarizes file names instead of behavior.
-- Missing tests are buried.
-- Security, data, permission, or error-handling changes are not inspected.
-
-## When To Use
-
-- A diff came from AI, heavy autocomplete, or an unfamiliar contributor.
-- The change touches behavior, data, auth, permissions, persistence, or error handling.
-- Tests are missing or only prove the happy path.
-- The developer cannot explain every meaningful line.
-
-## When Not To Use
-
-- Formatting-only diffs.
-- Lockfile or generated artifact updates with separate verification.
-- Diffs already reviewed after the latest changes.
-
-## Inputs Expected
-
-- Diff or PR summary.
-- Test output if available.
-- Relevant files, issue, or expected behavior.
-- Whether security-sensitive areas are touched.
-
-## Output Expected
-
-```md
-Behavior change:
-Highest-risk lines:
-Missing proof:
-Questions:
-Recommendation:
-```
-
-## Process
+## Workflow
 
 1. Summarize the behavior change, not the file list.
 2. Identify the highest-risk lines or decisions.
@@ -63,32 +19,14 @@ Recommendation:
 4. Ask explanation questions for unclear changes.
 5. Recommend commit, revise, or reject.
 
-## Quality Bar
+## Evidence
 
-A good interrogation leads with actionable findings. It does not praise style while missing behavior risk.
+Diff or PR summary. Test output if available. Relevant files, issue, expected behavior, and security-sensitive areas. Report the outcome with relevant behavior change, highest-risk lines, missing proof, questions. Adapt the format to the task; omit empty fields. Never claim checks ran without observed results.
 
-## Examples
+## Boundaries
 
-Simple case: a diff changes a validation condition. The skill should identify new accepted and rejected inputs and ask for a test proving both.
+Do not paste secrets, tokens, customer records, private incident details, or proprietary code into public summaries. Use line references and redacted snippets. Continue authorized read-only and reversible local work through the requested outcome. If evidence is missing, inspect available sources before asking; report limits honestly.
 
-Complex case: a diff adds retry logic around payment submission. The skill should inspect idempotency, duplicate side effects, logging, and failure handling before recommending merge.
+## References
 
-See `examples/simple.md` and `examples/edge-case.md`.
-
-## Failure Modes
-
-- Diff unavailable: ask for `git diff` or a patch before reviewing.
-- Tests not run: say so directly and avoid claiming confidence.
-- Security-sensitive change: escalate risk and request targeted review.
-- Large diff: triage by highest-risk files and behavior first.
-
-## Safety And Privacy
-
-Do not paste secrets, tokens, customer records, private incident details, or proprietary code into public summaries. Use line references and redacted snippets.
-
-## Anti-Slop Rules
-
-- Do not review only the file list.
-- Do not say "looks good" without proof.
-- Do not bury missing tests.
-- Do not claim security safety without checking the relevant paths.
+For worked examples, open [simple](examples/simple.md) or [edge case](examples/edge-case.md) only when useful. [Routing cases](tests/routing.json) record positive and negative activation examples for review; they are not a model benchmark.

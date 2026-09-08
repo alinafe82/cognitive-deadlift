@@ -65,7 +65,7 @@ Not every task deserves the same amount of friction.
 | --- | --- | --- |
 | Low | Mechanical or reversible work | Intent summary and a basic check |
 | Medium | Normal behavior changes | Code-path trace, failing signal, and diff review |
-| High | Security, data, public API, permissions, destructive behavior, migrations, or production config | Problem frame, assumption audit, alternatives, rollback plan, human approval, and final explanation |
+| High | Security, data, public API, permissions, destructive behavior, migrations, or production config | Problem frame, assumption audit, alternatives, rollback plan, existing/missing authorization check, and a mechanism summary |
 
 The policy lives in [policies/thinking-budget.yaml](policies/thinking-budget.yaml).
 

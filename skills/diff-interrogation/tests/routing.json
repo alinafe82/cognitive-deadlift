@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Review this retry diff for duplicate payment side effects.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Reformat these comments without changing behavior.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

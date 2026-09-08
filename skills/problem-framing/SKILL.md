@@ -1,95 +1,33 @@
 ---
 name: problem-framing
-description: "Turn an unclear request into a concrete engineering problem statement before implementation. Use when the user jumps to code, proposes a solution without the underlying problem, or asks for a fix without reproduction. NOT for pure formatting, copy edits, or already-scoped mechanical changes."
+description: "Resolve an ambiguous engineering request into an observable problem and completion criteria."
 ---
 
 # Problem Framing
 
-## Purpose
-
 Make the assistant define the real problem before it designs or writes code.
 
-## Preserves
+## Scope
 
-Problem definition.
+Use for the task in the description. For example: Add retries; I do not know which failures or duplicates we are seeing. Do not activate for: Apply the change specified by this precise failing test.
 
-## Required Evidence
-
-- User request or symptom.
-- Current evidence, or an explicit note that evidence is missing.
-- Constraints, non-goals, or success signal if known.
-
-## Failure Signs
-
-- The response proposes implementation before naming the problem.
-- Assumptions are presented as facts.
-- No first verification step is defined.
-
-## When To Use
-
-- The request starts with an implementation idea instead of a problem.
-- A bug report lacks reproduction evidence.
-- A feature request mixes goals, constraints, and solution guesses.
-- Success is described as "make it work" rather than a verifiable outcome.
-
-## When Not To Use
-
-- Pure formatting, typo fixes, or copy edits.
-- Mechanical dependency bumps with clear validation.
-- Work already framed by a current issue, PRD, failing test, or incident note.
-
-## Inputs Expected
-
-- User request or issue summary.
-- Any known symptom, affected workflow, user, logs, screenshots, or failing command.
-- Relevant constraints, deadlines, or non-goals if known.
-
-## Output Expected
-
-```md
-Problem:
-Current evidence:
-Assumptions:
-Non-goals:
-Success condition:
-First verification step:
-```
-
-## Process
+## Workflow
 
 1. Restate the request as a problem, not a solution.
 2. Identify actor, workflow, boundary, and observable symptom.
 3. Separate facts from interpretation.
 4. Name assumptions that still need checking.
 5. Define success as a test, command, user-visible outcome, or reviewable signal.
-6. If the problem cannot be framed, ask one focused question.
+6. Inspect available evidence first; ask only when a missing fact prevents safe progress.
 
-## Quality Bar
+## Evidence
 
-A good frame lets another engineer understand what is wrong, what is out of scope, and what proof would make the fix credible.
+User request or symptom. Current evidence, or an explicit note that evidence is missing. Constraints, non-goals, or success signal if known. Report the outcome with relevant problem, current evidence, assumptions, non-goals. Adapt the format to the task; omit empty fields. Never claim checks ran without observed results.
 
-## Examples
+## Boundaries
 
-Simple case: user says "Add retries to the webhook worker." The skill should ask what failure is being retried, where the failure is observed, and what success signal proves retries help.
+Do not ask for secrets, customer records, private employer details, or production credentials. If examples contain private data, request redacted logs or synthetic identifiers. Continue authorized read-only and reversible local work through the requested outcome. If evidence is missing, inspect available sources before asking; report limits honestly.
 
-Complex case: user says "Move billing sync to a queue because customers are missing invoices." The skill should separate the customer-visible invoice failure from the proposed queue solution and require evidence from logs, current sync behavior, and acceptance criteria.
+## References
 
-See `examples/simple.md` and `examples/edge-case.md`.
-
-## Failure Modes
-
-- Missing evidence: state what is missing and ask one question.
-- Files unavailable: frame only from the prompt and mark code evidence as unchecked.
-- Ambiguous actor or workflow: list the plausible interpretations and recommend the one to verify first.
-- Urgent incident: create the shortest useful frame and defer non-critical detail.
-
-## Safety And Privacy
-
-Do not ask for secrets, customer records, private employer details, or production credentials. If examples contain private data, request redacted logs or synthetic identifiers.
-
-## Anti-Slop Rules
-
-- Do not summarize the request as if it were already clear.
-- Do not claim the problem is verified without evidence.
-- Do not produce a solution plan until the output contract is filled.
-- Do not use filler or motivational language.
+For worked examples, open [simple](examples/simple.md) or [edge case](examples/edge-case.md) only when useful. [Routing cases](tests/routing.json) record positive and negative activation examples for review; they are not a model benchmark.

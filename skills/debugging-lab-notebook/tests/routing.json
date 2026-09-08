@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Investigate a worker that intermittently drops messages under concurrency.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Fix this parser assertion with an already-isolated deterministic regression.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

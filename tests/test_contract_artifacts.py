@@ -14,7 +14,7 @@ def test_contract_yaml_reads_top_level_and_nested_lists() -> None:
     data = read_contract_yaml(REPO_ROOT / "policies" / "thinking-budget.yaml")
 
     assert data["low"]["required"] == ["summarize-intent", "run-basic-check"]
-    assert "human-approval" in data["high"]["required"]
+    assert "authorization-check" in data["high"]["required"]
 
 
 def test_thinking_budget_policy_passes() -> None:
@@ -91,7 +91,7 @@ high:
   description: High risk.
   required:
     - rollback-plan
-    - human-approval
+    - authorization-check
 """.strip()
         + "\n",
         encoding="utf-8",
@@ -168,3 +168,16 @@ def test_doctor_json_command_passes() -> None:
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert '"ok": true' in result.stdout
+
+
+def test_high_risk_policy_keeps_authorization_and_rollback_requirements(tmp_path: Path) -> None:
+    source = REPO_ROOT / "policies" / "thinking-budget.yaml"
+    policy = tmp_path / "thinking-budget.yaml"
+    policy.write_text(
+        source.read_text()
+        .replace("    - authorization-check\n", "")
+        .replace("    - rollback-plan\n", "")
+    )
+    findings = validate_policies.validate_thinking_budget(policy)
+    assert "high required list must include authorization-check" in findings
+    assert "high required list must include rollback-plan" in findings

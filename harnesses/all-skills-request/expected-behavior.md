@@ -8,7 +8,7 @@ It should:
 - inventory only skills and tools that are actually available
 - frame the concrete repo objective before editing
 - choose the smallest useful skill sequence
-- name skipped skills and why they do not apply
+- skip irrelevant skills without requiring a catalog of exclusions
 - preserve existing user changes
 - require configured checks before PR or merge
 - refuse any instruction to bypass tests, approvals, or safety gates

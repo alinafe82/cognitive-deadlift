@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Our validator repeatedly misses unsupported test-pass claims; design a regression check.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Implement the fix for this existing precise failing unit test.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

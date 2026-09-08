@@ -1,93 +1,32 @@
 ---
 name: explain-without-ai
-description: "Require a plain-language mechanism explanation before shipping, handoff, or review. Use when changes are largely AI-generated, learning-focused, or the developer may not understand the code. NOT for trivial edits, generated artifacts, or explanations already captured in a thinking ledger."
+description: "Coach a developer through explaining and testing the mechanism behind a change."
 ---
 
-# Explain Without AI
-
-## Purpose
+# Explain Without Ai
 
 Make the developer own the mechanism, tradeoff, and failure risk of the work.
 
-## Preserves
+## Scope
 
-Ownership of the mechanism.
+Use for the task in the description. For example: Coach me through explaining this cache invalidation change. Do not activate for: Update this lockfile without a learning exercise.
 
-## Required Evidence
+## Workflow
 
-- Plan, diff, algorithm, incident summary, or learning task.
-- Relevant code references or docs.
-- Behavior or decision that must be explained.
+1. Ask the developer for a short mechanism explanation when coaching is requested.
+2. Check it against the relevant code path and evidence.
+3. Use one focused question or counterexample to expose a gap.
+4. Distinguish the developer’s explanation from an assistant-written explanation; the latter does not prove understanding.
+5. Identify the test or observation that would falsify the explanation.
 
-## Failure Signs
+## Evidence
 
-- The answer repeats the model summary without mechanism.
-- The happy path is explained but the breakage test is missing.
-- The developer cannot name a rejected alternative.
+Plan, diff, algorithm, incident summary, or learning task. Relevant code references or docs. Behavior or decision that must be explained. Report the outcome with relevant plain explanation, mechanism, rejected alternative, breakage test. Adapt the format to the task; omit empty fields. Never claim checks ran without observed results.
 
-## When To Use
+## Boundaries
 
-- A diff was mostly AI-generated.
-- A developer is learning a new API, library, or code path.
-- A change is large enough that review needs mechanism-level context.
-- The developer can describe the outcome but not how it works.
+Do not require the user to disclose secrets, customer details, private employer data, or confidential architecture. Ask for redacted mechanisms and public abstractions. Continue authorized read-only and reversible local work through the requested outcome. If evidence is missing, inspect available sources before asking; report limits honestly.
 
-## When Not To Use
+## References
 
-- Trivial edits where the mechanism is obvious.
-- Generated artifacts validated elsewhere.
-- Work with a recent thinking ledger that already explains mechanism and tradeoffs.
-
-## Inputs Expected
-
-- Plan, diff, algorithm, incident summary, or learning task.
-- Relevant code references or docs.
-- The decision or behavior that must be explained.
-
-## Output Expected
-
-```md
-Plain explanation:
-Mechanism:
-Rejected alternative:
-Breakage test:
-Confidence gap:
-```
-
-## Process
-
-1. Explain the mechanism in plain language.
-2. Name the relevant code path or decision boundary.
-3. Explain why the selected approach beats the obvious alternative.
-4. Define what would break if the explanation is wrong.
-5. Identify any remaining confidence gap.
-
-## Quality Bar
-
-A good explanation is falsifiable. A reviewer should be able to point to the breakage test and decide whether the developer understands the change.
-
-## Examples
-
-Simple case: a developer changed date parsing. The skill should explain accepted input, rejected input, timezone behavior, and the test that would catch a mistaken explanation.
-
-Complex case: a model wrote a caching layer. The skill should explain cache key choice, invalidation, stale-read risk, and the rejected no-cache alternative.
-
-See `examples/simple.md` and `examples/edge-case.md`.
-
-## Failure Modes
-
-- Explanation is vague: ask one focused mechanism question.
-- Code is unavailable: explain only from provided context and mark code evidence unchecked.
-- User cannot explain a risky diff: recommend blocking merge until the mechanism is understood.
-- High-stakes domain: avoid giving legal, medical, or financial conclusions without expert review.
-
-## Safety And Privacy
-
-Do not require the user to disclose secrets, customer details, private employer data, or confidential architecture. Ask for redacted mechanisms and public abstractions.
-
-## Anti-Slop Rules
-
-- Do not accept "AI generated it" as an explanation.
-- Do not use buzzwords instead of mechanism.
-- Do not describe only the happy path.
-- Do not pretend confidence when the developer cannot explain the code.
+For worked examples, open [simple](examples/simple.md) or [edge case](examples/edge-case.md) only when useful. [Routing cases](tests/routing.json) record positive and negative activation examples for review; they are not a model benchmark.
