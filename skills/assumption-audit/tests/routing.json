@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Check whether caching permission checks is safe when roles change.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Apply these already-verified mechanical formatting rules.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

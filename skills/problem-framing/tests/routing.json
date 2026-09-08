@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Add retries; I do not know which failures or duplicates we are seeing.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Apply the change specified by this precise failing test.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

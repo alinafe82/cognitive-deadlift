@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Verify discovery after moving the shared skill directory.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Rewrite an example without changing any discovery paths.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

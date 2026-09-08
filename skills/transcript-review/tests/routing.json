@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Audit this actual agent transcript for claimed checks without output.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Review a hypothetical skill draft without a transcript.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

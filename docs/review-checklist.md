@@ -1,6 +1,6 @@
 # Review Checklist
 
-Use this checklist for every skill change.
+Use relevant items for material skill changes; do not turn typo fixes into a full review.
 
 ## Problem Fit
 
@@ -12,7 +12,7 @@ Use this checklist for every skill change.
 ## Activation
 
 - Is the trigger condition clear?
-- Is the `NOT for` boundary clear?
+- Are negative routing cases clear?
 - Could it fire on unrelated requests?
 - Does it overlap confusingly with another skill?
 
@@ -30,14 +30,12 @@ Use this checklist for every skill change.
 - Could this leak secrets, private data, customer data, or employer details?
 - Could it encourage destructive operations?
 - Could it make legal, medical, or financial claims without appropriate caution?
-- Does it require confirmation for risky actions?
+- Does it preserve existing authorization and require missing authorization for consequential actions?
 - Does it avoid pretending that checks were run?
 
 ## Validation
 
-- Does `python scripts/validate_skills.py` pass?
-- Does `python -m pytest` pass?
-- Does `make check` pass?
+- Do affected checks pass during edits, and does `make prod-gate` pass before merge/release?
 - Are examples present and readable?
 - Are internal links valid?
 

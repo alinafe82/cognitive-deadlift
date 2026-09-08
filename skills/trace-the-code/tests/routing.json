@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Trace the webhook acknowledgment through persistence and retry handling.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Write a new isolated module with no existing callers.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

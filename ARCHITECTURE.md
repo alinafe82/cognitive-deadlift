@@ -52,12 +52,12 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 
 ## Skill lifecycle
 
-1. Author creates `skills/<name>/` with `SKILL.md` and the three required subdirectories.
-2. `SKILL.md` follows the format defined in `docs/skill-standard.md`: frontmatter (`name`, `description` with `Use when ... NOT for ...`), then the eleven required sections.
-3. Author adds at least two markdown examples (`examples/simple.md`, `examples/edge-case.md`), a fixture, and a tests README.
-4. Author updates `skills_index.json` and `CATALOG.md` to add the skill.
-5. Author updates `.claude-plugin/plugin.json` if the skill should be exposed to Claude.
-6. `make prod-gate` must pass before review.
+1. Author creates `skills/<name>/SKILL.md` following docs/skill-standard.md.
+2. Keep scope, workflow, evidence and boundaries in a compact root; worked examples load conditionally.
+3. Add two worked examples and positive/negative review cases in `tests/routing.json`. Fixtures are optional when they prove behavior.
+4. Update skills_index.json and CATALOG.md for additions/removals; explicit adapter manifests reference shared paths.
+5. Runtime context files link the shared index rather than repeating every skill trigger.
+6. Run affected checks during edits and make prod-gate before merge/release.
 
 ## Hook lifecycle
 
@@ -96,7 +96,7 @@ make prod-gate
   │                          (required files, manifests, adapter metadata, runtime context routing,
   │                           PR template, skills_index, doc contract, no tracked build artifacts)
   ├── make skills-check   -> scripts/validate_skills.py
-  │                          (skill structure, frontmatter, sections, examples, links)
+  │                          (skill evidence contract, frontmatter, routing review cases, examples, links)
   ├── make policy-check   -> scripts/validate_policies.py
   │                          (thinking budget levels and required fields)
   ├── make harness-check  -> scripts/validate_harnesses.py

@@ -89,3 +89,5 @@ Search phrases this repo is intended to answer:
 | Codex | `.codex-plugin/plugin.json` | `AGENTS.md` |
 | Claude | `.claude-plugin/plugin.json` | `CLAUDE.md` |
 | Gemini | `gemini-extension.json` | `GEMINI.md` |
+
+Skill routing review cases live at `skills/<name>/tests/routing.json`. They specify activation examples for review, not measured model results.

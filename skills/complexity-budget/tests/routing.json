@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Review whether one caller justifies adding a new service and queue.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Remove this unused helper with no replacement abstraction.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

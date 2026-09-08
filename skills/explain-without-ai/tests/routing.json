@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Coach me through explaining this cache invalidation change.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Update this lockfile without a learning exercise.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

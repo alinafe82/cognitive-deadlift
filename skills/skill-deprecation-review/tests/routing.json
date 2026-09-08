@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Assess retiring an unused skill and migrating its adapter references.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Propose a new skill with no retirement decision.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

@@ -24,7 +24,7 @@ output_contract:
   - assumptions and unknowns
   - options considered
   - selected path and rollback
-  - human approval status
+  - authorization already given or consequential action needing approval
 recommended_skills:
   - problem-framing
   - assumption-audit

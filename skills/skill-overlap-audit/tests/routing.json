@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Compare the triggers of resume writing and resume tailoring skills.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Correct spelling in a single example.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

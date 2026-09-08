@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Check the README claim that all three runtime adapters were tested.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Correct a spelling mistake in the README title.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

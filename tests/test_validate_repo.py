@@ -87,9 +87,7 @@ def test_validator_rejects_non_string_skill_metadata(
 ) -> None:
     from scripts import validate_repo
 
-    invalid_index = json.loads(
-        (REPO_ROOT / "skills_index.json").read_text(encoding="utf-8")
-    )
+    invalid_index = json.loads((REPO_ROOT / "skills_index.json").read_text(encoding="utf-8"))
     invalid_index["skills"][0]["purpose"] = ["not", "text"]
     monkeypatch.setattr(validate_repo, "ROOT", REPO_ROOT)
     monkeypatch.setattr(validate_repo, "load_json", lambda _path: invalid_index)
@@ -186,8 +184,7 @@ def test_validator_detects_runtime_adapter_version_drift(
         encoding="utf-8",
     )
     (fake_root / ".claude-plugin" / "plugin.json").write_text(
-        '{"name": "cognitive-deadlift", "version": "9.9.9", "description": "x", '
-        '"skills": []}\n',
+        '{"name": "cognitive-deadlift", "version": "9.9.9", "description": "x", "skills": []}\n',
         encoding="utf-8",
     )
     (fake_root / "gemini-extension.json").write_text(
@@ -229,15 +226,6 @@ def test_validator_detects_runtime_context_skill_routing_drift(
     findings: list[str] = []
     validate_repo.validate_runtime_context_skill_routing(findings)
 
-    assert any(
-        "AGENTS.md" in finding and "runtime-adapter-smoke" in finding
-        for finding in findings
-    )
-    assert any(
-        "CLAUDE.md" in finding and "runtime-adapter-smoke" in finding
-        for finding in findings
-    )
-    assert any(
-        "GEMINI.md" in finding and "runtime-adapter-smoke" in finding
-        for finding in findings
-    )
+    assert any("AGENTS.md" in finding and "skills_index.json" in finding for finding in findings)
+    assert any("CLAUDE.md" in finding and "skills_index.json" in finding for finding in findings)
+    assert any("GEMINI.md" in finding and "skills_index.json" in finding for finding in findings)

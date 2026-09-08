@@ -71,7 +71,7 @@ DOC_CONTRACT: list[tuple[str, list[str]]] = [
             "Anti-slop rules",
             "Validation philosophy",
             "Current assumptions",
-            "What agents must read before editing",
+            "Context routing",
         ],
     ),
     (
@@ -92,7 +92,7 @@ DOC_CONTRACT: list[tuple[str, list[str]]] = [
     ),
     (
         "AGENTS.md",
-        ["Repo contract", "Engineering style", "Final response format"],
+        ["Working agreement"],
     ),
     (
         "repo-audit.md",
@@ -258,22 +258,18 @@ def validate_runtime_adapter_metadata(findings: list[str]) -> None:
 
 
 def validate_runtime_context_skill_routing(findings: list[str]) -> None:
-    skills = [path.name for path in skill_dirs()]
-    context_requirements = [
-        ("AGENTS.md", lambda name: f"`{name}`"),
-        ("CLAUDE.md", lambda name: f"`{name}`"),
-        ("GEMINI.md", lambda name: f"`skills/{name}/SKILL.md`"),
-    ]
-
-    for relative, expected_ref in context_requirements:
+    for relative in ("AGENTS.md", "CLAUDE.md", "GEMINI.md"):
         path = ROOT / relative
         if not path.exists():
             fail(f"runtime context {relative} missing", findings)
             continue
         text = path.read_text(encoding="utf-8")
-        for skill in skills:
-            if expected_ref(skill) not in text:
-                fail(f"runtime context {relative} does not route skill: {skill}", findings)
+        if "[skills_index.json](skills_index.json)" not in text:
+            fail(f"runtime context {relative} must link skills_index.json", findings)
+        if relative != "AGENTS.md" and "[AGENTS.md](AGENTS.md)" not in text:
+            fail(f"runtime context {relative} must link AGENTS.md", findings)
+    if not (ROOT / "skills_index.json").is_file():
+        fail("runtime routing index skills_index.json missing", findings)
 
 
 def validate_skills_index(findings: list[str]) -> None:

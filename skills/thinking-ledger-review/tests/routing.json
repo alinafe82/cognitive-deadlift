@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Review this submitted thinking ledger against its cited test output.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Review a code diff with no ledger attached.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

@@ -1,37 +1,7 @@
-# Skill Quality
+# Skill quality
 
-Cognitive Deadlift uses a local grading script inspired by public Claude skill-grader patterns and the local skill-creator guidance.
+`make grade` requires all static contract axes to pass (100). This is a packaging score, not a claim about model performance or writing quality.
 
-## Constraint
+The axes check metadata/name consistency and a concise description; substantive scope/workflow/evidence/boundary sections; examples, links and content integrity; positive/negative routing cases without contradictory requests; and a bounded root word count. The budgets are 240 description characters and 450 root words, not targets to fill.
 
-Do not vendor third-party skill-grader content unless the license is clear. The public grader inspected during setup had restricted or unknown licensing metadata, so this repo owns a compact local rubric instead.
-
-## Local Rubric
-
-Run:
-
-```bash
-make grade
-```
-
-The grader checks eleven axes:
-
-- Description quality
-- Scope discipline
-- Progressive disclosure
-- Activation precision
-- Input/output contract
-- Process specificity
-- Example coverage
-- Failure handling
-- Safety and privacy
-- Anti-slop rules
-- Documentation quality
-
-A score of `100.0` means a skill hit the full-contract branch on every axis.
-Lower scores identify the first missing or thin contract surfaces. The default
-minimum score is 100. CI runs the same check.
-
-## Current Standard
-
-As of 2026-09-06, all twenty-one skills grade `A+` with a score of `100.0`.
+Human review checks whether requests select the right workflow, instructions are useful, evidence is real and boundaries preserve authorized task completion. Compare representative runs before making claims about improved latency or task success. Repetition, numbered steps and mandatory template fields earn no points.

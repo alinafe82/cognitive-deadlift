@@ -1,0 +1,14 @@
+{
+  "use": [
+    {
+      "request": "Verify which webhook API version supports the requested event.",
+      "reason": "Matches the specific workflow described by this skill."
+    }
+  ],
+  "skip": [
+    {
+      "request": "Refactor a local pure function whose behavior is fully covered by tests.",
+      "reason": "Outside this workflow; avoid loading it for this request."
+    }
+  ]
+}

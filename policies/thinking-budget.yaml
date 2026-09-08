@@ -27,8 +27,8 @@ high:
     - assumption-audit
     - alternatives-before-code
     - rollback-plan
-    - human-approval
-    - explain-without-ai
+    - authorization-check
+    - mechanism-summary
   examples:
     - auth changes
     - permissions
@@ -37,3 +37,9 @@ high:
     - public API changes
     - production config
     - tool or agent permissions
+
+# Evidence depth does not itself require a new approval. Reuse authorization
+# already given for the action; ask only for missing authorization to send,
+# publish, destroy data, widen permissions or change production state.
+# These are evidence categories, not instructions to load every named skill.
+# Coaching and mechanism exercises require an explicit learning request.
