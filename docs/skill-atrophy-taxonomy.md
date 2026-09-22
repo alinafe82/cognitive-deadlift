@@ -93,8 +93,9 @@ passively. It is a review aid, not a diagnosis of the developer.
   test, or rejected alternative.
 - Why it is harmful: Ownership is weak, so debugging and review depend on the assistant.
 - Which skill catches it: `explain-without-ai`.
-- Minimal repair: Explain mechanism, code path, rejected alternative, breakage test, and
-  confidence gap.
+- Minimal repair: Ask "What does this code mean?", then explain mechanism, code
+  path, rejected alternative, breakage test, and confidence gap in the
+  developer's own words.
 
 ## A10: Review Fatigue
 

@@ -66,7 +66,7 @@
     {
       "name": "explain-without-ai",
       "path": "skills/explain-without-ai/SKILL.md",
-      "purpose": "Require a plain-language explanation before merge or handoff."
+      "purpose": "Require the human to explain what the code means before merge or handoff."
     },
     {
       "name": "diff-interrogation",

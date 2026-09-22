@@ -3,6 +3,10 @@
     {
       "request": "Coach me through explaining this cache invalidation change.",
       "reason": "Matches the specific workflow described by this skill."
+    },
+    {
+      "request": "Ask me what this code means before I merge it.",
+      "reason": "Requests the human code-meaning checkpoint this skill is designed to enforce."
     }
   ],
   "skip": [

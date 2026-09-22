@@ -21,7 +21,7 @@ Search phrases this repo is intended to answer:
 | `failing-test-first` | Codex, Claude, Gemini | Prove the bug or behavior before fixing it. |
 | `trace-the-code` | Codex, Claude, Gemini | Follow the existing execution path before changing it. |
 | `read-the-docs-first` | Codex, Claude, Gemini | Check docs, ADRs, schemas, and source references before guessing. |
-| `explain-without-ai` | Codex, Claude, Gemini | Require a plain-language explanation before merge or handoff. |
+| `explain-without-ai` | Codex, Claude, Gemini | Require the human to explain what the code means before merge or handoff. |
 | `diff-interrogation` | Codex, Claude, Gemini | Review generated or human diffs as untrusted code. |
 | `debugging-lab-notebook` | Codex, Claude, Gemini | Reproduce, hypothesize, instrument, and verify hard bugs. |
 | `complexity-budget` | Codex, Claude, Gemini | Challenge unnecessary abstraction and dependency creep. |

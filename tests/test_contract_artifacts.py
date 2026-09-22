@@ -10,6 +10,27 @@ from scripts.contract_yaml import read_contract_yaml
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_explain_without_ai_requires_human_code_meaning_checkpoint() -> None:
+    skill = (REPO_ROOT / "skills" / "explain-without-ai" / "SKILL.md").read_text(
+        encoding="utf-8"
+    )
+    simple_example = (
+        REPO_ROOT / "skills" / "explain-without-ai" / "examples" / "simple.md"
+    ).read_text(encoding="utf-8")
+    edge_example = (
+        REPO_ROOT / "skills" / "explain-without-ai" / "examples" / "edge-case.md"
+    ).read_text(encoding="utf-8")
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    normalized_skill = " ".join(skill.split())
+
+    assert '"What does this code mean?"' in skill
+    assert "Do not answer the mechanism for them until they attempt it." in skill
+    assert "pasted model prose does not prove ownership" in normalized_skill
+    assert "Ask the human engineer" in simple_example
+    assert "Do not explain the caching layer first." in edge_example
+    assert "Pasting back model prose is not enough." in readme
+
+
 def test_contract_yaml_reads_top_level_and_nested_lists() -> None:
     data = read_contract_yaml(REPO_ROOT / "policies" / "thinking-budget.yaml")
 

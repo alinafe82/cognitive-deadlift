@@ -155,6 +155,12 @@ Expected behavior: the assistant identifies the actual failure, current evidence
 assumptions, non-goals, success condition, and first verification step before it
 proposes code.
 
+For learning or handoff work, use `explain-without-ai` differently from a normal
+summary prompt. The assistant should pick a small code span and ask the human
+engineer, "What does this code mean?" before it explains the mechanism. A good
+answer names inputs, branches, state changes, side effects, and one way the
+explanation could be false. Pasting back model prose is not enough.
+
 ## Harnesses
 
 Harnesses are review fixtures, not a full benchmark suite. They teach reviewers
