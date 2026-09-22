@@ -256,9 +256,9 @@ is not declared as a project dependency here.
 The shared source of truth is `skills/*/SKILL.md`. Runtime adapters route to
 those files and should not duplicate them.
 
-- Codex: `.codex-plugin/plugin.json` and `AGENTS.md`
-- Claude: `.claude-plugin/plugin.json` and `CLAUDE.md`
-- Gemini: `gemini-extension.json` and `GEMINI.md`
+- Codex: `.codex-plugin/plugin.json`
+- Claude: `.claude-plugin/plugin.json`
+- Gemini: `gemini-extension.json`
 
 ## Support
 
@@ -283,7 +283,6 @@ stance. Teams that want help applying the workflow can book a fixed-scope
 
 ## Design Notes
 
-- [specs/cognitive-deadlift-v2-modernization.md](specs/cognitive-deadlift-v2-modernization.md)
 - [docs/architecture.md](docs/architecture.md)
 - [docs/skill-atrophy-taxonomy.md](docs/skill-atrophy-taxonomy.md)
 - [docs/ai-slop-taxonomy.md](docs/ai-slop-taxonomy.md)

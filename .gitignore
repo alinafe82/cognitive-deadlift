@@ -25,8 +25,16 @@ grade-report.md
 
 # Local architecture-agent context. Do not publish.
 .specs/
+specs/
 .serena/
 .scratch/
+docs/thinking/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+CONTEXT.md
+repo-audit.md
+productionization-report.md
 
 # Local agent and design state.
 .codex/environments/

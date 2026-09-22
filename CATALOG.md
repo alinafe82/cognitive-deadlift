@@ -84,10 +84,10 @@ Search phrases this repo is intended to answer:
 
 ## Runtime adapters
 
-| Runtime | Manifest | Context file |
+| Runtime | Manifest | Public routing |
 | --- | --- | --- |
-| Codex | `.codex-plugin/plugin.json` | `AGENTS.md` |
-| Claude | `.claude-plugin/plugin.json` | `CLAUDE.md` |
-| Gemini | `gemini-extension.json` | `GEMINI.md` |
+| Codex | `.codex-plugin/plugin.json` | Shared `skills/` directory |
+| Claude | `.claude-plugin/plugin.json` | Explicit shared skill paths |
+| Gemini | `gemini-extension.json` | `README.md` package context |
 
 Skill routing review cases live at `skills/<name>/tests/routing.json`. They specify activation examples for review, not measured model results.
