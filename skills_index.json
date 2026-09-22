@@ -20,16 +20,14 @@
   ],
   "runtimes": {
     "codex": [
-      ".codex-plugin/plugin.json",
-      "AGENTS.md"
+      ".codex-plugin/plugin.json"
     ],
     "claude": [
-      ".claude-plugin/plugin.json",
-      "CLAUDE.md"
+      ".claude-plugin/plugin.json"
     ],
     "gemini": [
       "gemini-extension.json",
-      "GEMINI.md"
+      "README.md"
     ]
   },
   "skills": [

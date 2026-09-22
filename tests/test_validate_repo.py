@@ -105,14 +105,16 @@ def test_validator_detects_missing_doc_section(
     from scripts import validate_repo
 
     fake_root = tmp_path
-    (fake_root / "CONTEXT.md").write_text("# CONTEXT\n\n## Mission\n\nText.\n", encoding="utf-8")
+    (fake_root / "ARCHITECTURE.md").write_text(
+        "# Architecture\n\n## Top-level layout\n\nText.\n",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(validate_repo, "ROOT", fake_root)
 
     findings: list[str] = []
     validate_repo.validate_doc_contract(findings)
-    # CONTEXT.md is missing five of the six required sections, plus other docs.
-    assert any("Operating principles" in f for f in findings)
-    assert any("Anti-slop rules" in f for f in findings)
+    assert any("Skill lifecycle" in f for f in findings)
+    assert any("Validation lifecycle" in f for f in findings)
 
 
 def test_validator_detects_tracked_artifact(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -189,7 +191,7 @@ def test_validator_detects_runtime_adapter_version_drift(
     )
     (fake_root / "gemini-extension.json").write_text(
         '{"name": "cognitive-deadlift", "version": "0.1.0", "description": "x", '
-        '"contextFileName": "GEMINI.md"}\n',
+        '"contextFileName": "README.md"}\n',
         encoding="utf-8",
     )
     monkeypatch.setattr(validate_repo, "ROOT", fake_root)
@@ -200,25 +202,25 @@ def test_validator_detects_runtime_adapter_version_drift(
     assert any(".claude-plugin/plugin.json version" in finding for finding in findings)
 
 
-def test_validator_detects_runtime_context_skill_routing_drift(
+def test_validator_detects_runtime_manifest_skill_routing_drift(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     from scripts import validate_repo
 
     fake_root = tmp_path
-    for skill in ("problem-framing", "runtime-adapter-smoke"):
-        (fake_root / "skills" / skill).mkdir(parents=True)
-
-    (fake_root / "AGENTS.md").write_text(
-        "- `problem-framing` before implementation.\n",
+    (fake_root / ".codex-plugin").mkdir(parents=True)
+    (fake_root / ".claude-plugin").mkdir(parents=True)
+    (fake_root / "skills_index.json").write_text('{"skills": []}\n', encoding="utf-8")
+    (fake_root / ".codex-plugin" / "plugin.json").write_text(
+        '{"skills": "./wrong/"}\n',
         encoding="utf-8",
     )
-    (fake_root / "CLAUDE.md").write_text(
-        "- `problem-framing` before implementation.\n",
+    (fake_root / ".claude-plugin" / "plugin.json").write_text(
+        '{"skills": []}\n',
         encoding="utf-8",
     )
-    (fake_root / "GEMINI.md").write_text(
-        "- `skills/problem-framing/SKILL.md` before implementation.\n",
+    (fake_root / "gemini-extension.json").write_text(
+        '{"contextFileName": "GEMINI.md"}\n',
         encoding="utf-8",
     )
     monkeypatch.setattr(validate_repo, "ROOT", fake_root)
@@ -226,6 +228,6 @@ def test_validator_detects_runtime_context_skill_routing_drift(
     findings: list[str] = []
     validate_repo.validate_runtime_context_skill_routing(findings)
 
-    assert any("AGENTS.md" in finding and "skills_index.json" in finding for finding in findings)
-    assert any("CLAUDE.md" in finding and "skills_index.json" in finding for finding in findings)
-    assert any("GEMINI.md" in finding and "skills_index.json" in finding for finding in findings)
+    assert any(".codex-plugin/plugin.json" in finding for finding in findings)
+    assert any(".claude-plugin/plugin.json" in finding for finding in findings)
+    assert any("gemini-extension.json" in finding for finding in findings)

@@ -19,7 +19,7 @@ The repo layout is adapted from public AI-agent skill/plugin repositories inspec
 
 - Use a root `README.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, and `CHANGELOG.md`.
 - Keep shared skills under `skills/*/SKILL.md`.
-- Include runtime-specific root context files: `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md`.
+- Keep runtime-specific operator context out of the public tree; publish manifests and shared skill bodies instead.
 - Include plugin/extension manifests: `.codex-plugin/plugin.json`, `.claude-plugin/plugin.json`, and `gemini-extension.json`.
 - Include repo hygiene under `.github/`, including issue templates, pull request template, CODEOWNERS, dependabot, and validation workflow.
 - Include local enforcement under `hooks/` and `scripts/`.
