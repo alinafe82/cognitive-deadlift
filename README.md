@@ -155,6 +155,12 @@ Expected behavior: the assistant identifies the actual failure, current evidence
 assumptions, non-goals, success condition, and first verification step before it
 proposes code.
 
+For learning or handoff work, use `explain-without-ai` differently from a normal
+summary prompt. The assistant should pick a small code span and ask the human
+engineer, "What does this code mean?" before it explains the mechanism. A good
+answer names inputs, branches, state changes, side effects, and one way the
+explanation could be false. Pasting back model prose is not enough.
+
 ## Harnesses
 
 Harnesses are review fixtures, not a full benchmark suite. They teach reviewers
@@ -250,9 +256,9 @@ is not declared as a project dependency here.
 The shared source of truth is `skills/*/SKILL.md`. Runtime adapters route to
 those files and should not duplicate them.
 
-- Codex: `.codex-plugin/plugin.json` and `AGENTS.md`
-- Claude: `.claude-plugin/plugin.json` and `CLAUDE.md`
-- Gemini: `gemini-extension.json` and `GEMINI.md`
+- Codex: `.codex-plugin/plugin.json`
+- Claude: `.claude-plugin/plugin.json`
+- Gemini: `gemini-extension.json`
 
 ## Support
 
@@ -277,7 +283,6 @@ stance. Teams that want help applying the workflow can book a fixed-scope
 
 ## Design Notes
 
-- [specs/cognitive-deadlift-v2-modernization.md](specs/cognitive-deadlift-v2-modernization.md)
 - [docs/architecture.md](docs/architecture.md)
 - [docs/skill-atrophy-taxonomy.md](docs/skill-atrophy-taxonomy.md)
 - [docs/ai-slop-taxonomy.md](docs/ai-slop-taxonomy.md)

@@ -20,16 +20,14 @@
   ],
   "runtimes": {
     "codex": [
-      ".codex-plugin/plugin.json",
-      "AGENTS.md"
+      ".codex-plugin/plugin.json"
     ],
     "claude": [
-      ".claude-plugin/plugin.json",
-      "CLAUDE.md"
+      ".claude-plugin/plugin.json"
     ],
     "gemini": [
       "gemini-extension.json",
-      "GEMINI.md"
+      "README.md"
     ]
   },
   "skills": [
@@ -66,7 +64,7 @@
     {
       "name": "explain-without-ai",
       "path": "skills/explain-without-ai/SKILL.md",
-      "purpose": "Require a plain-language explanation before merge or handoff."
+      "purpose": "Require the human to explain what the code means before merge or handoff."
     },
     {
       "name": "diff-interrogation",

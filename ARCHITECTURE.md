@@ -16,7 +16,6 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 ├── hooks/                     # Optional pre-commit hook
 ├── tests/                     # Pytest tests for the harness
 ├── docs/                      # Deeper supporting docs, ADRs, security
-├── specs/                     # Planning and review documents for repo-level changes
 ├── policies/                  # Risk-based thinking budget
 ├── context-packs/             # Evidence contracts for common workflows
 ├── harnesses/                 # Review fixtures for agent failure modes
@@ -24,15 +23,9 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 ├── .claude-plugin/            # Claude runtime adapter manifest
 ├── .gemini/                   # Gemini runtime adapter note
 ├── .github/                   # CI, CODEOWNERS, issue templates
-├── AGENTS.md                  # Generic agent rules
-├── CLAUDE.md                  # Claude-specific rules
-├── GEMINI.md                  # Gemini-specific rules
-├── CONTEXT.md                 # Mission, principles, anti-slop rules, glossary
 ├── README.md                  # Public quickstart
 ├── CATALOG.md                 # Index of skills, hooks, scripts, adapters
 ├── ARCHITECTURE.md            # This file
-├── repo-audit.md              # Standing audit
-├── productionization-report.md # Standing prod-readiness status
 ├── skills_index.json          # Machine-readable index of skills/
 ├── Makefile                   # Validation and gate targets
 └── pyproject.toml             # Python packaging + ruff config
@@ -44,7 +37,6 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 - **`hooks/`** holds local automation invoked by git. The repo does not assume hooks are installed in consumer repos.
 - **`skills/`** holds reusable skill bodies and is the single source of truth for any skill. Runtime adapters reference these and never copy them.
 - **`docs/`** holds deeper documentation like architecture rationale, ADRs, the security model, the skill standard, the review checklist, and the workflow audit note. It is not the contract surface.
-- **`specs/`** holds planning and review documents for repo-level changes.
 - **`policies/`** holds risk-based evidence policy. `thinking-budget.yaml` is the source of truth for low / medium / high gates.
 - **`context-packs/`** holds workflow-specific context contracts for bug fixes, refactors, repo review, and risky changes.
 - **`harnesses/`** holds review fixtures that teach how to catch AI-assisted development failure modes. These are not benchmark claims.
@@ -56,14 +48,14 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 2. Keep scope, workflow, evidence and boundaries in a compact root; worked examples load conditionally.
 3. Add two worked examples and positive/negative review cases in `tests/routing.json`. Fixtures are optional when they prove behavior.
 4. Update skills_index.json and CATALOG.md for additions/removals; explicit adapter manifests reference shared paths.
-5. Runtime context files link the shared index rather than repeating every skill trigger.
+5. Runtime manifests link public shared skill paths rather than publishing local operator context files.
 6. Run affected checks during edits and make prod-gate before merge/release.
 
 ## Hook lifecycle
 
 1. Hook scripts live in `hooks/` and are symlinked into a consumer repo's `.git/hooks/` by the user.
 2. The only hook today is `hooks/pre-commit`, which calls `scripts/cognitive_deadlift_check.py`.
-3. The hook blocks staged source changes unless a `docs/thinking/*.md` ledger is also staged. `COGNITIVE_DEADLIFT_BYPASS=1` skips the check.
+3. The hook blocks staged source changes unless a local `.specs/thinking/*.md` ledger is also staged with `git add -f`. `COGNITIVE_DEADLIFT_BYPASS=1` skips the check.
 4. Adding a new hook requires updating `CATALOG.md` and `hooks/pre-commit` documentation.
 
 ## Policy lifecycle
@@ -93,7 +85,7 @@ Current top-level structure of the repo. Deeper rationale, alternatives consider
 ```text
 make prod-gate
   ├── make repo-check     -> scripts/validate_repo.py
-  │                          (required files, manifests, adapter metadata, runtime context routing,
+  │                          (required files, manifests, adapter metadata, public runtime routing,
   │                           PR template, skills_index, doc contract, no tracked build artifacts)
   ├── make skills-check   -> scripts/validate_skills.py
   │                          (skill evidence contract, frontmatter, routing review cases, examples, links)
@@ -136,16 +128,16 @@ If skill count grows beyond ~30, switch to generation. The threshold for that de
 
 Adapters route discovery to the shared skills, and they never carry a skill body.
 
-| Runtime | Manifest | Context file |
+| Runtime | Manifest | Public routing |
 | --- | --- | --- |
-| Claude | `.claude-plugin/plugin.json` | `CLAUDE.md` |
-| Codex | `.codex-plugin/plugin.json` | `AGENTS.md` |
-| Gemini | `gemini-extension.json` | `GEMINI.md` |
+| Claude | `.claude-plugin/plugin.json` | Explicit shared skill paths |
+| Codex | `.codex-plugin/plugin.json` | Shared `skills/` directory |
+| Gemini | `gemini-extension.json` | `README.md` package context |
 
 The validator checks that each manifest has consistent name and version metadata,
-that each manifest points at the expected runtime context, and that Claude's
+that each manifest points at public shared skill routing, and that Claude's
 explicit skill list matches the directory.
 
 ## Source-control hygiene
 
-Generated artifacts (`*.egg-info/`, `.pytest_cache/`, `.ruff_cache/`, `__pycache__/`, `.venv/`, `dist/`, `build/`, `htmlcov/`, `coverage.xml`) are gitignored and validated as untracked by `scripts/validate_repo.py`. Local agent context directories such as `.specs/` and `.serena/` stay ignored. If a generated artifact appears in `git ls-files`, the gate fails.
+Generated artifacts (`*.egg-info/`, `.pytest_cache/`, `.ruff_cache/`, `__pycache__/`, `.venv/`, `dist/`, `build/`, `htmlcov/`, `coverage.xml`) are gitignored and validated as untracked by `scripts/validate_repo.py`. Local agent context and evidence directories such as `.specs/`, `specs/`, and `.serena/` stay ignored. If a generated or local-only artifact appears in `git ls-files`, the gate fails.

@@ -4,7 +4,7 @@
 Checks:
 - required files exist
 - runtime adapter manifests are consistent
-- runtime context files route every shared skill
+- runtime manifests route to public shared skill files
 - skills_index.json matches the skills/ directory
 - top-level docs each own their declared job (doc contract)
 - generated and local-only artifacts stay untracked
@@ -23,17 +23,11 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_ROOT_FILES = [
     "README.md",
     "LICENSE",
-    "CONTEXT.md",
     "ARCHITECTURE.md",
     "CATALOG.md",
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
     "Makefile",
     "pyproject.toml",
     "skills_index.json",
-    "repo-audit.md",
-    "productionization-report.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".codex-plugin/plugin.json",
     ".claude-plugin/plugin.json",
@@ -64,17 +58,6 @@ REQUIRED_ROOT_FILES = [
 # Headings are matched against `## <heading>` markers.
 DOC_CONTRACT: list[tuple[str, list[str]]] = [
     (
-        "CONTEXT.md",
-        [
-            "Mission",
-            "Operating principles",
-            "Anti-slop rules",
-            "Validation philosophy",
-            "Current assumptions",
-            "Context routing",
-        ],
-    ),
-    (
         "ARCHITECTURE.md",
         [
             "Top-level layout",
@@ -90,18 +73,6 @@ DOC_CONTRACT: list[tuple[str, list[str]]] = [
         "CATALOG.md",
         ["Skills", "Hooks", "Scripts", "Runtime adapters"],
     ),
-    (
-        "AGENTS.md",
-        ["Working agreement"],
-    ),
-    (
-        "repo-audit.md",
-        ["Source-of-truth contract", "Findings"],
-    ),
-    (
-        "productionization-report.md",
-        ["Summary", "Checks available", "Commands run", "Remaining risks"],
-    ),
 ]
 
 
@@ -112,6 +83,14 @@ def _strip_dot_slash(path: str) -> str:
 
 # Glob patterns for generated artifacts and local-only agent state that must not be tracked.
 FORBIDDEN_TRACKED_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r"(^|/)AGENTS\.md$"),
+    re.compile(r"(^|/)CLAUDE\.md$"),
+    re.compile(r"(^|/)GEMINI\.md$"),
+    re.compile(r"(^|/)CONTEXT\.md$"),
+    re.compile(r"(^|/)repo-audit\.md$"),
+    re.compile(r"(^|/)productionization-report\.md$"),
+    re.compile(r"(^|/)docs/thinking(/|$)"),
+    re.compile(r"(^|/)specs(/|$)"),
     re.compile(r"(^|/)\.pytest_cache(/|$)"),
     re.compile(r"(^|/)\.ruff_cache(/|$)"),
     re.compile(r"(^|/)\.mypy_cache(/|$)"),
@@ -199,8 +178,8 @@ def validate_codex_manifest(findings: list[str]) -> None:
 
 def validate_gemini_manifest(findings: list[str]) -> None:
     manifest = load_json(ROOT / "gemini-extension.json")
-    if manifest.get("contextFileName") != "GEMINI.md":
-        fail("gemini-extension.json must use GEMINI.md as contextFileName", findings)
+    if manifest.get("contextFileName") != "README.md":
+        fail("gemini-extension.json must use README.md as contextFileName", findings)
 
 
 def validate_runtime_adapter_metadata(findings: list[str]) -> None:
@@ -258,18 +237,18 @@ def validate_runtime_adapter_metadata(findings: list[str]) -> None:
 
 
 def validate_runtime_context_skill_routing(findings: list[str]) -> None:
-    for relative in ("AGENTS.md", "CLAUDE.md", "GEMINI.md"):
-        path = ROOT / relative
-        if not path.exists():
-            fail(f"runtime context {relative} missing", findings)
-            continue
-        text = path.read_text(encoding="utf-8")
-        if "[skills_index.json](skills_index.json)" not in text:
-            fail(f"runtime context {relative} must link skills_index.json", findings)
-        if relative != "AGENTS.md" and "[AGENTS.md](AGENTS.md)" not in text:
-            fail(f"runtime context {relative} must link AGENTS.md", findings)
     if not (ROOT / "skills_index.json").is_file():
         fail("runtime routing index skills_index.json missing", findings)
+    codex = load_json(ROOT / ".codex-plugin" / "plugin.json")
+    if codex.get("skills") != "./skills/":
+        fail(".codex-plugin/plugin.json must route to ./skills/", findings)
+    claude = load_json(ROOT / ".claude-plugin" / "plugin.json")
+    claude_skills = claude.get("skills")
+    if not isinstance(claude_skills, list) or not claude_skills:
+        fail(".claude-plugin/plugin.json must list shared skill paths", findings)
+    gemini = load_json(ROOT / "gemini-extension.json")
+    if gemini.get("contextFileName") != "README.md":
+        fail("gemini-extension.json must route public context to README.md", findings)
 
 
 def validate_skills_index(findings: list[str]) -> None:

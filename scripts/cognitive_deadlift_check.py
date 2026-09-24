@@ -37,7 +37,7 @@ SOURCE_SUFFIXES = {
 }
 
 IGNORED_PREFIXES = (
-    "docs/thinking/",
+    ".specs/thinking/",
     "vendor/",
     "node_modules/",
     "dist/",
@@ -69,7 +69,7 @@ def is_source_change(path: Path) -> bool:
 
 def has_thinking_ledger(files: list[Path]) -> bool:
     return any(
-        path.as_posix().startswith("docs/thinking/")
+        path.as_posix().startswith(".specs/thinking/")
         and path.name != "TEMPLATE.md"
         and path.suffix.lower() == ".md"
         for path in files
@@ -97,7 +97,7 @@ def main() -> int:
     print("Cognitive Deadlift blocked this commit.")
     print("")
     print("Staged source changes need reasoning evidence.")
-    print("Add a staged docs/thinking/<short-name>.md using docs/thinking/TEMPLATE.md.")
+    print("Add a local .specs/thinking/<short-name>.md note, then stage it with git add -f.")
     print("")
     print("Source changes detected:")
     for path in source_changes[:20]:

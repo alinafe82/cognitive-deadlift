@@ -11,7 +11,6 @@ ROOT = Path(__file__).resolve().parents[1]
 
 CHECKS = [
     ("README", "README.md"),
-    ("AGENTS", "AGENTS.md"),
     ("skills index", "skills_index.json"),
     ("skills directory", "skills"),
     ("tests directory", "tests"),

@@ -19,20 +19,19 @@
 ├── .codex-plugin/
 ├── .claude-plugin/
 ├── .gemini/
-├── AGENTS.md
-├── CLAUDE.md
-└── GEMINI.md
+├── skills_index.json
+└── README.md
 ```
 
 ## Skill Loading Model
 
 The shared skill body lives in `skills/<skill-name>/SKILL.md`.
 
-Runtime adapters point at or describe those shared skills:
+Runtime adapters point at or describe those shared skills without publishing local operator context:
 
-- Codex: `.codex-plugin/plugin.json` and `AGENTS.md`
-- Claude: `.claude-plugin/plugin.json` and `CLAUDE.md`
-- Gemini: `gemini-extension.json` and `GEMINI.md`
+- Codex: `.codex-plugin/plugin.json`
+- Claude: `.claude-plugin/plugin.json`
+- Gemini: `gemini-extension.json` and `README.md`
 
 Installation and loading are separate steps. Installing a skill makes it
 available to a runtime, but it does not mean every new session loads the full
@@ -40,7 +39,7 @@ available to a runtime, but it does not mean every new session loads the full
 load the full body only when the user names the skill or the request matches the
 skill trigger.
 
-The repo does not duplicate skill bodies per runtime. If a runtime needs special routing, put that in the adapter file, not in a forked copy of the skill.
+The repo does not duplicate skill bodies per runtime. If a runtime needs special routing, put that in the adapter manifest, not in a forked copy of the skill or a tracked operator note.
 
 ## Skill Retention Harness Model
 
