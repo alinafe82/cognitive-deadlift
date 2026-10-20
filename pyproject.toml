@@ -5,7 +5,17 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cognitive-deadlift"
 version = "0.1.0"
+description = "A skill-retention harness for developers using AI coding assistants."
+authors = [{name = "Alinafe Matenda"}]
+maintainers = [{name = "Alinafe Matenda"}]
+license = "MIT AND CC-BY-NC-SA-4.0"
+license-files = ["LICENSE", "LICENSE-CONTENT", "NOTICE"]
 requires-python = ">=3.11"
+
+[project.urls]
+Homepage = "https://github.com/alinafe82/cognitive-deadlift"
+Repository = "https://github.com/alinafe82/cognitive-deadlift"
+Issues = "https://github.com/alinafe82/cognitive-deadlift/issues"
 
 [project.optional-dependencies]
 test = [
