@@ -1,5 +1,9 @@
 # Cognitive Deadlift
 
+Created and maintained by [Alinafe Matenda](https://github.com/alinafe82).
+Copyright (c) 2026 Alinafe Matenda. See [NOTICE](NOTICE) for the split license
+and [LICENSE-CONTENT](LICENSE-CONTENT) for content attribution and reuse terms.
+
 ## At a Glance
 
 - **Use case:** Keep developer judgment active while using AI coding assistants.
