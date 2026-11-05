@@ -61,6 +61,15 @@ Passive AI use can weaken the skills that make a developer useful:
 Cognitive Deadlift protects those abilities by requiring evidence at the points
 where judgment usually gets skipped.
 
+## Six Practices for AI Assisted Work
+
+1. **Form a hypothesis first:** Draft your own rough solution so a polished AI answer does not anchor your thinking.
+2. **Define verification upfront:** Decide your success criteria before running the prompt so you do not rationalize buggy results later.
+3. **Hunt for failure modes:** Ask what assumptions could break the code, then run real edge-case tests.
+4. **Inspect the raw evidence:** Review the exact commands and outputs before reading the model's summary.
+5. **Challenge green checks:** Ask which edge cases passing tests actually missed.
+6. **Demand explicit trade-offs:** Prompt the agent to list the decisions and shortcuts it took.
+
 ## Thinking Budget
 
 Not every task deserves the same amount of friction.
